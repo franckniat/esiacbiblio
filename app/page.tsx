@@ -1,113 +1,111 @@
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
+import Navbar from "@/components/ui/header";
+import Footer from "@/components/ui/footer";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
+    <>
+    <Navbar/>
+    <main className="max-w-[1340px] mx-auto px-2 ">
+        <section className='hero mx-auto max-w-3xl px-4 pt-12 sm:pt-24 lg:pt-28'
+        style={{
+          backgroundImage: 'url(/bg__hero.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}>
+          <section className='flex justify-center'>
+              <Link href="/support" className="group dark:text-white dark:bg-slate-800 dark:hover:bg-slate-700 inline-flex active:scale-95 transition items-center hover:bg-gray-200 p-1 pr-2 text-black bg-gray-100 border-red-600 rounded-full sm:text-base lg:text-sm xl:text-base">
+                  <div className="px-3 py-0.5 text-black dark:text-white text-xs font-semibold leading-5 uppercase tracking-wide rounded-full bg-gray-300 dark:bg-slate-900">
+                    ⚡️Sponsor
+                  </div>
+                  <div className="ml-4 hidden text-sm sm:block">
+                    Soutenez C-GIT aujourd&#039;hui en nous sponsorisant.
+                  </div>
+                  <div className="ml-4 text-sm sm:hidden">
+                    Soutenez C-GIT
+                  </div>          
+                  <svg className="w-5 h-5 ml-2 group-hover:translate-x-0.5 transition text-black dark:text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+              </Link>
+          </section>
+          <section className="mt-10 text-center">
+            <h1 className="text-5xl font-extrabold tracking-tighter sm:leading-none lg:text-7xl bg-gradient-to-r from-red-500 via-green-500 to-neutral-600 dark:bg-clip-text dark:text-transparent inline-block text-transparent bg-clip-text pr-1">
+                ESIAC-BIBLIO
+            </h1>
+            <p className="mt-3 text-base font-medium text-black dark:text-white sm:mt-5 sm:text-lg md:text-xl lg:text-2xl tracking-wide">
+              Bienvenue dans la bibliothèque numérique de l&#039;Ecole Supérieure d&#039;Ingénieurie et de Management d&#039;Afrique Centrale.
+            </p>
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row md:gap-6 sm:justify-center">
+              <Link href={/* user ? "/dashboard":  */"/auth/login"}>
+                <Button variant="success" size={"lg"} className="active:scale-95 transition focus:outline focus:outline-gray-300 font-medium w-full sm:w-fit text-white">{/* user ? "Aller au tableau de bord": */ "Rejoindre la communauté"}</Button>
+              </Link>
+              <Link href="/documents">
+                <Button variant="secondary" size={"lg"} className="active:scale-95 transition focus:outline focus:outline-gray-300 font-medium w-full sm:w-fit ">Visiter la bibliothèque</Button>
+              </Link> 
+            </div>
+          </section>
+        </section>
+        <section className='pt-10 md:pt-14 lg:pt-20 pb-5 border-b border-gray-300 dark:border-neutral-600 sm:border-none mx-2'>
+          <div className='text-center text-sm font-medium text-gray-600 dark:text-white'>
+            <p>Conçu par les étudiants pour les étudiants.</p>
+          </div>
+        </section>
+        <section className='relative py-24 sm:py-32 pointer-events-auto'>
+          <div className="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl" aria-hidden="true">
+            <div className="aspect-[1097/845] w-[30.5625rem] bg-gradient-to-tr from-[#ff466e] to-[#31aa56] dark:opacity-30 opacity-50" style={{clipPath:" polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"}}></div>
+          </div>
+          <div className="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl" aria-hidden="true">
+            <div className="aspect-[1097/845] w-[30.5625rem] bg-gradient-to-tr from-[#ff466e] to-[#31aa56] dark:opacity-30 opacity-50" style={{clipPath:" polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"}}></div>
+          </div>
+          
+          <div className="mx-auto max-w-[1340px] px-6 lg:px-8">
+            <div className="mx-auto max-w-2xl lg:mx-0">
+              <h2 className="text-4xl font-extrabold tracking-tighter sm:text-6xl">Travaillons ensemble</h2>
+                <p className="mt-6 text-lg leading-8 dark:text-neutral-300 font-medium">Créer votre compte pour ainsi contribuer au bien-être et au partage de connaissances au sein d&#039;ESIAC</p>
+            </div>
+            <div className="mx-auto mt-10 max-w-2xl lg:mx-0 lg:max-w-none">
+              <dl className="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="flex flex-col-reverse">
+                  <dt className="text-base leading-7 dark:text-gray-300">Documents enregistrés</dt>
+                  <dd className="text-2xl font-bold leading-9 tracking-tight dark:text-white">500</dd>
+                </div>
+                <div className="flex flex-col-reverse">
+                  <dt className="text-base leading-7 dark:text-gray-300">Étudiants inscrits</dt>
+                  <dd className="text-2xl font-bold leading-9 tracking-tight dark:text-white">210+</dd>
+                </div>
+                <div className="flex flex-col-reverse">
+                  <dt className="text-base leading-7 dark:text-gray-300">Articles ajoutés par semaine</dt>
+                  <dd className="text-2xl font-bold leading-9 tracking-tight dark:text-white">10</dd>
+                </div>
+                <div className="flex flex-col-reverse">
+                  <dt className="text-base leading-7 dark:text-gray-300">Accès aux données</dt>
+                  <dd className="text-2xl font-bold leading-9 tracking-tight dark:text-white">Illimité et gratuit</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </section>
+        <section className='px-5 flex flex-col py-5'>
+        <h2 className='text-lg font-bold tracking-tight dark:text-white sm:text-xl'>Contributeurs : </h2>
+        <div className='flex gap-3 flex-wrap items-center py-3'>
+          <a target='_blank' href="https://github.com/franckniat">
             <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+              src="/profile_master.jpg"
+              title="FRANCK NIAT"
+              alt="IMAGE CONTRIBUTEUR : Franck NIAT"
+              width={300}
+              height={300}
+              className="w-[100px] h-[100px] object-cover rounded-full border-2 border-slate-800 dark:border-gray-50 hover:border-red-600 dark:hover:border-red-600"
             />
-          </a>
+          </a>    
         </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      </section>
+      </main>
+      <Footer/>
+      </>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google";
+import { Inter, DM_Sans, Space_Grotesk } from "next/font/google";
+import Providers from "@/providers";
 import "./globals.css";
 
 const space_grotesk = Space_Grotesk({ subsets: ["latin"] });
@@ -23,7 +24,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className={`${space_grotesk.className} min-h-screen antialiased`}>{children}</body>
+      <body className={`${space_grotesk.className} min-h-screen antialiased bg-white dark:bg-slate-950`}>
+        <Providers>
+          {children}
+        </Providers>
+      </body>
     </html>
   );
 }
