@@ -52,7 +52,7 @@ export const RegisterForm = () => {
                             <FormItem>
                             <FormLabel>Nom : </FormLabel>
                             <FormControl>
-                                <Input {...field}  placeholder="Franck NIAT" type="text"/>
+                                <Input {...field} disabled={isPending}  placeholder="Franck NIAT" type="text"/>
                             </FormControl>
                             <FormMessage className="text-sm"/>
                             </FormItem>
@@ -61,7 +61,7 @@ export const RegisterForm = () => {
                             <FormItem>
                             <FormLabel>Email : </FormLabel>
                             <FormControl>
-                                <Input {...field}  placeholder="exemple@esiac.cm" type="email"/>
+                                <Input {...field} disabled={isPending}  placeholder="exemple@esiac.cm" type="email"/>
                             </FormControl>
                             <FormMessage className="text-sm"/>
                             </FormItem>
@@ -70,7 +70,7 @@ export const RegisterForm = () => {
                             <FormItem>
                             <FormLabel>Mot de passe : </FormLabel>
                             <FormControl>
-                                <Input {...field} placeholder="********" type="password"/>
+                                <Input {...field} disabled={isPending} placeholder="********" type="password"/>
                             </FormControl>
                             <FormMessage className="text-sm"/>
                             </FormItem>
@@ -78,7 +78,7 @@ export const RegisterForm = () => {
                     </div>
                     <FormError message={error}/>
                     <FormSuccess message={success}/>
-                    <Button type="submit"   className="w-full">Créer un compte</Button>
+                    <Button type="submit" disabled={isPending} className="w-full">Créer un compte</Button>
                 </form>
             </Form>
         </CardWrapper>
