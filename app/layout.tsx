@@ -4,6 +4,8 @@ import Providers from "@/providers";
 import "./globals.css";
 
 const space_grotesk = Space_Grotesk({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
+const dm_sans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "ESIAC-BIBLIO",
