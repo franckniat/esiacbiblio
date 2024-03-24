@@ -8,7 +8,7 @@ export function BackButton(){
     return(
         <div className="hidden sm:flex" title="Retour à la page précédente">
             <Button
-                variant="ghost"
+                variant="link"
                 className="absolute top-[60px] left-[60px] rounded-full py-5 px-5 gap-2 flex"
                 onClick={() => router.back()}
             >
