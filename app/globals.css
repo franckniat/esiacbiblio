@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#nprogress .bar {
+    filter: drop-shadow(1px 2px 3px rgba(190, 18, 61, 0.671));
+  }

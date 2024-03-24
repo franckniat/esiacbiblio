@@ -10,6 +10,7 @@ export default function NextThemesProvider({children, ...props}:ThemeProviderPro
             <ProgressBar
                 options={{ showSpinner: true }}
                 height="4px"
+                color="#be123c"
             />
             {children}
         </ThemeProvider>
