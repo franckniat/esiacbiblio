@@ -1,25 +1,31 @@
 import type { NextAuthConfig } from 'next-auth';
+import { DefaultSession } from 'next-auth';
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from '@/lib/db';
+import { getUserById } from './data/user';
+import { UserRole } from '@prisma/client';
 
 export const authConfig = {
   pages: {
     signIn: '/auth/login',
   },
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
-      if (isOnDashboard) {
-        if (isLoggedIn) return true;
-        return false;
-      } 
-      return true;
+    async session({token, session}){
+      if(token.sub && session.user){
+        session.user.id = token.sub;
+      }
+      if(token.role && session.user){
+        session.user.role = token.role as UserRole;
+      }
+      return session
     },
-    /* async jwt({token}){
-      console.log({token})
-      return token
-    } */
+    async jwt({token}){
+      if(!token.sub) return token;
+      const existingUser = await getUserById(token.sub);
+      if(!existingUser) return token;
+      token.role = existingUser.role;
+      return token;
+    }
   },
   adapter: PrismaAdapter(db),
   session: {strategy: "jwt"},

@@ -1,13 +1,17 @@
 import NextAuth from 'next-auth';
 import { authConfig } from '@/auth.config';
 import Credentials from 'next-auth/providers/credentials';
+import Github from "next-auth/providers/github";
+import Google from "next-auth/providers/google";
 import {z} from "zod";
 import bcrypt from 'bcryptjs';
 import { getUserByEmail } from '@/data/user';
 
-export const { auth, signIn, signOut } = NextAuth({
+export const { auth, signIn, signOut, handlers:{GET, POST} } = NextAuth({
     ...authConfig,
     providers: [
+        Github,
+        Google,
         Credentials({
             async authorize(credentials){
                 const parsedCredentials = z.object({
