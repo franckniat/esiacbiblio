@@ -1,12 +1,11 @@
-import { auth, signOut } from '@/auth'
-import { Button } from '@/components/ui/button'
-import React from 'react'
+import { auth, signOut } from '@/auth';
+import { Button } from '@/components/ui/button';
 
 export default async function Dashboard() {
-    const user = await auth()
+    const session = await auth()
   return (
     <div>
-      {JSON.stringify(user)}
+      {JSON.stringify(session)}
       <form action={async()=>{
         "use server"
         await signOut();

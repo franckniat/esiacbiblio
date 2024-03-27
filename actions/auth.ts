@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { getUserByEmail } from "@/data/user";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 export const login = async (data: z.infer<typeof LoginSchema>) => {
     const validateFields = LoginSchema.safeParse(data);
@@ -19,7 +20,7 @@ export const login = async (data: z.infer<typeof LoginSchema>) => {
         await signIn("credentials", {
             email, 
             password,
-            redirectTo: "/dashboard",
+            redirectTo: DEFAULT_LOGIN_REDIRECT,
         })
     } catch (error) {
         if(error instanceof AuthError){
@@ -30,9 +31,7 @@ export const login = async (data: z.infer<typeof LoginSchema>) => {
             }
             switch (error.type) {
                 case "CredentialsSignin":
-                    return {error:"Invalid Credentials ! "}
-                case 'CallbackRouteError':
-                    return {error:"Callback Route error !"}
+                    return {error:"Email ou mot de passe incorrect ! "}
                 default:
                     return {error:"Something went wrong !"}
             }

@@ -11,7 +11,7 @@ export default function Footer(){
         <section className="mx-2 md:mx-5 border-b border-gray-200 dark:border-neutral-600 pb-5">
             <div className="flex flex-col md:flex-row justify-between gap-5 flex-wrap">
                 <div className="flex flex-col">
-                    <Image height={500} width={500} className="w-[100px] h-[100px]" src="/logo_esiac.png" alt=""/>
+                    <Image height={500} width={500} className="w-[100px] h-[100px]" src="/images/logo_esiac.png" alt=""/>
                     <h1 className="font-bold max-w-xs uppercase tracking-wide text-lg">Ecole supérieure d{"'"}Ingénieurie et de management d{"'"}Afrique Centrale</h1>
                 </div>
                 <div className="flex flex-col gap-3 border-b border-gray-100 dark:border-neutral-600 py-5 md:border-none">

@@ -1,34 +1,30 @@
-import {publicRoutes, apiAuthPrefix, DEFAULT_LOGIN_REDIRECT, authRoutes, protectedRoutes} from "@/routes";
-import { auth } from '@/auth';
- 
+import { authConfig } from "@/auth.config";
+import NextAuth from "next-auth";
+import {apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT, publicRoutes} from "@/routes"
+
+const { auth } = NextAuth(authConfig)
+
 export default auth((req)=>{
-  const {nextUrl} = req;
-  const isLogged = !!req.auth;
+  const {nextUrl}= req;
+  const isLoggedIn = !!req.auth;
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-  const isProtectedRoute = protectedRoutes.includes(nextUrl.pathname);
   if(isApiAuthRoute){
-    return;
+    return null;
   }
   if(isAuthRoute){
-    if(isLogged){
-        return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+    if(isLoggedIn){
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
-    return;
+    return null;
   }
-  if(isProtectedRoute){
-    if(!isLogged){
-      return Response.redirect(new URL("/auth/login", nextUrl));
-    }
+  if(!isLoggedIn && !isPublicRoute){
+    return Response.redirect(new URL("/auth/login", nextUrl));
   }
-  if(!isPublicRoute && !isLogged){
-    return Response.redirect(new URL("/auth/login", nextUrl))
-  }
-  return;
+  return null;
 })
- 
+
 export const config = {
-  // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
-  matcher: ['/((?!api|_next/static|_next/image||.*\\.png$).*)'],
-};
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+}

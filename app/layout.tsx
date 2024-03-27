@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className={`${space_grotesk.className} min-h-screen antialiased bg-white dark:bg-slate-950`}>
+      <body className={`${inter.className} min-h-screen antialiased bg-white dark:bg-slate-950`}>
         <Providers>
           {children}
         </Providers>

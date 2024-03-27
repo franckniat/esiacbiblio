@@ -11,7 +11,7 @@ export default function Home() {
     <main className="max-w-[1340px] mx-auto px-2 ">
         <section className='hero mx-auto max-w-3xl px-4 pt-12 sm:pt-24 lg:pt-28'
         style={{
-          backgroundImage: 'url(/bg__hero.png)',
+          backgroundImage: 'url(/images/bg__hero.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -94,7 +94,7 @@ export default function Home() {
         <div className='flex gap-3 flex-wrap items-center py-3'>
           <a target='_blank' href="https://github.com/franckniat">
             <Image
-              src="/profile_master.jpg"
+              src="/images/profile_master.jpg"
               title="FRANCK NIAT"
               alt="IMAGE CONTRIBUTEUR : Franck NIAT"
               width={300}
