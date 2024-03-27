@@ -25,7 +25,12 @@ export default function CardWrapper({
                 {children}
             </CardContent>
             {showSocials && (
-                <CardFooter>
+                <CardFooter className="flex-col gap-3">
+                    <div className="flex items-center gap-2 w-full">
+                        <span className="w-full h-[0.5px] bg-slate-300 dark:bg-slate-700"></span>
+                        <span className="text-xs w-full flex justify-center">Ou continuez avec</span>
+                        <span className="w-full h-[0.5px] bg-slate-300 dark:bg-slate-700"></span>
+                    </div>
                     <SocialButtons/>
                 </CardFooter>
             )}
