@@ -9,9 +9,12 @@ import { z } from "zod";
 import { LoginSchema } from "@/schemas";
 import { Button } from "@/components/ui/button";
 import { useState, useTransition,  } from "react";
+import { useSearchParams } from "next/navigation";
 import { login } from "@/actions/auth";
 import { FormError } from "@/components/ui/form-error";
 export const LoginForm = () => {
+    const searchParams = useSearchParams();
+    const urlError = searchParams.get("error")=== "OAuthAccountNotLinked" ? "Email déjà utilisé chez un autre fournisseur d'authentification !":"";
     const [isPending, startTransition] = useTransition();
     const [error, setError] = useState<string|undefined>();
     const [success, setSuccess] = useState<string|undefined>()
@@ -64,7 +67,7 @@ export const LoginForm = () => {
                         </FormItem>
                     )}/>
                     </div>
-                    <FormError message={error}/>
+                    <FormError message={error||urlError}/>
                     <Button type="submit" disabled={isPending} className="w-full">Se connecter</Button>
                 </form>
             </Form>
