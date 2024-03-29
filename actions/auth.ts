@@ -4,7 +4,7 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { getUserByEmail } from "@/data/user";
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
@@ -65,4 +65,8 @@ export const register = async (data: z.infer<typeof RegisterSchema>) => {
     return{
         success:"Votre compte a été créé avec succès, nous vous avons envoyé un email de confirmation."
     }
+}
+
+export const logout = async () => {
+    await signOut();
 }
