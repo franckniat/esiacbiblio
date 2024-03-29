@@ -35,10 +35,10 @@ export const DashboardWrapper = ({
                 )}
             </div>
             <section className="space-y-3">
-                <h1 className="text-2xl md:text-3xl font-bold">{title}</h1>
+                <h1 className="text-2xl md:text-2xl font-bold">{title}</h1>
                 {headerMessage && <p className="text-sm leading-6">{headerMessage}</p>}
             </section>
-            <section className="px-3 py-1">
+            <section>
                 {children}
             </section>
         </main>
