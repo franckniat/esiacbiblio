@@ -3,8 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/ui/header";
 import Footer from "@/components/ui/footer";
+import { auth } from "@/auth";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
   return (
     <>
     <Navbar/>
@@ -40,8 +42,8 @@ export default function Home() {
               Bienvenue dans la bibliothèque numérique de l&#039;Ecole Supérieure d&#039;Ingénieurie et de Management d&#039;Afrique Centrale.
             </p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row md:gap-6 sm:justify-center">
-              <Link href={/* user ? "/dashboard":  */"/auth/login"}>
-                <Button variant="success" size={"lg"} className="active:scale-95 transition focus:outline focus:outline-gray-300 font-medium w-full sm:w-fit text-white">{/* user ? "Aller au tableau de bord": */ "Rejoindre la communauté"}</Button>
+              <Link href={session?.user ? "/dashboard": "/auth/login"}>
+                <Button variant="success" size={"lg"} className="active:scale-95 transition focus:outline focus:outline-gray-300 font-medium w-full sm:w-fit text-white">{session?.user ? "Aller au tableau de bord": "Rejoindre la communauté"}</Button>
               </Link>
               <Link href="/documents">
                 <Button variant="secondary" size={"lg"} className="active:scale-95 transition focus:outline focus:outline-gray-300 font-medium w-full sm:w-fit ">Visiter la bibliothèque</Button>

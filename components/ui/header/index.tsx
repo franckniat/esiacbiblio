@@ -1,5 +1,5 @@
 "use client";
-import {AlignJustify, DoorClosed, SunMedium, Moon, Plus, BookOpen, BellPlus, MessageCircle, LayoutDashboard, User, Settings, DoorOpen} from "lucide-react";
+import {AlignJustify, DoorClosed, SunMedium, Moon, Plus, BookOpen, BellPlus, MessageCircle, LayoutDashboard, User, Settings, DoorOpen, Loader} from "lucide-react";
 import {clsx} from "clsx";
 import {usePathname} from "next/navigation";
 import {Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTrigger, SheetTitle} from "@/components/ui/sheet";
@@ -8,6 +8,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import {useTheme} from "next-themes";
+import { useSession } from "next-auth/react";
+import { logout } from "@/actions/auth";
 
 const navlinks = [
     {
@@ -66,11 +68,15 @@ const morelinks = [
 export default function Navbar(){
     const pathname = usePathname();
     const {theme, setTheme} = useTheme();
+    const session = useSession();
+    const handleLogout = () => {
+        logout();
+    }
     return(
         <>
             <nav className="z-[30] w-full sticky top-0 backdrop-blur-sm bg-white/90 dark:bg-slate-950/90 transition">
                 <section className="max-w-[1340px] mx-auto px-2">
-                    <section className="flex items-center justify-between h-[65px]">
+                    <section className="flex items-center justify-between h-[60px]">
                         <section className="flex items-center gap-5">
                             <Link href="/"
                                   className="mx-2 flex items-center gap-0 text-lg md:text-xl lg:text-2xl font-serif">
@@ -102,13 +108,13 @@ export default function Navbar(){
                             </Button>
                             <div className="hidden md:flex gap-2">
                                 <div
-                                    className={`text-sm flex gap-3 items-center font-medium ${/* user ? "hidden": */"flex"}`}>
+                                    className={`text-sm flex gap-3 items-center font-medium ${session.data?.user ? "hidden":"flex"}`}>
                                     <Link href={"/auth/login"} className="text-green-600 hover:text-green-600/90 flex">Se
                                         connecter</Link>
                                     ●
                                     <Link href={"/auth/register"} className="hover:text-opacity-90">S{"'"}inscrire</Link>
                                 </div>
-                                <div className={`flex gap-4 ${/* user ? "flex" : */ "hidden"}`}>
+                                <div className={`flex gap-4 ${session.data?.user ? "flex" : "hidden"}`}>
                                     <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
                                             <Button variant="ghost" className="px-2 py-2 rounded-full">
@@ -143,20 +149,21 @@ export default function Navbar(){
                                     <DropdownMenu>
                                         <DropdownMenuTrigger className="rounded-full">
                                             <Avatar className="hover:bg-opacity-80 flex items-center justify-center">
-                                                {/* {loading ? <Loader size={20} className="animate-spin"/> :
-                                                user && user?.photoURL === "" || user?.photoURL === undefined || user?.photoURL === null
+                                                {session.status==="loading" 
+                                                ? <Loader size={20} className="animate-spin"/> 
+                                                : session.data?.user && session.data?.user.image === "" || session.data?.user.image === undefined || session.data?.user.image === null
                                                     ? (
-                                                        <AvatarFallback className="font-bold">{user?.displayName?.charAt(0).toUpperCase()}</AvatarFallback>
+                                                        <AvatarFallback className="font-bold">{session.data?.user.name?.charAt(0).toUpperCase()}</AvatarFallback>
                                                     ) : (
-                                                        <AvatarImage src={user?.photoURL}/>
+                                                        <AvatarImage src={session.data?.user.image}/>
                                                     )
-                                            } */}
+                                            }
                                             </Avatar>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent aria-label="Static Actions"
                                                              className="mr-3 rounded-md w-[200px]">
                                             <DropdownMenuLabel className="text-xs line-clamp-2">Connecté en tant
-                                                que <br/> {/* user?.email */}</DropdownMenuLabel>
+                                                que <br/> {session.data?.user.email}</DropdownMenuLabel>
                                             <DropdownMenuSeparator/>
                                             <DropdownMenuItem className="rounded-md" asChild>
                                                 <Link href="/dashboard"
@@ -180,7 +187,7 @@ export default function Navbar(){
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem
-                                                className="rounded-md text-red-600 hover:text-red-600 flex gap-2 items-center w-full h-full">
+                                                className="rounded-md text-red-600 hover:text-red-600 flex gap-2 items-center w-full h-full" onClick={handleLogout}>
                                                 <DoorOpen size={20}/>
                                                 Se déconnecter
                                             </DropdownMenuItem>
