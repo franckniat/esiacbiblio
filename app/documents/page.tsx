@@ -6,6 +6,7 @@ import Footer from '@/components/ui/footer';
 import { getActiveDocuments } from '@/data/documents';
 import DocumentCard from '@/components/document';
 import { getUserById } from '@/data/user';
+import CustomBreadcrumb from "@/components/ui/custom-breadcrumb";
 
 export default async function Documents(){
     const allDocuments = await getActiveDocuments();
@@ -23,17 +24,12 @@ export default async function Documents(){
             <main className="max-w-[1340px] mx-auto px-2">
             <section className="mx-2 md:mx-5 pt-10 sm:pt-22">
                 <section className='text-sm'>
-                    <Breadcrumb>
-                        <BreadcrumbList>
-                            <BreadcrumbItem>
-                                <BreadcrumbLink href="/">Accueil</BreadcrumbLink>
-                            </BreadcrumbItem>
-                            <ChevronRight size={15}/>
-                            <BreadcrumbItem>
-                                <BreadcrumbPage>Documents</BreadcrumbPage>
-                            </BreadcrumbItem>
-                        </BreadcrumbList>
-                    </Breadcrumb>
+                    <CustomBreadcrumb
+                        path={[
+                            {name:"Accueil", href:"/"},
+                            {name:"Documents", href:"/documents"}
+                        ]}
+                    />
                 </section>
                 <div className='space-y-4'>
                     <h1 className="text-3xl font-bold">
