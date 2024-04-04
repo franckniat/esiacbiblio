@@ -5,6 +5,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import { db } from '@/lib/db';
 import { UserRole } from '@prisma/client';
 import { getUserById } from '@/data/user';
+import { getAccountById } from './data/account';
 
 export const { 
     auth, signIn, signOut, 
@@ -40,6 +41,22 @@ export const {
             if(token.role && session.user){
               session.user.role = token.role as UserRole;
             }
+            if(token.bio && session.user){
+              session.user.bio = token.bio;
+            }
+            if(token.email && session.user){
+              session.user.email = token.email;
+            }
+            if(token.name && session.user){
+              session.user.name = token.name;
+            }
+            if(token.picture && session.user){
+              session.user.image = token.picture;
+            }
+            if(token.is0Auth && session.user){
+              session.user.is0Auth = token.is0Auth as boolean;
+            }
+            
             return session
           },
       
@@ -47,7 +64,13 @@ export const {
             if(!token.sub) return token;
             const existingUser = await getUserById(token.sub);
             if(!existingUser) return token;
+            const existingAccount = await getAccountById(existingUser.id)
+            token.email = existingUser.email;
+            token.name = existingUser.name;
+            token.picture = existingUser.image;
             token.role = existingUser.role;
+            token.bio = existingUser.bio;
+            token.is0Auth = !!existingAccount;
             return token;
           }
     },
