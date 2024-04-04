@@ -10,6 +10,7 @@ import Link from "next/link";
 import {useTheme} from "next-themes";
 import { useSession } from "next-auth/react";
 import { logout } from "@/actions/auth";
+import UserAvatar from "../user-avatar";
 
 const navlinks = [
     {
@@ -69,6 +70,7 @@ export default function Navbar(){
     const pathname = usePathname();
     const {theme, setTheme} = useTheme();
     const session = useSession();
+    const isAdmin = session.data?.user?.role === "ADMIN" || session.data?.user?.role === "SUPERADMIN";
     const handleLogout = () => {
         logout();
     }
@@ -148,17 +150,7 @@ export default function Navbar(){
                                     </DropdownMenu>
                                     <DropdownMenu>
                                         <DropdownMenuTrigger className="rounded-full">
-                                            <Avatar className="hover:bg-opacity-80 flex items-center justify-center">
-                                                {session.status==="loading" 
-                                                ? <Loader size={20} className="animate-spin"/> 
-                                                : session.data?.user && session.data?.user.image === "" || session.data?.user.image === undefined || session.data?.user.image === null
-                                                    ? (
-                                                        <AvatarFallback className="font-bold">{session.data?.user.name?.charAt(0).toUpperCase()}</AvatarFallback>
-                                                    ) : (
-                                                        <AvatarImage src={session.data?.user.image}/>
-                                                    )
-                                            }
-                                            </Avatar>
+                                            <UserAvatar />
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent aria-label="Static Actions"
                                                              className="mr-3 rounded-md w-[200px]">
