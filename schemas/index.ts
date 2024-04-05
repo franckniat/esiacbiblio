@@ -31,6 +31,7 @@ export const ProfileUpdateSchema = z.object({
     image: z.optional(z.string())
 })
 
+
 export const DocumentsSchema = z.object({
     sector: z.string().min(1,{
         message:"Veuillez choisir une filière !"
@@ -44,10 +45,7 @@ export const DocumentsSchema = z.object({
     description: z.string().min(1,{
         message:"Veuillez entrer une description !"
     }),
-    fileURL: z.string().min(1,{
+    fileURL: z.optional(z.string().min(1,{
         message:"Veuillez entrer un fichier !"
-    }),
-    fileType: z.string().min(1,{
-        message:"Veuillez entrer un type de fichier !"
-    })
+    }))
 })
