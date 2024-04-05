@@ -38,6 +38,7 @@ yarn-error.log*
 next-env.d.ts
 
 #ide Settings
-/.idea/
+.idea/
 .idea/copilot/chatSessions/00000000000.xd
 .idea/copilot/chatSessions/00000000000.xd
+.idea/.gitignore
