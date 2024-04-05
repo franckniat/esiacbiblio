@@ -15,8 +15,8 @@ export default async function DashboardMenu() {
     const isAdmin = userInfo?.role === "ADMIN" || userInfo?.role === "SUPERADMIN";
   return (
     <>
-    <aside className=" mb-4 border-r border-slate-100 dark:border-slate-900">
-        <div className="flex flex-col items-start justify-between h-full px-4 py-3 pt-6">
+    <aside className="mb-4 border-r border-slate-100 dark:border-slate-900 hidden md:block">
+        <div className="flex flex-col items-start h-full px-4 py-3 pt-6">
             <div className="flex flex-col max-w-[250px]">
                 <div className="flex flex-col gap-2 items-center">
                     <Suspense fallback={<Loader2 className="animate-spin" size={60}/>}>
