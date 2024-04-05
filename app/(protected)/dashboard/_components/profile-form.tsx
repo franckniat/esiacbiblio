@@ -60,7 +60,7 @@ export function ProfileForm() {
       setError("");
       setSuccess("");
       if(file){
-        const fileURL = await getStringOfFile(file, `images/users/${data?.user.name}`);
+        const fileURL = await getStringOfFile(file, `images/users/${data?.user.id}`);
         profileData.image = fileURL;
       }
       updateUser(profileData).then((res) => {
