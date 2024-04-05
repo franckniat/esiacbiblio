@@ -58,7 +58,6 @@ model Document {
   userId          String
   title           String?
   fileURL         String?
-  fileType        String?
   sector          String?
   category        String?
   description     String?
