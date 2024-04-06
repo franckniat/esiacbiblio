@@ -3,6 +3,7 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { DocumentsSchema } from "@/schemas";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 
@@ -26,6 +27,7 @@ export const addDocument = async(data: z.infer<typeof DocumentsSchema>)=>{
                 userId: session?.user.id
             }
         });
+        revalidatePath("/dashboard/documents")
         return{
             success: "Document ajouté avec succès !"
         }
