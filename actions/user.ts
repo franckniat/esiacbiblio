@@ -35,3 +35,20 @@ export const updateUser = async (values: z.infer<typeof ProfileUpdateSchema>) =>
     success: "Votre profil a été mis à jour avec succès !",
   };
 };
+
+
+export const deleteUser = async (id: string) => {
+  const session = await auth();
+  if (session?.user.role !== "SUPERADMIN" || session?.user.role !== "ADMIN") {
+    return {
+      error: "Accès non autorisé !",
+    };
+  }
+  await db.user.delete({
+    where: { id },
+  });
+  revalidatePath("/dashboard/admin/users")
+  return {
+    success: "Compte supprimé avec succès !",
+  };
+}
