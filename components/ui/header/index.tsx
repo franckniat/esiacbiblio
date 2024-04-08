@@ -165,13 +165,6 @@ export default function Navbar(){
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem className="rounded-md" asChild>
-                                                <Link href="/dashboard/profile"
-                                                      className="flex gap-2 items-center w-full h-full py-2 cursor-pointer">
-                                                    <User size={20}/>
-                                                    Profil
-                                                </Link>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem className="rounded-md" asChild>
                                                 <Link href="/dashboard/settings"
                                                       className="flex gap-2 items-center w-full h-full py-2 cursor-pointer">
                                                     <Settings size={20}/>
@@ -212,7 +205,7 @@ export default function Navbar(){
                                         </div>
                                     ))}
                                 </div>
-                                <div className={`flex-col mt-4 gap-3 ${/* user ? "flex" :  */"hidden"}`}>
+                                <div className={`flex-col mt-4 gap-3 ${session.data?.user ? "flex" : "hidden"}`}>
                                     {morelinks.map((navlink, index) => (
                                         <div key={index}>
                                             <SheetClose asChild>
@@ -233,7 +226,7 @@ export default function Navbar(){
                                     </SheetClose>
                                 </div>
                                 <div
-                                    className={`text-sm flex-col gap-3 font-medium ml-4 mt-3 ${/* user ? "hidden" : */ "flex"}`}>
+                                    className={`text-sm flex-col gap-3 font-medium ml-4 mt-3 ${session.data?.user ? "hidden" : "flex"}`}>
                                     <SheetClose asChild>
                                         <Link href={"/signin"} className="text-green-600 hover:text-green-600/90 flex">
                                             Se connecter
