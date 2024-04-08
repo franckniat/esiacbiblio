@@ -42,3 +42,13 @@ export const protectedRoutes = [
     "/settings",
     "/profile",
 ]
+
+/**
+ * An array of admin routes of the application.
+ * @type {string[]}
+ */
+export const adminRoutes = [
+    "/dashboard/admin",
+    "/dashboard/admin/users",
+    "/dashboard/admin/documents",
+]
