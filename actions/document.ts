@@ -76,3 +76,33 @@ export const deleteDocument = async(id: string)=>{
         console.log(error);
     }
 }
+
+export const validateDocument = async(id: string)=>{
+    const document = await db.document.findUnique({
+        where:{
+            id
+        }
+    });
+    try {
+        await db.document.update({
+            where:{
+                id
+            },
+            data:{
+                isVisible: true
+            }
+        });
+        await db.user.update({
+            where:{
+                id: document?.userId,
+            },
+            data:{
+                expPoints:{
+                    increment: 15
+                }
+            }
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}
