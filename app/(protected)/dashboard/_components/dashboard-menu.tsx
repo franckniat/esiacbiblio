@@ -25,7 +25,7 @@ export default async function DashboardMenu() {
                                 user?.user.image === null || 
                                 user?.user.image === undefined || 
                                 user?.user.image === ""  ?  
-                                <AvatarFallback className="text-xl">{user?.user.name?.charAt(0).toUpperCase()}</AvatarFallback> :
+                                <AvatarFallback className="text-xl font-extrabold">{user?.user.name?.charAt(0).toUpperCase()}</AvatarFallback> :
                                 <AvatarImage src={user?.user.image} className="object-cover"/>
                             }
                         </Avatar>

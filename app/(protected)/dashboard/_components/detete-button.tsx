@@ -10,7 +10,6 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog";
 import { useRouter } from 'next/navigation';
 
@@ -28,12 +27,12 @@ export default function DeleteButton({
     deleteFunc: (ref: string) => {},
 }) {
     const [open, setOpen] = useState(false);
-    const [isOK, setIsOK] = useState(false);
     const router = useRouter();
     return (
         <>
             <Button
                 variant="danger"
+                size="sm"
                 onClick={() => {
                     setOpen(true);
                 }}
@@ -61,7 +60,7 @@ export default function DeleteButton({
                             Confirmer
                         </Button>
                         <DialogClose asChild>
-                            <Button onClick={()=>setIsOK(false)}>Annuler</Button>
+                            <Button>Annuler</Button>
                         </DialogClose>
                     </DialogFooter>
                 </DialogContent>

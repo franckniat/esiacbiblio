@@ -63,7 +63,7 @@ export default function DashboardLinks() {
                     <Link
                         key={index}
                         href={link.path}
-                        className={clsx("flex text-sm items-center gap-2 py-2 rounded-lg hover:text-green-600 hover:translate-x-1 will-change-transform transition-all", pathname === link.path ? "text-green-600" : " dark:text-slate-50 text-slate-950 ")}
+                        className={clsx("flex text-sm items-center gap-2 py-2 rounded-lg hover:text-green-600 dark:hover:text-green-600 hover:translate-x-1 will-change-transform transition-all", pathname === link.path ? "text-green-600" : " dark:text-slate-50 text-slate-950 ")}
                     >
                         {link.icon}{link.title}
                     </Link>
