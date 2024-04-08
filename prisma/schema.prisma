@@ -32,6 +32,10 @@ model User {
   expPoints     Int?      @default(0)
   accounts      Account[]
   documents     Document[]
+  articles      Article[]
+  comments      Comment[]
+  likes         LikeArticle[]
+  likeDocuments LikeDocument[]
 }
 
 model Account {
@@ -65,5 +69,57 @@ model Document {
   createdAt       DateTime? @default(now())
   updatedAt       DateTime? @updatedAt
   isVisible       Boolean?  @default(false)
+  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes           LikeDocument[]
+}
+
+model Article{
+  id              String   @id @default(cuid())
+  title           String?
+  content         String?
+  image           String?
+  author          String?
+  createdAt       DateTime? @default(now())
+  updatedAt       DateTime? @updatedAt
+  isVisible       Boolean?  @default(false)
+  tags            String[]
+  sector          String?
+  category        String?
+
+  user            User? @relation(fields: [author], references: [id])
+  comments        Comment[]
+  likes           LikeArticle[]
+}
+
+model LikeArticle {
+  id              String   @id @default(cuid())
+  articleId       String
+  userId          String
+  createdAt       DateTime? @default(now())
+
+  article         Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model LikeDocument{
+  id              String   @id @default(cuid())
+  documentId      String
+  userId          String
+  createdAt       DateTime? @default(now())
+
+  document        Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+}
+
+model Comment{
+  id              String   @id @default(cuid())
+  articleId       String
+  userId          String
+  content         String?
+  createdAt       DateTime? @default(now())
+  updatedAt       DateTime? @updatedAt
+
+  article         Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
   user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
