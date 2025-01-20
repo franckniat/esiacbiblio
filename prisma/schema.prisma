@@ -1,0 +1,184 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  name          String
+  email         String         @unique
+  password      String?
+  role          String         @default("user")
+  emailVerified DateTime?
+  is0Auth       Boolean        @default(false)
+  image         String?
+  bio           String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  expPoints     Int            @default(0)
+  status        String         @default("active")
+  accounts      Account[]
+  documents     Document[]
+  articles      Article[]
+  comments      Comment[]
+  likes         LikeArticle[]
+  likeDocuments LikeDocument[]
+  Notification  Notification[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Document {
+  id          String         @id @default(cuid())
+  userId      String
+  title       String
+  description String
+  sector      String
+  category    String
+  fileURL     String
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  isVisible   Boolean        @default(false)
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes       LikeDocument[]
+
+  @@map("documents")
+}
+
+model Article {
+  id         String        @id @default(cuid())
+  title      String
+  slug       String        @unique
+  content    String
+  image      String
+  author     String
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  isVisible  Boolean       @default(false)
+  sectorId   String
+  categoryId String
+  user       User          @relation(fields: [author], references: [id], onDelete: Cascade)
+  sector     Sector        @relation(fields: [sectorId], references: [id], onDelete: Cascade)
+  category   Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  tags       Tag[]
+  comments   Comment[]
+  likes      LikeArticle[]
+
+  @@map("articles")
+}
+
+model LikeArticle {
+  id        String   @id @default(cuid())
+  articleId String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("like_articles")
+}
+
+model LikeDocument {
+  id         String   @id @default(cuid())
+  documentId String
+  userId     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("like_documents")
+}
+
+model Comment {
+  id        String    @id @default(cuid())
+  articleId String
+  userId    String
+  content   String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+}
+
+model Category {
+  id      String    @id @default(cuid())
+  label   String
+  value   String
+  Article Article[]
+
+  @@map("categories")
+}
+
+model Sector {
+  id      String    @id @default(cuid())
+  label   String
+  value   String
+  code    String
+  Article Article[]
+
+  @@map("sectors")
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  label     String
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Article   Article? @relation(fields: [articleId], references: [id], onDelete: SetNull)
+  articleId String?
+
+  @@map("tags")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  message   String
+  url       String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
