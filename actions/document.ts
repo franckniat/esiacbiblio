@@ -1,7 +1,7 @@
 "use server";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/user";
-import { DocumentsSchema } from "@/schemas";
+import {DocumentsSchema, UpdateDocumentSchema} from "@/schemas";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -29,6 +29,35 @@ export const addDocument = async (data: z.infer<typeof DocumentsSchema>) => {
         revalidatePath("/dashboard/documents")
         return {
             success: "Document ajouté avec succès !"
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const updateDocument = async (id:string, data: z.infer<typeof UpdateDocumentSchema>) => {
+    const validateFields = UpdateDocumentSchema.safeParse(data);
+    if (!validateFields.success) {
+        return {
+            error: "Informations invalides !"
+        }
+    }
+    const { title, description, sector, category } = validateFields.data;
+    try {
+        await db.document.update({
+            where: {
+                id,
+            },
+            data: {
+                title,
+                description,
+                sector,
+                category
+            }
+        });
+        revalidatePath("/dashboard/documents")
+        return {
+            success: "Document modifié avec succès !"
         }
     } catch (error) {
         console.log(error);

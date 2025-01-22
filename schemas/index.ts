@@ -82,3 +82,31 @@ export const DocumentsSchema = z.object({
         message: "Veuillez entrer un fichier !"
     })
 })
+
+
+export const UpdateDocumentSchema = z.object({
+    sector: z.string({
+        required_error: "Veuillez choisir une filière !"
+    }).min(1,{
+        message: "Veuillez choisir une filière !"
+    }),
+    category: z.string({
+        required_error: "Veuillez choisir une catégorie !"
+    }).min(1,{
+        message: "Veuillez choisir une catégorie !"
+    }),
+    title: z.string({
+        required_error: "Veuillez entrer un titre !"
+    }).max(100, {
+        message: "Le titre doit avoir maximum 32 caractères !"
+    }).min(1,{
+        message: "Veuillez entrer un titre !"
+    }),
+    description: z.string({
+        required_error: "Veuillez entrer une description !"
+    }).max(300, {
+        message: "La description doit avoir maximum 300 caractères !"
+    }).min(1,{
+        message: "Veuillez entrer une description !"
+    }),
+})
