@@ -1,17 +1,23 @@
 import DashboardWrapper from "@/components/dashboard/dashboard-wrapper";
 import React from "react";
+import DocsPerMonth from "@/components/charts/doc-per-month";
+import {getUserDocuments} from "@/data/document";
+import {getCurrentUser} from "@/lib/user";
+import {notFound} from "next/navigation";
 
 export default async function Dashboard() {
-
+	const user = await getCurrentUser();
+	if (!user?.id) {
+		notFound();
+	}
+	const documents = await getUserDocuments(user.id as string);
 	return (
 		<DashboardWrapper
 			title="Tableau de bord"
 			path={[]}
 		>
-			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita
-			repellendus nobis ut cum, molestias ducimus odit accusantium saepe
-			beatae omnis. Et tempora recusandae omnis distinctio, quis atque
-			iure dicta ducimus.
+			<h1 className="text-foreground/40">Bienvenue sur votre tableau de bord</h1>
+			<DocsPerMonth documents={documents}/>
 		</DashboardWrapper>
 	);
 }
