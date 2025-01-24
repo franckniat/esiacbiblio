@@ -4,6 +4,8 @@ import { getCurrentUser } from "@/lib/user";
 import {DocumentsSchema, UpdateDocumentSchema} from "@/schemas";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import {getDocumentById} from "@/data/document";
+import {deleteFile} from "@/firebase/functions";
 
 export const addDocument = async (data: z.infer<typeof DocumentsSchema>) => {
     const validateFields = DocumentsSchema.safeParse(data);
@@ -75,13 +77,15 @@ export const updateDocument = async (id:string, data: z.infer<typeof UpdateDocum
 }
 
 export const deleteDocument = async (id: string) => {
-    console.log(id)
+    const document = await getDocumentById(id);
+    if(!document) return { error: "Document introuvable !" }
     try {
         await db.document.delete({
             where: {
                 id
             }
         });
+        await deleteFile(document.title);
         revalidatePath("/dashboard/documents")
         return {
             success: "Document supprimé avec succès !"
