@@ -26,6 +26,16 @@ export const addDocument = async (data: z.infer<typeof DocumentsSchema>) => {
                 userId: user.id
             }
         });
+        await db.user.update({
+            where: {
+                id: user.id
+            },
+            data: {
+                expPoints: {
+                    increment: 25
+                }
+            }
+        })
         revalidatePath("/dashboard/documents")
         return {
             success: "Document ajouté avec succès !"
@@ -61,5 +71,25 @@ export const updateDocument = async (id:string, data: z.infer<typeof UpdateDocum
         }
     } catch (error) {
         console.log(error);
+    }
+}
+
+export const deleteDocument = async (id: string) => {
+    console.log(id)
+    try {
+        await db.document.delete({
+            where: {
+                id
+            }
+        });
+        revalidatePath("/dashboard/documents")
+        return {
+            success: "Document supprimé avec succès !"
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            error: "Une erreur s'est produite lors de la suppression du document !"
+        }
     }
 }
