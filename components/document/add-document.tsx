@@ -79,10 +79,14 @@ export default function AddDocument({
 				document.fileURL = await getStringOfFile(file, `documents/${document.title}`);
 			}
 			addDocument(document).then((res) => {
-				setError(res?.error);
-				setSuccess(res?.success);
+				if (res?.success){
+					setSuccess(res.success)
+					removeValue()
+					router.push("/dashboard/documents")
+				} else {
+					setError(res?.error)
+				}
 			});
-			removeValue()
 		});
 	};
 	return (
@@ -147,7 +151,7 @@ export default function AddDocument({
 								render={({ field }) => (
 									<FormItem className="flex flex-col gap-1">
 										<FormLabel>Filière : </FormLabel>
-										<Select onValueChange={field.onChange} defaultValue={field.value}>
+										<Select onValueChange={field.onChange} disabled={isPending} defaultValue={field.value}>
 											<SelectTrigger>
 												<SelectValue placeholder="Selectionnez une filière :" />
 											</SelectTrigger>
@@ -175,6 +179,7 @@ export default function AddDocument({
 										<Select
 											onValueChange={field.onChange}
 											defaultValue={field.value}
+											disabled={isPending}
 										>
 											<SelectTrigger>
 												<SelectValue placeholder="Selectionnez une catégorie :" />
