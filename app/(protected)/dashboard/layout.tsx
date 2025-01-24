@@ -6,12 +6,12 @@ import { cookies } from "next/headers"
 import ScrollTop from "@/components/scroll-top";
 
 
-export default function PublicLayout({
+export default async function PublicLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
-	const cookieStore = cookies()
+	const cookieStore = await cookies()
 	const defaultOpen = cookieStore.get("sidebar:state")?.value === "true"
 	return (
 		<>
