@@ -31,6 +31,7 @@ import Link from "next/link";
 import { Document, User, LikeDocument } from "@prisma/client";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import DeleteButton from "@/components/delete-button";
+import {deleteDocument} from "@/actions/document";
 
 export type DocumentWithIncludes = Document & {
     likes: LikeDocument[];
@@ -145,10 +146,17 @@ export function DataDocuments({ data }: { data: DocumentWithIncludes[] }) {
 								</Button>
 							</Link>
 							<DeleteButton
+								header={"Supprimer le document"}
+								message={"Cette action est irréversible. Voulez vous vraiment supprimer ce document ?"}
 								contentButton={<Trash2 size={16} />}
-								handleDelete={() => {
-									toast.success("Document en cours de suppression ...");
-								}}
+								handleDeleteAction={()=> deleteDocument(row.original.id).then((res) => {
+										if (res?.success) {
+											toast.success(res.success)
+										} else {
+											toast.error(res?.error)
+										}
+									})
+								}
 							/>
 						</div>
 					</>

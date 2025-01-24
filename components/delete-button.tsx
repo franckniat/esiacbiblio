@@ -16,11 +16,15 @@ import { cn } from '@/lib/utils';
 
 export default function DeleteButton({
     contentButton,
-    handleDelete,
+    handleDeleteAction,
+    message,
+    header,
 }: {
     contentButton: React.ReactNode,
     itemName?: string,
-    handleDelete: () => Promise<void> | void
+    header: string,
+    message: string,
+    handleDeleteAction: () => void
 }) {
     const [open, setOpen] = React.useState(false);
     return (
@@ -29,14 +33,14 @@ export default function DeleteButton({
             <AlertDialog open={open} onOpenChange={setOpen}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Voulez vous vraiment supprimer cet élément ?</AlertDialogTitle>
+                        <AlertDialogTitle>{header}</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Vous ne pourrez plus revenir en arrière après cette action, êtes-vous sûr de vouloir continuer ?
+                            {message}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Annuler</AlertDialogCancel>
-                        <AlertDialogAction className={cn(buttonVariants({ variant: "destructive" }))} onClick={handleDelete}>Oui</AlertDialogAction>
+                        <AlertDialogAction className={cn(buttonVariants({ variant: "destructive" }))} onClick={handleDeleteAction}>Oui</AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
