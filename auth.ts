@@ -43,13 +43,14 @@ export const {
     },
     callbacks: {
         //TODO: Implement email verification
-        /* async signIn({user}){
-            const existingUser = await getUserById(user.id as string);
-            if(!existingUser || !existingUser.emailVerified) {
-                return false;
+         async signIn({user, account}){
+            if (account?.provider !== "credentials") return true;
+            if (account?.provider === "credentials") {
+                const existingUser = await getUserById(user.id as string);
+                if (!existingUser?.emailVerified) return false;
             }
             return true;
-        }, */
+        },
         async jwt({ token }) {
             if (!token.sub) return token;
             const existingUser = await getUserById(token.sub);

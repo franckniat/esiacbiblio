@@ -7,6 +7,8 @@ import { getUserByEmail } from "@/data/user";
 import { signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import {generateVerificationToken} from "@/lib/tokens";
+import {sendVerificationEMail} from "@/lib/mail";
 
 export const login = async (data: z.infer<typeof LoginSchema>) => {
     const validateFields = LoginSchema.safeParse(data);
@@ -16,6 +18,19 @@ export const login = async (data: z.infer<typeof LoginSchema>) => {
         }
     }
     const { email, password } = validateFields.data;
+    const existingUser = await getUserByEmail(email);
+    if (!existingUser || !existingUser.password || !existingUser.email) {
+        return {
+            error: "Utilisateur non trouvé !"
+        }
+    }
+    if (!existingUser.emailVerified){
+        const verificationToken = await generateVerificationToken(existingUser.email);
+        await sendVerificationEMail(verificationToken.email, verificationToken.token);
+        return {
+            error: "Votre email n'a pas été vérifié. Un email de vérification a été envoyé à votre adresse email."
+        }
+    }
     try {
         await signIn("credentials", {
             email,
@@ -60,11 +75,12 @@ export const register = async (data: z.infer<typeof RegisterSchema>) => {
             name,
             email,
             password: hashedPassword,
-            emailVerified: new Date()
         }
     })
+    const verificationToken = await generateVerificationToken(email);
+    await sendVerificationEMail(verificationToken.email, verificationToken.token);
     return {
-        success: "Votre compte a été créé avec succès, nous vous avons envoyé un email de confirmation."
+        success: "Un email de vérification a été envoyé à votre adresse email."
     }
 }
 
