@@ -131,6 +131,15 @@ body {
     }
 }
 
+.scroll-top{
+    transform: translateY(150%);
+    transition: transform ease-out 0.3s;
+}
+
+.scroll-top.visible{
+    transform: translateY(0);
+}
+
 @media (max-width: 768px) {
     .dashboard-children{
         margin-left: 100px;
