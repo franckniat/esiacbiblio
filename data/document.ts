@@ -7,7 +7,15 @@ import { db } from "@/lib/db";
  * @returns An array of all documents in the database.
  */
 export const getAllDocuments = async () => {
-    const data = await db.document.findMany();
+    const data = await db.document.findMany({
+        orderBy: {
+            createdAt: "desc"
+        },
+        include: {
+            user: true,
+            likes: true
+        }
+    });
     return data;
 }
 
@@ -26,7 +34,7 @@ export const getActiveDocuments = async () => {
         },
         include: {
             user: true,
-            likes: true
+            likes: true,
         }
     });
     return data;
