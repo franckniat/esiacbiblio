@@ -39,7 +39,7 @@ export default async function RootLayout({
 	const session = await auth();
 	return (
 		<SessionProvider session={session}>
-			<html lang="fr">
+			<html lang="fr" suppressHydrationWarning>
 				<body className={`${spaceGrotesk.className} antialiased`} suppressHydrationWarning>
 					<Providers>{children}</Providers>
 				</body>
