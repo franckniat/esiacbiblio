@@ -2,45 +2,57 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {Article} from "@prisma/client";
+import {ArticleWithUserCommentsAndLikes} from "@/components/article/public-article";
 
-interface ArticleProps{
-    title:string,
-    author:string, 
-    author_image:string,
-    description:string, 
-    article_image:string,
-    date:string,
-    id:string
+interface ArticleCardProps {
+    article: ArticleWithUserCommentsAndLikes;
 }
 
 export default function ArticleCard({
-    title,
-    author, 
-    author_image, 
-    description,
-    article_image,
-    date,
-    id
-}:ArticleProps){
+    article
+}:ArticleCardProps){
+    function calculateReadingTime(text: string) {
+        const wordsPerMinute = 200;
+        const words = text.split(" ").length;
+        const minutes = words / wordsPerMinute;
+        const seconds = Math.ceil(minutes * 60);
+        return { minutes: Math.floor(seconds / 60), seconds: seconds % 60 };
+    }
+    const { minutes, seconds } = calculateReadingTime(article.content);
     return(
-        <div className="flex gap-2 items-start flex-col sm:flex-row">
-            <Link href={`/articles/${id}`} className="w-full sm:w-[300px] h-[200px]">
-                <Image src={article_image || ""} alt={title || ""} width={400} height={200} className="rounded-lg shadow-lg w-full h-full sm:w-[400px] sm:h-[200px] hover:opacity-75 dark:hover:opacity-85 cursor-pointer object-cover"/>
+        <div className="flex items-start gap-3">
+            <Link
+                href={`/articles/${article.id}`}
+                className="rounded-md h-full w-full sm:min-w-[250px] sm:max-h-[250px] sm:max-w-[300px] object-cover hover:opacity-85 transition-opacity overflow-hidden">
+                <Image
+                    src={article.image}
+                    alt={article.title}
+                    width={500}
+                    height={500}
+                    className="rounded-md h-full w-full sm:min-w-[250px] sm:max-h-[250px] object-cover hover:opacity-90 hover:scale-105 transition-all"
+                />
             </Link>
-            <div className="px-2 flex flex-col gap-2">
-                <Link href={`/articles/${id}`} className="text-lg hover:text-primary text-wrap font-bold">{title}</Link>
-                <Link href={`/users/${author?.toLowerCase().split(" ").join("-")}`} className="flex items-center gap-2 group w-fit">
+            <div className="space-y-3 px-3 py-3">
+                <Link href={`/articles/${article.slug}`} className="text-lg font-bold hover:text-primary">{article.title}</Link>
+                <Link href={`/${article.user.name?.toLowerCase().split(" ").join("-")}`} className="flex items-center gap-2 group w-fit">
                     <Avatar>
-                        {author_image ? (
-                            <AvatarImage src={author_image} alt={author || ""} />
+                        {article.user.image ? (
+                            <AvatarImage src={article.user.image} alt={article.user.name || ""} />
                         ):(
-                            <AvatarFallback className="group-hover:no-underline">{author?.charAt(0).toUpperCase()}</AvatarFallback>
+                            <AvatarFallback className="group-hover:no-underline">{article.user.name?.charAt(0).toUpperCase()}</AvatarFallback>
                         )}
                     </Avatar>
-                    <h2 className="group-hover:underline text-sm font-medium">{author}</h2>
+                    <h2 className="group-hover:underline text-sm font-medium">{article.user.name}</h2>
                 </Link>
-                <p className="text-sm text-foreground/70">publié le {date}</p>
-                <p className="max-w-sm tracking-tight text-sm text-justify text-foreground/50 line-clamp-3">{description}</p>
+                <p className="text-sm text-foreground/70">
+                    Publié le {article.createdAt.toLocaleDateString("fr-FR",{
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric"
+                    })}
+                </p>
+                <p className="max-w-sm tracking-tight text-sm text-justify text-foreground/50 line-clamp-3">{article.content}</p>
             </div>
         </div>
     )
