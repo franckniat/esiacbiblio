@@ -14,6 +14,14 @@ const nextConfig = {
         FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
         RESEND_API_KEY: process.env.RESEND_API_KEY,
     },
+    images: {
+        remotePatterns : [
+            {
+                hostname: "images.pexels.com",
+                pathname: "/**",
+            }
+        ]
+    },
 };
 
 export default nextConfig;
