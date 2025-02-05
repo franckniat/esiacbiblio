@@ -40,8 +40,8 @@ export const DEFAULT_LOGIN_REDIRECT = "/dashboard"
  */
 export const protectedRoutes = [
     "/dashboard",
-    "/settings",
-    "/profile",
+    "/dashboard/settings",
+    "/dashboard/account",
 ]
 
 /**
