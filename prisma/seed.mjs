@@ -69,13 +69,30 @@ const sectors = [
     }
 ]
 
-async function main() {
+/*async function main() {
     const category = await db.category.createMany({
         data: categories
     })
     const sector = await db.sector.createMany({
         data: sectors
     })
+}*/
+
+async function main() {
+    const documents = Array.from({ length: 12 }, (_, i) => ({
+        title: `Document ${i + 1}`,
+        description: `Content for document ${i + 1}`,
+        userId: "cm68cna5r0000zxeq9stph0ig", // Assuming you have a user with ID 1
+        category: categories[i % categories.length].value,
+        sector: sectors[i % sectors.length].value,
+        fileURL: "https://clg-reeberg-neron.eta.ac-guyane.fr/IMG/pdf/chapitre_3_la_matiere_livret_.pdf"
+    }));
+
+    await db.document.createMany({
+        data: documents,
+    });
+
+    console.log('Seeded 12 documents');
 }
 
 main()
