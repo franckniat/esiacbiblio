@@ -1,9 +1,10 @@
 
 import React from "react";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { cookies } from "next/headers"
-import ScrollTop from "@/components/scroll-top";
+import ScrollTop from "@/components/layouts/scroll-top";
+import DashboardHeader from "@/components/dashboard/dashboard-header";
 
 
 export default async function PublicLayout({
@@ -18,9 +19,9 @@ export default async function PublicLayout({
 			<SidebarProvider defaultOpen={defaultOpen}>
 				<AppSidebar />
 				<main className={"w-full"}>
-					<SidebarTrigger className={"m-4"} />
+					<DashboardHeader />
 					<ScrollTop />
-					<div className={"max-w-[1280px] mx-auto px-4"}>{children}</div>
+					<div className={"max-w-[1280px] mx-auto px-4 pt-[75px]"}>{children}</div>
 				</main>
 			</SidebarProvider>
 		</>

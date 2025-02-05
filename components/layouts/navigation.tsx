@@ -11,7 +11,7 @@ import {
 	LayoutDashboard,
 	Settings,
 	User,
-	CircleHelp,
+	CircleHelp, Loader2,
 } from "lucide-react";
 import { clsx } from "clsx";
 import { usePathname } from "next/navigation";
@@ -83,8 +83,8 @@ const morelinks = [
 	},
 	{
 		id: 5,
-		title: "Profil",
-		href: "/dashboard/profile",
+		title: "Compte",
+		href: "/dashboard/account",
 	},
 	{
 		id: 6,
@@ -95,13 +95,13 @@ const morelinks = [
 export default function Navbar() {
 	const pathname = usePathname();
 	const { theme, setTheme } = useTheme();
-	const { user } = useCurrentUser();
+	const { user, isLoading } = useCurrentUser();
 
 	return (
 		<>
 			<nav className="z-[30] w-full sticky top-0 backdrop-blur-sm bg-background/95 transition">
 				<section className="max-w-[1340px] mx-auto px-2">
-					<section className="flex items-center justify-between h-[70px]">
+					<section className="flex items-center justify-between h-[60px]">
 						<section className="flex items-center gap-5">
 							<Link
 								href="/"
@@ -214,10 +214,15 @@ export default function Navbar() {
 									</DropdownMenu>
 									<DropdownMenu>
 										<DropdownMenuTrigger className="rounded-full focus:ring-2 focus:ring-primary">
-											<Avatar>
-												{user?.image && <AvatarImage src={user!.image}/>}
-												{!user?.image && <AvatarFallback>{user?.name?.charAt(0).toUpperCase()}</AvatarFallback>}
-											</Avatar>
+											{!isLoading &&
+												<Avatar>
+													{user?.image && <AvatarImage src={user!.image}/>}
+													{!user?.image &&
+														<AvatarFallback className={"font-medium bg-primary/20"}>{user?.name?.charAt(0).toUpperCase()}</AvatarFallback>
+													}
+												</Avatar>
+											}
+											{isLoading && <Loader2 className={"rounded-full w-10 h-10"} />}
 										</DropdownMenuTrigger>
 										<DropdownMenuContent
 											aria-label="Static Actions"
@@ -244,11 +249,11 @@ export default function Navbar() {
 												asChild
 											>
 												<Link
-													href="/dashboard/profile"
+													href="/dashboard/account"
 													className="flex gap-2 items-center w-full h-full py-2 cursor-pointer"
 												>
 													<User size={18} />
-													Profil
+													Votre compte
 												</Link>
 											</DropdownMenuItem>
 											<DropdownMenuItem

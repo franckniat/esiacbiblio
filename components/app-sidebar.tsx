@@ -169,10 +169,6 @@ export function AppSidebar() {
                                 className="w-[--radix-popper-anchor-width]"
                             >
                                 <DropdownMenuItem className={"flex gap-2 items-center w-full"}
-                                                  onClick={() => router.push("/dashboard/profile")}>
-                                    <User size={16}/><span>Profil</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem className={"flex gap-2 items-center w-full"}
                                                   onClick={() => router.push("/dashboard/account")}>
                                     <CircleUserRound size={16}/><span>Compte</span>
                                 </DropdownMenuItem>

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import CardWrapper from "@/components/auth/card-wrapper";
 import { Input } from "@/components/ui/input";
@@ -20,6 +19,7 @@ import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { login } from "@/actions/auth";
 import { FormError } from "@/components/ui/form-error";
+import {FormSuccess} from "@/components/ui/form-success";
 export const LoginForm = () => {
 	const searchParams = useSearchParams();
 	const urlError =
@@ -100,6 +100,7 @@ export const LoginForm = () => {
 						/>
 					</div>
 					<FormError message={error || urlError} />
+					{success && <FormSuccess message={success}/>}
 					<Button
 						type="submit"
 						disabled={isPending}

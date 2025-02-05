@@ -1,7 +1,7 @@
 import Footer from "@/components/layouts/footer";
 import Navbar from "@/components/layouts/navigation";
 import React from "react";
-import ScrollTop from "@/components/scroll-top";
+import ScrollTop from "@/components/layouts/scroll-top";
 
 export default function PublicLayout({
 	children,

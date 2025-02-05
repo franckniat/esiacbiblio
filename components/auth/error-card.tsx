@@ -1,4 +1,3 @@
-import Header from "@/components/auth/header";
 import BackButton from "@/components/auth/back-button";
 import { Card, CardHeader, CardFooter, CardContent, CardTitle } from "@/components/ui/card";
 import { TriangleAlert } from "lucide-react";
