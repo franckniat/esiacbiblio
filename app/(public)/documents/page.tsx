@@ -5,6 +5,7 @@ import CustomBreadcrumb from "@/components/ui/custom-breadcrumb";
 import { getActiveDocuments } from "@/data/document";
 import { Metadata } from "next";
 import PublicDocuments from "@/components/document/public-document";
+import {getCategories, getSectors} from "@/data/items";
 
 export async function generateMetadata(): Promise<Metadata> {
 	return {
@@ -16,6 +17,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Documents() {
 	const documents = await getActiveDocuments();
+	const categories = await getCategories();
+	const sectors = await getSectors();
 	return (
 		<>
 			<main className="max-w-[1340px] mx-auto px-2">
@@ -36,7 +39,7 @@ export default async function Documents() {
 						</p>
 					</div>
 				</section>
-				<PublicDocuments documents={documents}/>
+				<PublicDocuments sectors={sectors} categories={categories} documents={documents}/>
 			</main>
 		</>
 	);
