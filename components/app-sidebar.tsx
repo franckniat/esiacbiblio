@@ -16,7 +16,7 @@ import {
     CirclePlus, CircleUserRound, DoorOpen,
     Home,
     MessageSquarePlus,
-    Newspaper, ScrollText, User, Users, Wrench
+    Newspaper, ScrollText, Users, Wrench
 } from "lucide-react";
 import Link from "next/link";
 import {usePathname, useRouter} from "next/navigation";
