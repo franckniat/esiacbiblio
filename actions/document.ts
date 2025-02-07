@@ -97,3 +97,25 @@ export const deleteDocument = async (id: string) => {
         }
     }
 }
+
+export const publishDocument = async (id: string) => {
+    try {
+        await db.document.update({
+            where: {
+                id
+            },
+            data: {
+                isVisible: true
+            }
+        });
+        revalidatePath("/dashboard/documents")
+        return {
+            success: "Document publié avec succès !"
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            error: "Une erreur s'est produite lors de la publication du document !"
+        }
+    }
+}
