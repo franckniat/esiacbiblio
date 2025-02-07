@@ -1,5 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {
     env: {
         GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
         GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
@@ -13,6 +14,9 @@ const nextConfig = {
         FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
         FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
         RESEND_API_KEY: process.env.RESEND_API_KEY,
+        AUTH_SECRET: process.env.AUTH_SECRET,
+        EDGE_STORE_ACCESS_KEY: process.env.EDGE_STORE_ACCESS_KEY,
+        EDGE_STORE_SECRET_KEY: process.env.EDGE_STORE_SECRET_KEY,
     },
     images: {
         remotePatterns : [
