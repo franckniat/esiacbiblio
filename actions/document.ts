@@ -15,6 +15,7 @@ export const addDocument = async (data: z.infer<typeof DocumentsSchema>) => {
         }
     }
     const { title, description, fileURL, sector, category } = validateFields.data;
+    const documentSlug = title.toLowerCase().replace(/ /g, "-");
     const user = await getCurrentUser();
     try {
         if(!user?.id) return { error: "Vous devez être connecté pour effectuer cette action !" }
@@ -25,7 +26,8 @@ export const addDocument = async (data: z.infer<typeof DocumentsSchema>) => {
                 fileURL,
                 sector,
                 category,
-                userId: user.id
+                userId: user.id,
+                firebaseSlug: documentSlug,
             }
         });
         await db.user.update({
@@ -85,7 +87,7 @@ export const deleteDocument = async (id: string) => {
                 id
             }
         });
-        await deleteFile(document.title);
+        await deleteFile(document.firebaseSlug);
         revalidatePath("/dashboard/documents")
         return {
             success: "Document supprimé avec succès !"

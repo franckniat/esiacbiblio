@@ -69,18 +69,19 @@ model VerificationToken {
 }
 
 model Document {
-  id          String         @id @default(cuid())
-  userId      String
-  title       String
-  description String
-  sector      String
-  category    String
-  fileURL     String
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  isVisible   Boolean        @default(false)
-  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  likes       LikeDocument[]
+  id           String         @id @default(cuid())
+  userId       String
+  title        String
+  description  String
+  sector       String
+  category     String
+  fileURL      String
+  firebaseSlug String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  isVisible    Boolean        @default(false)
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes        LikeDocument[]
 
   @@map("documents")
 }
