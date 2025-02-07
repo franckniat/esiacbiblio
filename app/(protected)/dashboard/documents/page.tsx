@@ -1,5 +1,5 @@
 import DashboardWrapper from "@/components/dashboard/dashboard-wrapper";
-import { DataDocuments } from "@/components/dashboard/documents";
+import { DataDocuments } from "@/components/dashboard/data-tables/user-documents";
 import { getUserDocuments } from "@/data/document";
 import { getCurrentUser } from "@/lib/user";
 import React from "react";

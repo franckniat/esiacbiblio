@@ -2,7 +2,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {Article} from "@prisma/client";
 import {ArticleWithUserCommentsAndLikes} from "@/components/article/public-article";
 
 interface ArticleCardProps {
@@ -35,15 +34,18 @@ export default function ArticleCard({
             </Link>
             <div className="space-y-3 px-3 py-3">
                 <Link href={`/articles/${article.slug}`} className="text-lg font-bold hover:text-primary">{article.title}</Link>
-                <Link href={`/${article.user.name?.toLowerCase().split(" ").join("-")}`} className="flex items-center gap-2 group w-fit">
+                <Link href={`/${article.user.name?.toLowerCase().split(" ").join("-")}`}
+                      className="flex items-center gap-2 group w-fit">
                     <Avatar>
                         {article.user.image ? (
-                            <AvatarImage src={article.user.image} alt={article.user.name || ""} />
-                        ):(
-                            <AvatarFallback className="group-hover:no-underline">{article.user.name?.charAt(0).toUpperCase()}</AvatarFallback>
+                            <AvatarImage src={article.user.image} alt={article.user.name || ""}/>
+                        ) : (
+                            <AvatarFallback
+                                className="group-hover:no-underline">{article.user.name?.charAt(0).toUpperCase()}</AvatarFallback>
                         )}
                     </Avatar>
                     <h2 className="group-hover:underline text-sm font-medium">{article.user.name}</h2>
+                    <p className="group-hover:underline text-sm font-medium">{minutes} minutes et {seconds} secondes de lecture</p>
                 </Link>
                 <p className="text-sm text-foreground/70">
                     Publié le {article.createdAt.toLocaleDateString("fr-FR",{

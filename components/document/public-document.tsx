@@ -3,7 +3,7 @@ import {Category, Document, LikeDocument, Sector, User} from "@prisma/client";
 import * as React from "react";
 import DocumentCard from "@/components/document/index";
 import {Input} from "@/components/ui/input";
-import {BookText, ScrollText, Search} from "lucide-react";
+import {BookText, Search} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {
     Select,
