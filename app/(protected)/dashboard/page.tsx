@@ -17,7 +17,9 @@ export default async function Dashboard() {
 			path={[]}
 		>
 			<h1 className="text-foreground/40">Bienvenue sur votre tableau de bord</h1>
-			<DocsPerMonth documents={documents}/>
+			<div className={"grid grid-cols-1 lg:grid-cols-2"}>
+				<DocsPerMonth documents={documents}/>
+			</div>
 		</DashboardWrapper>
 	);
 }

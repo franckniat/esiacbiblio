@@ -26,7 +26,7 @@ const chartConfig = {
 export  default  function DocsPerMonth({documents}: { documents: Document[] }){
     const data = addDocumentPerMonth(documents as Document[]);
     return (
-        <Card className={"w-fit"}>
+        <Card className={"w-full"}>
             <CardHeader>
                 <CardTitle>Documents</CardTitle>
                 <CardDescription>
