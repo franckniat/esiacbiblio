@@ -5,6 +5,7 @@ import { AppSidebar } from "@/components/app-sidebar"
 import { cookies } from "next/headers"
 import ScrollTop from "@/components/layouts/scroll-top";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
+import {EdgeStoreProvider} from "@/lib/edgestore";
 
 
 export default async function PublicLayout({
@@ -21,7 +22,10 @@ export default async function PublicLayout({
 				<main className={"w-full"}>
 					<DashboardHeader />
 					<ScrollTop />
-					<div className={"max-w-[1280px] mx-auto px-4 pt-[75px]"}>{children}</div>
+					<EdgeStoreProvider>
+						<div className={"max-w-[1280px] mx-auto px-4 pt-[75px]"}>{children}</div>
+					</EdgeStoreProvider>
+
 				</main>
 			</SidebarProvider>
 		</>
