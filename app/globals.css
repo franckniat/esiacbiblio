@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-}
-
 @layer utilities {
     .text-balance {
         text-wrap: balance;
@@ -107,29 +103,6 @@ body {
     }
 }
 
-.sidebar {
-    width: 300px;
-
-    .side-text {
-        display: none;
-    }
-
-    &.small {
-        width: 100px;
-
-        .sidelink {
-            justify-content: center;
-        }
-
-        .sidelink:hover {
-            transform: none;
-        }
-
-        .sidelink-text {
-            display: none;
-        }
-    }
-}
 
 .scroll-top{
     transform: translateY(150%);
@@ -144,4 +117,34 @@ body {
     .dashboard-children{
         margin-left: 100px;
     }
+}
+
+@font-face {
+    font-family: "Space Grotesk";
+    src: url("./fonts/SpaceGrotesk.ttf") format("truetype");
+}
+
+.bn-container,
+.bn-block,
+.bn-editor,
+.bn-block-content,
+.bn-toolbar {
+    font-family: "Space Grotesk", sans-serif;
+}
+
+.bn-editor,
+.bn-toolbar {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+    border: 0.5px solid hsl(var(--border));
+    border-radius: var(--radius) !important;
+    padding: 15px;
+}
+
+.bn-editor {
+    min-height: 500px;
+}
+
+.bn-editor:focus {
+    border: 0.5px solid hsl(var(--primary));
 }
