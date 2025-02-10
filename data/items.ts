@@ -9,3 +9,7 @@ export const getCategories = async ()=>{
 export const getSectors = async () => {
     return await db.sector.findMany();
 }
+
+export const getTags = async () => {
+    return await db.tag.findMany();
+}
