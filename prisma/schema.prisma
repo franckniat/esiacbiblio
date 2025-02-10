@@ -87,23 +87,20 @@ model Document {
 }
 
 model Article {
-  id         String        @id @default(cuid())
-  title      String
-  slug       String        @unique
-  content    String
-  image      String
-  author     String
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
-  isVisible  Boolean       @default(false)
-  sectorId   String
-  categoryId String
-  user       User          @relation(fields: [author], references: [id], onDelete: Cascade)
-  sector     Sector        @relation(fields: [sectorId], references: [id], onDelete: Cascade)
-  category   Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  tags       Tag[]
-  comments   Comment[]
-  likes      LikeArticle[]
+  id        String        @id @default(cuid())
+  title     String
+  slug      String        @unique
+  content   String
+  image     String
+  author    String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  isVisible Boolean       @default(false)
+  sector    String
+  user      User          @relation(fields: [author], references: [id], onDelete: Cascade)
+  tags      Tag[]
+  comments  Comment[]
+  likes     LikeArticle[]
 
   @@map("articles")
 }
@@ -149,20 +146,18 @@ model Comment {
 }
 
 model Category {
-  id      String    @id @default(cuid())
-  label   String
-  value   String
-  Article Article[]
+  id    String @id @default(cuid())
+  label String
+  value String
 
   @@map("categories")
 }
 
 model Sector {
-  id      String    @id @default(cuid())
-  label   String
-  value   String
-  code    String
-  Article Article[]
+  id    String @id @default(cuid())
+  label String
+  value String
+  code  String
 
   @@map("sectors")
 }
