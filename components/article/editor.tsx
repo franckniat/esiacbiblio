@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React, {useMemo} from "react";
 import {useTheme} from "next-themes";

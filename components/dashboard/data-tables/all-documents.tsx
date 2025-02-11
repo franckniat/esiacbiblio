@@ -28,7 +28,6 @@ import { Trash2} from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 import { Document, User } from "@prisma/client";
-import { Pencil1Icon } from "@radix-ui/react-icons";
 import DeleteButton from "@/components/delete-button";
 import {deleteDocument, publishDocument} from "@/actions/document";
 

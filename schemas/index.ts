@@ -110,3 +110,31 @@ export const UpdateDocumentSchema = z.object({
         message: "Veuillez entrer une description !"
     }),
 })
+
+export const AddArticleSchema = z.object({
+    title: z.string({
+        required_error: "Veuillez entrer un titre !"
+    }).min(1, {
+        message: "Votre article doit avoir un titre !"
+    }).max(110, {
+        message: "Votre titre doit avoir maximum 110 caractères !"
+    }),
+    content: z.string({
+        required_error: "Veuillez entrer un contenu !"
+    }).min(100,{
+        message: "Votre article doit avoir minimum 100 caractères !"
+    }).min(1,{
+        message: "Votre article doit avoir un contenu !"
+    }),
+    tags: z.array(z.string(), {
+        required_error: "Veuillez ajouter des tags !"
+    }).min(1,{
+        message: "Veuillez selectionner au moins un tag !"
+    }),
+    image: z.string({
+        required_error: "Veuillez ajouter une bannière à votre article !"
+    }),
+    sector: z.string({
+        required_error: "Veuillez choisir une filière !"
+    }),
+})
