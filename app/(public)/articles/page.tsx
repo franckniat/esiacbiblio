@@ -2,7 +2,7 @@ import CustomBreadcrumb from "@/components/ui/custom-breadcrumb";
 import { Metadata } from "next";
 import PublicArticles from "@/components/article/public-article";
 import {getActiveArticles} from "@/data/article";
-import {getCategories, getSectors} from "@/data/items";
+import {getSectors, getTags} from "@/data/items";
 
 export async function generateMetadata(): Promise<Metadata> {
 	return {
@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Articles() {
 	const articles = await getActiveArticles();
-	const categories = await getCategories();
+	const tags = await getTags();
 	const sectors = await getSectors();
 	return (
 		<>
@@ -35,7 +35,7 @@ export default async function Articles() {
 						</p>
 					</div>
 				</section>
-				<PublicArticles articles={articles} sectors={sectors} categories={categories} />
+				<PublicArticles articles={articles} sectors={sectors} tags={tags} />
 			</main>
 		</>
 	);

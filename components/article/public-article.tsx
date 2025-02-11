@@ -1,5 +1,5 @@
 "use client";
-import {Article, User, Comment, LikeArticle, Category, Sector} from "@prisma/client";
+import {Article, User, Comment, LikeArticle, Tag, Sector} from "@prisma/client";
 import * as React from "react";
 import ArticleCard from "@/components/article/index";
 import {Input} from "@/components/ui/input";
@@ -16,16 +16,16 @@ export type ArticleWithUserCommentsAndLikes = Article & {
 
 interface PublicArticlesProps {
     articles: ArticleWithUserCommentsAndLikes[];
-    categories: Category[];
     sectors: Sector[];
+    tags: Tag[];
 }
 
-export default function PublicArticles({articles, categories, sectors}: PublicArticlesProps) {
+export default function PublicArticles({articles, tags, sectors}: PublicArticlesProps) {
     const [search, setSearch] = React.useState("");
     const [currentPage, setCurrentPage] = React.useState(1);
     const documentsPerPage = 8;
     const [filteredArticles, setFilteredArticles] = React.useState<ArticleWithUserCommentsAndLikes[]>(articles);
-    const [selectedCategory, setSelectedCategory] = React.useState<string>("all");
+    const [selectedTag, setSelectedTag] = React.useState<string>("all");
     const [selectedSector, setSelectedSector] = React.useState<string>("all");
 
     React.useEffect(() => {
@@ -36,18 +36,14 @@ export default function PublicArticles({articles, categories, sectors}: PublicAr
             );
         }
 
-        if (selectedCategory !== "all") {
-            filtered = filtered.filter((article) => article.categoryId === selectedCategory);
-        }
-
         if (selectedSector !== "all") {
-            filtered = filtered.filter((article) => article.sectorId === selectedSector);
+            filtered = filtered.filter((article) => article.sector === selectedSector);
         }
         setFilteredArticles(filtered);
-    }, [search, articles, selectedCategory, selectedSector]);
+    }, [search, articles, selectedTag, selectedSector]);
 
     const handleSortByCategory = (category: string) => {
-        setSelectedCategory(category);
+        setSelectedTag(category);
     };
 
     const handleSortBySector = (sector: string) => {
@@ -81,9 +77,9 @@ export default function PublicArticles({articles, categories, sectors}: PublicAr
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="all">Toutes les catégories</SelectItem>
-                        {categories.map((category) => (
-                            <SelectItem key={category.id} value={category.id}>
-                                {category.label}
+                        {tags.map((tag) => (
+                            <SelectItem key={tag.id} value={tag.id}>
+                                {tag.value}
                             </SelectItem>
                         ))}
                     </SelectContent>
