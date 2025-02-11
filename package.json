@@ -44,6 +44,7 @@
     "@tanstack/react-table": "^8.20.5",
     "@tremor/react": "^3.18.7",
     "@types/uuid": "^10.0.0",
+    "@vercel/analytics": "^1.5.0",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "@/providers";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
+import { Analytics } from "@vercel/analytics/react"
 
 const spaceGrotesk = localFont({
 	src: "./fonts/SpaceGrotesk.ttf",
@@ -41,6 +42,7 @@ export default async function RootLayout({
 		<SessionProvider session={session}>
 			<html lang="fr" suppressHydrationWarning>
 				<body className={`${spaceGrotesk.className} antialiased`} suppressHydrationWarning>
+					<Analytics />
 					<Providers>{children}</Providers>
 				</body>
 			</html>
