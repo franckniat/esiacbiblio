@@ -110,7 +110,7 @@
 }
 
 .scroll-top.visible{
-    transform: translateY(0);
+    transform: translateY(-80px);
 }
 
 @media (max-width: 768px) {

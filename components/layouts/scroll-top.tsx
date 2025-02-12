@@ -17,7 +17,7 @@ export default function ScrollTop(){
     })
     return(
         <Button
-            className={"scroll-top hover:scale-110 transition-transform w-12 h-12 fixed bottom-4 right-4 z-50 will-change-transform rounded-full active:scale-90"}
+            className={"scroll-top transition-transform w-12 h-12 fixed bottom-4 right-7 z-50 will-change-transform rounded-full active:scale-90"}
             onClick={()=>{
                 window.scrollTo({top: 0, behavior: 'smooth'});
             }}
