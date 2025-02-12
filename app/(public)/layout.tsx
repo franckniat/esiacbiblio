@@ -1,7 +1,8 @@
 import Footer from "@/components/layouts/footer";
 import Navbar from "@/components/layouts/navigation";
 import React from "react";
-import ScrollTop from "@/components/layouts/scroll-top";
+//import ScrollTop from "@/components/layouts/scroll-top";
+import ChatSupport from "@/components/layouts/ai-chatbot";
 
 export default function PublicLayout({
 	children,
@@ -11,7 +12,8 @@ export default function PublicLayout({
 	return (
 		<>
 			<Navbar />
-			<ScrollTop />
+			{/* <ScrollTop /> */}
+			<ChatSupport />
 			{children}
 			<Footer />
 		</>

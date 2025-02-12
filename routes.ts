@@ -8,6 +8,7 @@ export const publicRoutes = [
     "/articles",
     "/contact",
     "/auth/new-verification",
+    "/api/chat"
 ]
 
 /**
