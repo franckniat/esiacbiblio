@@ -23,26 +23,27 @@ const StyledMarkdown: React.FC<StyledMarkdownProps> = ({ content }) => {
 			rehypePlugins={[rehypeRaw]}
 			components={{
 				h1: ({ node, ...props }) => (
-					<h1 className="text-3xl font-extrabold my-4" {...props} />
+					<h1 className="text-2xl font-extrabold" {...props} />
 				),
 				h2: ({ node, ...props }) => (
-					<h2 className="text-2xl font-bold my-3" {...props} />
+					<h2 className="text-xl font-bold" {...props} />
 				),
 				h3: ({ node, ...props }) => (
-					<h3 className="text-xl font-bold my-2" {...props} />
+					<h3 className="text-xl font-bold " {...props} />
 				),
 				h4: ({ node, ...props }) => (
-					<h4 className="text-lg font-semibold my-2" {...props} />
+					<h4 className="text-lg font-semibold" {...props} />
 				),
 				h5: ({ node, ...props }) => (
-					<h5 className="text-base font-semibold my-1" {...props} />
+					<h5 className="text-base font-semibold" {...props} />
 				),
 				h6: ({ node, ...props }) => (
-					<h6 className="text-sm font-semibold my-1" {...props} />
+					<h6 className="text-sm font-semibold" {...props} />
 				),
-				p: ({ node, ...props }) => (
-					<p className="text-base leading-relaxed my-2" {...props} />
-				),
+				p: ({ node, ...props }) => {
+
+					return (<p className="text-base leading-relaxed" {...props} />)
+				},
 				a: ({ node, ...props }) => (
 					<a className="text-primary hover:underline" {...props} />
 				),
@@ -53,10 +54,13 @@ const StyledMarkdown: React.FC<StyledMarkdownProps> = ({ content }) => {
 					/>
 				),
 				ul: ({ node, ...props }) => (
-					<ul className="list-disc pl-4 md:pl-6 my-2" {...props} />
+					<ul className="list-disc list-inside pl-4" {...props} />
 				),
 				ol: ({ node, ...props }) => (
-					<ol className="list-decimal pl-4 md:pl-6 my-2" {...props} />
+					<ol className="list-decimal list-inside pl-4" {...props} />
+				),
+				li: ({ node, ...props }) => (
+					<li className="text-sm list-item" {...props} />
 				),
 				code: ({ className, style, ...props }) => {
 					let language;

@@ -1,5 +1,5 @@
 "use client";
-import { ArrowUpRight, CornerDownLeft } from "lucide-react";
+import {ArrowUpRight, CircleStop, CornerDownLeft} from "lucide-react";
 import {
 	ChatBubble,
 	ChatBubbleAvatar,
@@ -27,6 +27,8 @@ export default function ChatSupport() {
 		handleSubmit,
 		isLoading,
 		stop,
+		error,
+		reload,
 	} = useChat({
 		onFinish: (message, { usage, finishReason }) => {
 			console.log("Finished streaming message:", message);
@@ -50,9 +52,6 @@ export default function ChatSupport() {
 					Discuter avec notre IA ✨
 				</h1>
 				<p>Posez vos questions et obtenez des réponses instantanées.</p>
-				<div className="flex gap-2 items-center pt-2">
-					<Button variant="secondary">Nouvelle conversation</Button>
-				</div>
 			</ExpandableChatHeader>
 			<ExpandableChatBody>
 				{user && (
@@ -65,17 +64,26 @@ export default function ChatSupport() {
 										? "sent"
 										: "received"
 								}`}
+								className={`${message.role === "user" ? "max-w-[60%]" : "max-w-[90%]"}`}
 							>
 								<ChatBubbleAvatar
 									fallback={`${
 										message.role === "user" ? "You" : "AI"
 									}`}
 								/>
-								<ChatBubbleMessage>
+								<ChatBubbleMessage className={`text-sm px-3 py-3`}>
 									<StyledMarkdown content={message.content} />
 								</ChatBubbleMessage>
 							</ChatBubble>
 						))}
+						{error && (
+							<>
+								<div>An error occurred.</div>
+								<Button variant={"outline"} type="button" onClick={() => reload()}>
+									Retry
+								</Button>
+							</>
+						)}
 						{isLoading && (
 							<ChatBubble variant="received">
 								<ChatBubbleAvatar fallback="AI" />
@@ -89,7 +97,11 @@ export default function ChatSupport() {
 						<ChatBubble variant="received">
 							<ChatBubbleAvatar fallback="AI" />
 							<ChatBubbleMessage>
-								<StyledMarkdown content={"Connectez-vous ou créer un compte pour discuter avec notre IA."} />
+								<StyledMarkdown
+									content={
+										"Connectez-vous ou créer un compte pour discuter avec notre IA."
+									}
+								/>
 							</ChatBubbleMessage>
 						</ChatBubble>
 					</ChatMessageList>
@@ -113,11 +125,12 @@ export default function ChatSupport() {
 							{isLoading ? (
 								<Button
 									size="sm"
+									variant={"destructive"}
 									className="ml-auto gap-1.5"
 									onClick={() => stop()}
 								>
+									<CircleStop className="size-3.5" />
 									Arrêter
-									<CornerDownLeft className="size-3.5" />
 								</Button>
 							) : (
 								<Button size="sm" className="ml-auto gap-1.5">

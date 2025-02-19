@@ -46,7 +46,7 @@ export function useAutoScroll(options: UseAutoScrollOptions = {}) {
       } else {
         scrollRef.current.scrollTo({
           top: targetScrollTop,
-          behavior: smooth ? "smooth" : "auto",
+          behavior: smooth ? "smooth" : "smooth",
         });
       }
 
