@@ -94,7 +94,7 @@
 }
 
 .hero {
-    background-image: url(/images/bg__hero.png);
+    background-image: url("../public/images/bg__hero.png");
 }
 
 @media (max-width: 768px) {
