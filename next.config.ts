@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
         AUTH_SECRET: process.env.AUTH_SECRET,
         EDGE_STORE_ACCESS_KEY: process.env.EDGE_STORE_ACCESS_KEY,
         EDGE_STORE_SECRET_KEY: process.env.EDGE_STORE_SECRET_KEY,
+        OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     },
     images: {
         remotePatterns : [
