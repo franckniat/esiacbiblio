@@ -148,3 +148,9 @@
 .bn-editor:focus {
     border: 0.5px solid hsl(var(--primary));
 }
+
+li > p {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
