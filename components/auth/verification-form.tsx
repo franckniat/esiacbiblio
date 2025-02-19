@@ -38,7 +38,7 @@ export default function VerificationForm() {
             <div>
                 {error && <FormError message={error}/>}
                 {success && <FormSuccess message={success}/>}
-                {!error && !success && <Loader2 size={48}/>}
+                {!error && !success && <Loader2 className={"animate-spin"} size={48}/>}
             </div>
         </CardWrapper>
     )
