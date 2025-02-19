@@ -17,10 +17,10 @@ export default function Footer(){
                 <div className="flex flex-col gap-3 border-b border-gray-100 dark:border-neutral-600 py-5 md:border-none">
                     <h1 className="text-gray-600 dark:text-neutral-200">Ressources</h1>
                     <div className="flex flex-col gap-3">
-                        <Link href="" className="text-sm hover:underline font-medium">Articles</Link>
-                        <Link href="" className="text-sm hover:underline font-medium">Documents</Link>
-                        <Link href="" className="text-sm hover:underline font-medium flex gap-1 items-center">
-                            Livres
+                        <Link href="/articles" className="text-sm hover:underline font-medium">Articles</Link>
+                        <Link href="/documents" className="text-sm hover:underline font-medium">Documents</Link>
+                        <Link href="#" className="text-sm hover:underline font-medium flex gap-1 items-center">
+                            Discussions
                             <Badge className="hover:no-underline">Bientot</Badge>
                         </Link>
                     </div>
@@ -28,10 +28,10 @@ export default function Footer(){
                 <div className="flex flex-col gap-3 py-5 border-b border-foreground/5 md:border-none">
                     <h1 className="text-gray-600 dark:text-neutral-200">Légal</h1>
                     <div className="flex flex-col gap-3">
-                        <Link href="" className="text-sm hover:underline font-medium">Confidentialité</Link>
-                        <Link href="" className="text-sm hover:underline font-medium">Condition d{"'"}utilisation</Link>
-                        <Link href="" className="text-sm hover:underline font-medium">Code de conduite</Link>
-                        <Link href="" className="text-sm hover:underline font-medium">FAQ</Link>
+                        <Link href="/privacy" className="text-sm hover:underline font-medium">Confidentialité</Link>
+                        <Link href="/terms" className="text-sm hover:underline font-medium">Condition d{"'"}utilisation</Link>
+                        <Link href="/rules" className="text-sm hover:underline font-medium">Code de conduite</Link>
+                        <Link href="/faq" className="text-sm hover:underline font-medium">FAQ</Link>
                     </div>
                 </div>
                 <div className="flex flex-col gap-3 py-5">

@@ -126,7 +126,7 @@ export default function Navbar() {
                             </div>
                         </section>
 
-                        <section className="flex items-center gap-3">
+                        <section className="hidden md:flex items-center gap-3">
                             <Button
                                 size={"icon"}
                                 className="relative"
