@@ -36,7 +36,7 @@ export default async function Home() {
 					</Link>
 				</section>
 				<section className="mt-10 text-center">
-					<h1 className="text-6xl font-extrabold tracking-tighter sm:leading-none lg:text-7xl bg-gradient-to-r from-red-500 via-primary to-neutral-600 dark:bg-clip-text dark:text-transparent inline-block text-transparent bg-clip-text pr-1">
+					<h1 className="text-5xl sm:text-6xl font-bold sm:font-extrabold tracking-tighter sm:leading-none lg:text-7xl bg-gradient-to-r from-red-500 via-primary to-neutral-600 dark:bg-clip-text dark:text-transparent text-transparent bg-clip-text pr-1 inline-block">
 						ESIAC-BIBLIO
 					</h1>
 					<p className="mt-3 text-base font-medium sm:mt-5 sm:text-lg md:text-xl lg:text-2xl tracking-wide">
