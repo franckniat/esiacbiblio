@@ -4,10 +4,23 @@ import {getCategories, getSectors} from "@/data/items";
 import React from "react";
 import EditDocumentForm from "@/components/document/edit-document";
 import {Document} from "@prisma/client";
+import { getCurrentUser } from "@/lib/user";
+import { toast } from "sonner";
 
 export default async function EditDocument({params,}: { params: Promise<{ id: string }> }) {
     const id = (await params).id;
     const document = await getDocumentById(id) as Document;
+    const userId = document.userId;
+    const user = await getCurrentUser();
+    if (userId !== user!.id) {
+        toast.error("Vous n'êtes pas autorisé à modifier ce document.");
+        return {
+            redirect: {
+                destination: "/dashboard/documents",
+                permanent: false,
+            },
+        };
+    }
     const sectors = await getSectors();
     const categories = await getCategories();
     return (
