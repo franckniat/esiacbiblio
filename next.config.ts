@@ -24,6 +24,10 @@ const nextConfig: NextConfig = {
             {
                 hostname: "images.pexels.com",
                 pathname: "/**",
+            },
+            {
+                hostname: "firebasestorage.googleapis.com",
+                pathname: "/**",
             }
         ]
     },
