@@ -24,7 +24,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Trash2} from "lucide-react";
+import { Download, Trash2} from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 import { Document, User } from "@prisma/client";
@@ -150,6 +150,11 @@ export function AllDocuments({ data }: { data: DocumentWithIncludes[] }) {
                                     Publier
                                 </Button>
                             }
+                            <Button variant={"outline"} onClick={()=>{
+                                window.open(row.original.fileURL, "_blank")
+                            }}>
+                                <Download size={18}/>
+                            </Button>
                             <DeleteButton
                                 header={"Supprimer le document"}
                                 message={"Cette action est irréversible. Voulez vous vraiment supprimer ce document ?"}
