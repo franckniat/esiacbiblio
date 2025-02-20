@@ -87,7 +87,7 @@ export const deleteDocument = async (id: string) => {
                 id
             }
         });
-        await deleteFile(document.firebaseSlug);
+        await deleteFile(`documents/${document.firebaseSlug}`);
         revalidatePath("/dashboard/documents")
         return {
             success: "Document supprimé avec succès !"
