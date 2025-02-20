@@ -1,21 +1,15 @@
 "use client";
-import {Article, User, Comment, LikeArticle, Tag, Sector} from "@prisma/client";
+import {Tag, Sector} from "@prisma/client";
 import * as React from "react";
 import ArticleCard from "@/components/article/index";
 import {Input} from "@/components/ui/input";
 import {ScrollText, Search} from "lucide-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Button} from "@/components/ui/button";
-
-
-export type ArticleWithUserCommentsAndLikes = Article & {
-    user: User;
-    comments: Comment[];
-    likes: LikeArticle[];
-}
+import { ArticleWithIncludes } from "@/types";
 
 interface PublicArticlesProps {
-    articles: ArticleWithUserCommentsAndLikes[];
+    articles: ArticleWithIncludes[];
     sectors: Sector[];
     tags: Tag[];
 }
@@ -24,7 +18,7 @@ export default function PublicArticles({articles, tags, sectors}: PublicArticles
     const [search, setSearch] = React.useState("");
     const [currentPage, setCurrentPage] = React.useState(1);
     const documentsPerPage = 8;
-    const [filteredArticles, setFilteredArticles] = React.useState<ArticleWithUserCommentsAndLikes[]>(articles);
+    const [filteredArticles, setFilteredArticles] = React.useState<ArticleWithIncludes[]>(articles);
     const [selectedTag, setSelectedTag] = React.useState<string>("all");
     const [selectedSector, setSelectedSector] = React.useState<string>("all");
 
@@ -73,10 +67,10 @@ export default function PublicArticles({articles, tags, sectors}: PublicArticles
                     handleSortByCategory(value);
                 }}>
                     <SelectTrigger className={"w-fit"}>
-                        <SelectValue placeholder="Sélectionnez une catégorie"/>
+                        <SelectValue placeholder="Sélectionnez un tag"/>
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="all">Toutes les catégories</SelectItem>
+                        <SelectItem value="all">Toutes les tags</SelectItem>
                         {tags.map((tag) => (
                             <SelectItem key={tag.id} value={tag.id}>
                                 {tag.value}
@@ -101,7 +95,7 @@ export default function PublicArticles({articles, tags, sectors}: PublicArticles
                 </Select>
             </section>
             {displayedArticles.length > 0 &&
-                <section className="px-2 md:px-5 mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5 pb-10">
+                <section className="px-2 md:px-5 mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-5 pb-10">
                     {displayedArticles.map((article) => (
                         <ArticleCard article={article} key={article.id}/>
                     ))}
