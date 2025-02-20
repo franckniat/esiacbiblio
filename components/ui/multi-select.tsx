@@ -159,11 +159,18 @@ export const MultiSelect = React.forwardRef<
         };
 
         const toggleOption = (option: string) => {
-            const newSelectedValues = selectedValues.includes(option)
-                ? selectedValues.filter((value) => value !== option)
-                : [...selectedValues, option];
-            setSelectedValues(newSelectedValues);
-            onValueChange(newSelectedValues);
+            if (selectedValues.includes(option)) {
+                const newSelectedValues = selectedValues.filter((value) => value !== option);
+                setSelectedValues(newSelectedValues);
+                onValueChange(newSelectedValues);
+            } else if (selectedValues.length < maxCount) {
+                const newSelectedValues = [...selectedValues, option];
+                setSelectedValues(newSelectedValues);
+                onValueChange(newSelectedValues);
+                if (newSelectedValues.length === maxCount) {
+                    setIsPopoverOpen(false);
+                }
+            }
         };
 
         const handleClear = () => {
@@ -294,28 +301,11 @@ export const MultiSelect = React.forwardRef<
                         <CommandList>
                             <CommandEmpty>No results found.</CommandEmpty>
                             <CommandGroup>
-                                <CommandItem
-                                    key="all"
-                                    onSelect={toggleAll}
-                                    className="cursor-pointer"
-                                >
-                                    <div
-                                        className={cn(
-                                            "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
-                                            selectedValues.length === options.length
-                                                ? "bg-primary text-primary-foreground"
-                                                : "opacity-50 [&_svg]:invisible"
-                                        )}
-                                    >
-                                        <CheckIcon className="h-4 w-4" />
-                                    </div>
-                                    <span>(Select All)</span>
-                                </CommandItem>
-                                {options.map((option) => {
+                                {options.map((option, index) => {
                                     const isSelected = selectedValues.includes(option.value);
                                     return (
                                         <CommandItem
-                                            key={option.value}
+                                            key={index}
                                             onSelect={() => toggleOption(option.value)}
                                             className="cursor-pointer"
                                         >
