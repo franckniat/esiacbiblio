@@ -28,16 +28,10 @@ import {
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
-import { Document, User, LikeDocument } from "@prisma/client";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import DeleteButton from "@/components/delete-button";
 import {deleteDocument} from "@/actions/document";
-
-export type DocumentWithIncludes = Document & {
-    likes: LikeDocument[];
-    user: User;
-}
-
+import { DocumentWithIncludes } from "@/types";
 
 export function DataDocuments({ data }: { data: DocumentWithIncludes[] }) {
 	const [sorting, setSorting] = React.useState<SortingState>([]);

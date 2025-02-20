@@ -1,41 +1,57 @@
 "use client";
-import React, {useState, useTransition} from "react";
-import {Input} from "@/components/ui/input";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select";
-import {useForm} from "react-hook-form";
+import React, { useState, useTransition } from "react";
+import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
-import {DocumentsSchema} from "@/schemas";
-import {Button} from "@/components/ui/button";
-import {Textarea} from "@/components/ui/textarea";
-import {addDocument} from "@/actions/document";
-import {FormError} from "@/components/ui/form-error";
-import {FormSuccess} from "@/components/ui/form-success";
+import { DocumentsSchema } from "@/schemas";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { addDocument } from "@/actions/document";
+import { FormError } from "@/components/ui/form-error";
+import { FormSuccess } from "@/components/ui/form-success";
 import DashboardWrapper from "../dashboard/dashboard-wrapper";
-import {getStringOfFile} from "@/firebase/functions";
-import {Category, Sector} from "@prisma/client";
-import {useLocalStorage} from "usehooks-ts";
-import {useRouter} from "next/navigation";
-
+import { getStringOfFile } from "@/firebase/functions";
+import { Category, Sector } from "@prisma/client";
+import { useLocalStorage } from "usehooks-ts";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function AddDocument({
 	categories,
-	sectors
-}:{
-	categories: Category[],
-	sectors: Sector[]
+	sectors,
+}: {
+	categories: Category[];
+	sectors: Sector[];
 }) {
 	const [isPending, startTransition] = useTransition();
 	const [error, setError] = useState<string | undefined>();
 	const [success, setSuccess] = useState<string | undefined>();
 	const [file, setFile] = useState<File | undefined>();
-	const [value, setValue, removeValue] = useLocalStorage<z.infer<typeof DocumentsSchema>>('new document', {
+	const [value, setValue, removeValue] = useLocalStorage<
+		z.infer<typeof DocumentsSchema>
+	>("new document", {
 		title: "",
 		description: "",
 		sector: "",
 		category: "",
-		fileURL: ""
+		fileURL: "",
 	});
 	const router = useRouter();
 	const form = useForm<z.infer<typeof DocumentsSchema>>({
@@ -45,7 +61,7 @@ export default function AddDocument({
 			description: value?.description,
 			sector: value?.sector,
 			category: value?.category,
-			fileURL: ""
+			fileURL: value?.fileURL,
 		},
 	});
 
@@ -63,8 +79,8 @@ export default function AddDocument({
 			if (file?.type !== "application/pdf") {
 				return setError("Le fichier doit être un document PDF.");
 			}
-            setFile(file);
-			form.setValue('fileURL', new URL(file.name, "http://localhost:3000").href);
+			setFile(file);
+            form.setValue("fileURL", file.name);
 		}
 	};
 
@@ -76,15 +92,19 @@ export default function AddDocument({
 		setSuccess("");
 		startTransition(async () => {
 			if (file) {
-				document.fileURL = await getStringOfFile(file, `documents/${document.title}`);
+                const firebase_slug = document.title.toLowerCase().replace(/ /g, "-");
+				document.fileURL = await getStringOfFile(
+					file,
+					`documents/${firebase_slug}`
+				);
 			}
 			addDocument(document).then((res) => {
-				if (res?.success){
-					setSuccess(res.success)
-					removeValue()
-					router.push("/dashboard/documents")
+				if (res?.success) {
+					setSuccess(res.success);
+					removeValue();
+					router.push("/dashboard/documents");
 				} else {
-					setError(res?.error)
+					setError(res?.error);
 				}
 			});
 		});
@@ -151,7 +171,11 @@ export default function AddDocument({
 								render={({ field }) => (
 									<FormItem className="flex flex-col gap-1">
 										<FormLabel>Filière : </FormLabel>
-										<Select onValueChange={field.onChange} disabled={isPending} defaultValue={field.value}>
+										<Select
+											onValueChange={field.onChange}
+											disabled={isPending}
+											defaultValue={field.value}
+										>
 											<SelectTrigger>
 												<SelectValue placeholder="Selectionnez une filière :" />
 											</SelectTrigger>
@@ -205,19 +229,70 @@ export default function AddDocument({
 									name="fileURL"
 									render={() => (
 										<FormItem>
-											<FormLabel>
-												Sélectionnez le document à publier :{" "}
+											<FormLabel
+												className="space-y-3"
+												htmlFor="docfile"
+											>
+												<div className="text-sm">
+													Sélectionnez le document à
+													publier :{" "}
+												</div>
+												{!file && (
+													<div className={`border border-foreground/30 rounded-md p-4 flex flex-col justify-center items-center border-dashed ${isPending ? "opacity-50 pointer-events-none cursor-not-allowed" : ""}`}>
+														<Image
+															src="/images/pdf_icon.png"
+															alt="logo"
+															height={100}
+															width={100}
+															className="w-[100px] h-[100px] object-cover"
+														/>
+														<span className="text-base font-medium text-foreground/70">
+															Cliquez ici pour
+															selectionner un
+															document.
+														</span>
+														<span className="text-sm font-thin text-foreground/50">
+															Vous ne pourrez plus
+															modifier votre
+															document une fois le
+															formulaire envoyé.
+														</span>
+													</div>
+												)}
+                                                {file && (
+                                                    <div className={`border border-foreground/30 rounded-md p-4 flex flex-col justify-center items-center border-dashed ${isPending ? "opacity-50 pointer-events-none cursor-not-allowed" : ""}`}>
+                                                        <Image
+                                                            src="/images/pdf_icon.png"
+                                                            alt="logo"
+                                                            height={100}
+                                                            width={100}
+                                                            className="w-[100px] h-[100px] object-cover"
+                                                        />
+                                                        <span className="text-base font-medium text-foreground/70">
+                                                            {file.name}
+                                                        </span>
+                                                        <span className="text-sm font-thin text-foreground/50">
+                                                            Vous ne pourrez plus
+                                                            modifier votre
+                                                            document une fois le
+                                                            formulaire envoyé.
+                                                        </span>
+                                                    </div>
+                                                )}
 											</FormLabel>
 											<Input
+												id="docfile"
 												disabled={isPending}
 												placeholder="Donnez un titre à votre document"
 												type="file"
 												accept=".pdf"
 												onChange={handleFileUpload}
+												className="hidden"
 											/>
 											<FormDescription>
-												Le fichier doit être un document PDF et ne doit pas
-												dépasser 5 Mo.
+												Le fichier doit être un document
+												PDF et ne doit pas dépasser 5
+												Mo.
 											</FormDescription>
 											<FormMessage className="text-sm" />
 										</FormItem>
@@ -235,13 +310,13 @@ export default function AddDocument({
 								disabled={isPending}
 								className="w-full sm:w-fit mt-4"
 							>
-								Créer un document
+								Ajouter un document
 							</Button>
 							<Button
 								disabled={isPending}
 								variant={"outline"}
 								className="w-full sm:w-fit mt-4"
-								onClick={()=> {
+								onClick={() => {
 									removeValue();
 									setError("");
 									router.back();
