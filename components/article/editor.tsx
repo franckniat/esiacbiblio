@@ -12,7 +12,8 @@ import "@blocknote/core/fonts/inter.css";
 interface EditorProps {
 	onChange: () => void;
 	editor: BlockNoteEditor;
-	defaultValue?: string;
+	className?: string;
+	//defaultValue?: string;
 }
 
 const space_grotesk = Space_Grotesk({ subsets: ["latin"] });
@@ -20,7 +21,8 @@ const space_grotesk = Space_Grotesk({ subsets: ["latin"] });
 export default function Editor({
 	editor,
 	onChange,
-	defaultValue,
+	//defaultValue,
+	className = "",
 }: EditorProps) {
 	const { theme } = useTheme();
 	const [isDark, setIsDark] = useState(false);
@@ -32,7 +34,7 @@ export default function Editor({
 		}
 	}, [theme]);
 
-	useEffect(() => {
+	/* useEffect(() => {
 		async function loadInitialHTML() {
 			const blocks = await editor.tryParseMarkdownToBlocks(
 				defaultValue as string
@@ -40,17 +42,16 @@ export default function Editor({
 			editor.replaceBlocks(editor.document, blocks);
 		}
 		loadInitialHTML();
-	}, [editor, defaultValue]);
+	}, [editor, defaultValue]); */
 
 	return (
 		<BlockNoteView
 			editor={editor}
 			onChange={onChange}
-			className={`${space_grotesk.style}`}
+			className={`${space_grotesk.style + className}`}
 			theme={isDark ? "dark" : "light"}
 			lang="fr-FR"
 			emojiPicker={true}
-			defaultValue={defaultValue}
 			formattingToolbar={true}
 			id={"editor"}
 		/>
