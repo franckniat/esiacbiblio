@@ -21,3 +21,22 @@ export const createLikeDocument = async (userId: string, documentId: string, id:
     }
     revalidatePath(`/documents/`);
 }
+
+export const createLikeArticle = async (userId: string, articleId: string, id: string|undefined) => {
+    if (id) {
+        await db.likeArticle.delete({
+            where: {
+                id,
+                userId
+            }
+        });
+    } else {
+        await db.likeArticle.create({
+            data: {
+                userId,
+                articleId
+            }
+        })
+    }
+    revalidatePath(`/articles/${articleId}`);
+}
