@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React from "react";
 import { Button } from "@/components/ui/button";
@@ -16,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { AddArticleSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2, Router } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { FormError } from "@/components/ui/form-error";
 import { FormSuccess } from "@/components/ui/form-success";
 import dynamic from "next/dynamic";
@@ -36,12 +35,9 @@ import {
 import { Sector, Tag } from "@prisma/client";
 import { createArticle } from "@/actions/article";
 import { getStringOfFile } from "@/firebase/functions";
-import { nanoid } from 'nanoid';
+import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
-
-const BlockNoteEditor = dynamic(() => import("@/components/article/editor"), {
-	ssr: false,
-});
+import { toast } from "sonner";
 
 export default function AddArticle({
 	tags,
@@ -50,21 +46,23 @@ export default function AddArticle({
 	tags: Tag[];
 	sectors: Sector[];
 }) {
+	const BlockNoteEditor = dynamic(() => import("@/components/article/editor"), {
+		ssr: false,
+	});
 	const [isPending, startTransaction] = React.useTransition();
 	const [error, setError] = React.useState<string | undefined>();
 	const [success, setSuccess] = React.useState<string | undefined>();
 	const [imgURL, setImgURL] = React.useState<string>("");
 	const [imgFile, setImgFile] = React.useState<File>();
-	const router = useRouter()
-	const [newArticleStore, setNewArticleStore, clearNewArticleStore] = useLocalStorage<
-		z.infer<typeof AddArticleSchema>
-	>("new-article", {
-		title: "",
-		tags: [],
-		content: "",
-		image: "",
-		sector: "",
-	});
+	const router = useRouter();
+	const [newArticleStore, setNewArticleStore, clearNewArticleStore] =
+		useLocalStorage<z.infer<typeof AddArticleSchema>>("new-article", {
+			title: "",
+			tags: [],
+			content: "",
+			image: "",
+			sector: "",
+		});
 	const form = useForm<z.infer<typeof AddArticleSchema>>({
 		resolver: zodResolver(AddArticleSchema),
 		defaultValues: {
@@ -89,9 +87,22 @@ export default function AddArticle({
 			value: tag.value,
 		};
 	});
+	async function uploadFile(file: File) {
+		const body = new FormData();
+		body.append("file", file);
+		const ret = await fetch("https://tmpfiles.org/api/v1/upload", {
+			method: "POST",
+			body: body,
+		});
+		return (await ret.json()).data.url.replace(
+			"tmpfiles.org/",
+			"tmpfiles.org/dl/"
+		);
+	}
 
 	const editor = useCreateBlockNote({
 		dictionary: locales.fr,
+		uploadFile,
 	});
 
 	const onChange = async () => {
@@ -104,31 +115,40 @@ export default function AddArticle({
 	};
 
 	const onSubmit = async (data: z.infer<typeof AddArticleSchema>) => {
-		startTransaction(async() => {
+		startTransaction(async () => {
 			if (!imgFile) {
 				setError("Veuillez ajouter une image pour l'article.");
+				toast.error("Veuillez ajouter une image pour l'article.");
 				return;
 			}
-			if(!data.content) {
+			if (!data.content) {
 				setError("Veuillez ajouter du contenu à l'article.");
+				toast.error("Veuillez ajouter du contenu à l'article.");
+				return;
 			}
-			const articleSlug = normalizeString(data.title)
-						.toLowerCase()
-						.replace(/[^a-z0-9\s-]/g, '')
-						.replace(/\s+/g, '-')
-						.replace(/-+$/, '') + '-' + nanoid(8);
-			data.image = await getStringOfFile(imgFile, `articles/images/${articleSlug}`)
-			createArticle(data).then((res) => {
+			const articleSlug =
+				normalizeString(data.title)
+					.toLowerCase()
+					.replace(/[^a-z0-9\s-]/g, "")
+					.replace(/\s+/g, "-")
+					.replace(/-+$/, "") +
+				"-" +
+				nanoid(8);
+			data.image = await getStringOfFile(
+				imgFile,
+				`articles/images/${articleSlug}`
+			);
+			createArticle(data, articleSlug).then((res) => {
 				if (res?.error) {
 					setError(res.error);
 				} else if (res?.success) {
-					setSuccess(res.success)
+					setSuccess(res.success);
 					form.reset();
 					clearNewArticleStore();
 					router.push("/dashboard/articles");
 				}
-			})
-		})
+			});
+		});
 	};
 	return (
 		<>
@@ -228,7 +248,8 @@ export default function AddArticle({
 										</FormControl>
 										<FormDescription>
 											Les tags permettent de classer vos
-											articles. Vous ne pouvez ajouter que 3 tags.
+											articles. Vous ne pouvez ajouter que
+											3 tags.
 										</FormDescription>
 										<FormMessage className="text-sm" />
 									</FormItem>
@@ -240,7 +261,14 @@ export default function AddArticle({
 								disabled={isPending}
 								render={({ field }) => (
 									<FormItem className="flex flex-col col-span-2">
-										<FormLabel htmlFor="image" className={`${isPending ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"}`} >
+										<FormLabel
+											htmlFor="image"
+											className={`${
+												isPending
+													? "cursor-not-allowed pointer-events-none"
+													: "cursor-pointer"
+											}`}
+										>
 											Bannière de l&#39; article :
 											{imgURL && (
 												<div className="w-full mt-4">
@@ -270,11 +298,15 @@ export default function AddArticle({
 											className="hidden"
 											id="image"
 											accept={"image/*"}
-											onChange={(e)=>{
-												const file = e.target.files?.[0];
+											onChange={(e) => {
+												const file =
+													e.target.files?.[0];
 												if (file) {
 													setImgFile(file);
-													const imageURL = URL.createObjectURL(file);
+													const imageURL =
+														URL.createObjectURL(
+															file
+														);
 													setImgURL(imageURL);
 													field.onChange(file.name);
 													setNewArticleStore({
@@ -299,7 +331,8 @@ export default function AddArticle({
 								<BlockNoteEditor
 									editor={editor}
 									onChange={onChange}
-									defaultValue={newArticleStore.content}
+									//defaultValue={newArticleStore.content}
+									className={`${isPending ? "cursor-not-allowed pointer-events-none" : ""}`}
 								/>
 								<FormDescription>
 									Rédigez le contenu de votre article.

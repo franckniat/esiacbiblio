@@ -95,7 +95,7 @@ export default function PublicArticles({articles, tags, sectors}: PublicArticles
                 </Select>
             </section>
             {displayedArticles.length > 0 &&
-                <section className="px-2 md:px-5 mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-5 pb-10">
+                <section className="px-2 md:px-5 mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 pb-10">
                     {displayedArticles.map((article) => (
                         <ArticleCard article={article} key={article.id}/>
                     ))}

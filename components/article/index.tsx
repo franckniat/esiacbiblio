@@ -18,20 +18,28 @@ export default function ArticleCard({ article }: ArticleCardProps) {
 	}
 	const { minutes, seconds } = calculateReadingTime(article.content);
 	return (
-		<div className="flex flex-col lg:flex-row items-start gap-3">
+		<div className="flex flex-col gap-3">
 			<Link
 				href={`/articles/${article.slug}`}
-				className="rounded-md h-fit w-full lg:min-w-[300px] lg:max-h-[300px] lg:max-w-[300px] object-cover hover:opacity-85 transition-opacity overflow-hidden"
+				className="rounded-md max-h-[250px] w-full object-cover hover:opacity-85 transition-opacity overflow-hidden"
 			>
 				<Image
 					src={article.image}
 					alt={article.title}
 					width={500}
 					height={500}
-					className="rounded-md h-auto max-h-[300px] w-full lg:min-w-[250px] lg:max-h-[250px] object-cover hover:opacity-90 hover:scale-105 transition-all"
+					className="rounded-md w-full min-h-[250px] object-cover hover:opacity-90 hover:scale-105 transition-all"
 				/>
 			</Link>
 			<div className="space-y-3 px-3 py-2">
+				<div className="flex gap-2 py-2">
+					{article.tags.map((tag) => (
+						<Badge key={tag.id} title={tag.value} className="inline-flex items-center gap-2 cursor-pointer bg-primary/30 hover:bg-primary/40" variant={"outline"}>
+							<span className="text-sm text-foreground">●</span>
+							<span className="line-clamp-1">{tag.value}</span>
+						</Badge>
+					))}
+				</div>
 				<Link
 					href={`/articles/${article.slug}`}
 					className="text-lg font-bold hover:text-primary"
@@ -39,7 +47,8 @@ export default function ArticleCard({ article }: ArticleCardProps) {
 					{article.title}
 				</Link>
 				<p className="group-hover:underline text-sm font-medium">
-					{minutes} minutes et {seconds > 0 ? seconds + " secondes" : ""}
+					{minutes} minutes et{" "}
+					{seconds > 0 ? seconds + " secondes" : ""}
 				</p>
 				<p className="text-sm text-foreground/70">
 					Publié le{" "}
@@ -61,13 +70,6 @@ export default function ArticleCard({ article }: ArticleCardProps) {
 						{article.user.name}
 					</h2>
 				</Link>
-                <div className="flex gap-2 flex-wrap">
-                    {article.tags.map((tag)=>(
-                        <Badge key={tag.id}>
-                            {tag.value}
-                        </Badge>
-                    ))}
-                </div>
 			</div>
 		</div>
 	);
