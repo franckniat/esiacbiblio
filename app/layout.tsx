@@ -4,7 +4,8 @@ import "./globals.css";
 import Providers from "@/providers";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
+import { EdgeStoreProvider } from "../lib/edgestore";
 
 const spaceGrotesk = localFont({
 	src: "./fonts/SpaceGrotesk.ttf",
@@ -41,9 +42,14 @@ export default async function RootLayout({
 	return (
 		<SessionProvider session={session}>
 			<html lang="fr" suppressHydrationWarning>
-				<body className={`${spaceGrotesk.className} antialiased`} suppressHydrationWarning>
+				<body
+					className={`${spaceGrotesk.className} antialiased`}
+					suppressHydrationWarning
+				>
 					<Analytics />
-					<Providers>{children}</Providers>
+					<Providers>
+						<EdgeStoreProvider>{children}</EdgeStoreProvider>
+					</Providers>
 				</body>
 			</html>
 		</SessionProvider>
