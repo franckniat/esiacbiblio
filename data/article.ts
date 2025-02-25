@@ -50,3 +50,25 @@ export const getUserArticles = async (userId: string) => {
         }
     });
 }
+
+export const getArticleBySlug = async (slug: string) => {
+    return db.article.findFirst({
+        where: {
+            slug
+        },
+        include: {
+            user: true,
+            likes: true,
+            tags: true,
+            comments: true
+        }
+    });
+}
+
+export const getArticleById = async (id: string) => {
+    return db.article.findFirst({
+        where: {
+            id
+        }
+    })
+}
