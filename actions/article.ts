@@ -2,7 +2,6 @@
 import { db } from "@/lib/db";
 import { AddArticleSchema } from "@/schemas";
 import { z } from "zod";
-import { nanoid } from 'nanoid';
 import { getCurrentUser } from "@/lib/user";
 import { revalidatePath } from "next/cache";
 
@@ -14,7 +13,7 @@ import { revalidatePath } from "next/cache";
  * @returns {Promise<{error: string} | {success: string}>}
  * A promise that resolves to an object with an error string if the data is invalid, or with a success string if the article was created successfully.
  */
-export const createArticle = async (data: z.infer<typeof AddArticleSchema>) => {
+export const createArticle = async (data: z.infer<typeof AddArticleSchema>, articleSlug: string) => {
     try {
         const validateFields = AddArticleSchema.safeParse(data);
         if (!validateFields.success) {
@@ -23,15 +22,7 @@ export const createArticle = async (data: z.infer<typeof AddArticleSchema>) => {
             }
         }
         const user = await getCurrentUser()
-        const normalizeString = (str: string) => {
-            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        };
         const { title, content, image, sector, tags } = validateFields.data;
-        const articleSlug = normalizeString(title)
-            .toLowerCase()
-            .replace(/[^a-z0-9\s-]/g, '')
-            .replace(/\s+/g, '-')
-            .replace(/-+$/, '') + '-' + nanoid(8);
         const articleTags = await db.tag.findMany({
             where: {
                 value: {
