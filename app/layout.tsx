@@ -5,7 +5,6 @@ import Providers from "@/providers";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { Analytics } from "@vercel/analytics/react";
-import { EdgeStoreProvider } from "../lib/edgestore";
 import ChatSupport from "@/components/layouts/ai-chatbot";
 
 const spaceGrotesk = localFont({
@@ -49,9 +48,7 @@ export default async function RootLayout({
 				>
 					<Analytics />
 					<ChatSupport />
-					<Providers>
-						<EdgeStoreProvider>{children}</EdgeStoreProvider>
-					</Providers>
+					<Providers>{children}</Providers>
 				</body>
 			</html>
 		</SessionProvider>
