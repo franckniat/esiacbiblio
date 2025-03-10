@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import UpdateArticle from '@/components/article/update-article';
 import { getSectors, getTags } from '@/data/items';
 
-export default async function EditArticlePage({params}:{params:{slug:string}}) {
+export default async function EditArticlePage({params}:{params:Promise<{slug:string}>}) {
   const {slug} = await params;
   const article = await getArticleBySlug(slug);
   const sectors = await getSectors();
