@@ -1,9 +1,11 @@
 "use server";
 import { db } from "@/lib/db";
-import { AddArticleSchema } from "@/schemas";
+import { AddArticleSchema, UpdateArticleSchema } from "@/schemas";
 import { z } from "zod";
 import { getCurrentUser } from "@/lib/user";
 import { revalidatePath } from "next/cache";
+import { getArticleById } from "@/data/article";
+import { deleteFile } from "@/firebase/functions";
 
 /**
  * Creates a new article in the database with the given data.
@@ -59,5 +61,70 @@ export const createArticle = async (data: z.infer<typeof AddArticleSchema>, arti
         }
     } catch (error) {
         console.error(error);
+    }
+}
+
+
+export const updateArticle = async (id: string, data: z.infer<typeof UpdateArticleSchema>) => {
+    try {
+        const validateFields = UpdateArticleSchema.safeParse(data);
+        if (!validateFields.success) {
+            return {
+                error: validateFields.error.message,
+            }
+        }
+        const { title, image, sector, tags } = validateFields.data;
+        const articleTags = await db.tag.findMany({
+            where: {
+                value: {
+                    in: tags
+                }
+            }
+        });
+        await db.article.update({
+            where: {
+                id
+            },
+            data: {
+                title,
+                image,
+                sector,
+                tags: {
+                    set: articleTags.map((tag) => ({ id: tag.id }))
+                }
+            }
+        });
+        revalidatePath("/dashboard/articles")
+        return {
+            success: "Article modifié avec succès",
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const deleteArticle = async (id: string) => {
+    const article = await getArticleById(id);
+    if (!article) {
+        return {
+            error: "Article introuvable",
+        }
+    }
+    try {
+        await db.article.delete({
+            where: {
+                id
+            }
+        });
+        await deleteFile(`articles/images/${article.slug}`);
+        revalidatePath("/dashboard/articles")
+        return {
+            success: "Article supprimé avec succès !",
+        }
+    } catch (error) {
+        console.error(error);
+        return {
+            error: "Une erreur est survenue lors de la suppression de l'article"
+        }
     }
 }

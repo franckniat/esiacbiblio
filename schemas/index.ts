@@ -138,3 +138,22 @@ export const AddArticleSchema = z.object({
         required_error: "Veuillez choisir une filière !"
     }),
 })
+
+export const UpdateArticleSchema = z.object({
+    title: z.string({
+        required_error: "Veuillez entrer un titre !"
+    }).min(1, {
+        message: "Votre article doit avoir un titre !"
+    }),
+    tags: z.array(z.string(), {
+        required_error: "Veuillez ajouter des tags !"
+    }).min(1,{
+        message: "Veuillez selectionner au moins un tag !"
+    }),
+    image: z.string({
+        required_error: "Veuillez ajouter une bannière à votre article !"
+    }),
+    sector: z.string({
+        required_error: "Veuillez choisir une filière !"
+    }),
+})
