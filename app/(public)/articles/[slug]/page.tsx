@@ -1,4 +1,5 @@
 import ArticleContent from "@/components/article/article-content";
+import CustomBreadcrumb from "@/components/ui/custom-breadcrumb";
 import { getArticleBySlug } from "@/data/article";
 import { Metadata } from "next";
 import { unstable_noStore as noStore } from "next/cache";
@@ -38,7 +39,7 @@ export async function generateMetadata({
 export default async function ArticlePage({
 	params,
 }: {
-	params: { slug: string };
+	params: Promise<{ slug: string }>;
 }) {
 	const { slug } = await params;
 	const article = await getArticleBySlug(slug);
@@ -46,7 +47,14 @@ export default async function ArticlePage({
 		notFound();
 	}
 	return (
-		<div className="max-w-[1280px] mx-auto px-2">
+		<div className="max-w-[1280px] mx-auto px-2 pt-10 sm:pt-22">
+			<CustomBreadcrumb
+				path={[
+					{ name: "Accueil", href: "/" },
+					{ name: "Articles", href: "/articles" },
+					{ name: article.title, href: `/blog/${article.slug}` },
+				]}
+			/>
 			<ArticleContent article={article} />
 		</div>
 	);
