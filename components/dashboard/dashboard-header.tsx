@@ -24,7 +24,7 @@ export default function DashboardHeader() {
             navbar.current.style.width = "calc(100% - 16rem)"
         }
         if (!open && navbar.current) {
-            navbar.current.style.width = "calc(100% - 3rem)"
+            navbar.current.style.width = "calc(100%)"
         }
     }, [open, navbar])
     return (

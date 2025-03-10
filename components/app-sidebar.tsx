@@ -84,7 +84,7 @@ export function AppSidebar() {
     const {open} = useSidebar();
     const router = useRouter();
     return (
-        <Sidebar collapsible="icon">
+        <Sidebar collapsible="offcanvas">
             <SidebarHeader>
                 <Link href={"/"} className={"flex justify-center flex-col gap-2 items-center"}>
                     <Image src={"/images/logo_esiac.png"} alt={""} className={"object-cover"} width={50} height={50}/>
