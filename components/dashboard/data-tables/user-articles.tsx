@@ -15,7 +15,6 @@ import {
 } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import {
 	Table,
@@ -25,13 +24,13 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { Trash2 } from "lucide-react";
+import { ScanEye, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import DeleteButton from "@/components/delete-button";
-import {deleteDocument} from "@/actions/document";
 import { ArticleWithIncludes } from "@/types";
+import { deleteArticle } from "@/actions/article";
 
 export function DataArticles({ data }: { data: ArticleWithIncludes[] }) {
 	const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -41,30 +40,6 @@ export function DataArticles({ data }: { data: ArticleWithIncludes[] }) {
 		React.useState<VisibilityState>({});
 	const [rowSelection, setRowSelection] = React.useState({});
 	const columns: ColumnDef<ArticleWithIncludes>[] = [
-		{
-			id: "select",
-			header: ({ table }) => (
-				<Checkbox
-					checked={
-						table.getIsAllPageRowsSelected() ||
-						(table.getIsSomePageRowsSelected() && "indeterminate")
-					}
-					onCheckedChange={(value) =>
-						table.toggleAllPageRowsSelected(!!value)
-					}
-					aria-label="Select all"
-				/>
-			),
-			cell: ({ row }) => (
-				<Checkbox
-					checked={row.getIsSelected()}
-					onCheckedChange={(value) => row.toggleSelected(!!value)}
-					aria-label="Select row"
-				/>
-			),
-			enableSorting: false,
-			enableHiding: false,
-		},
 		{
 			accessorKey: "title",
 			header: () => {
@@ -140,23 +115,36 @@ export function DataArticles({ data }: { data: ArticleWithIncludes[] }) {
 					<>
 						<div className="flex gap-2">
 							<Link
-								href={`/dashboard/articles/${row.original.id}`}
+								href={`/dashboard/articles/${row.original.slug}/edit`}
 							>
 								<Button size={"icon"} variant={"secondary"}>
 									<Pencil1Icon />
 								</Button>
 							</Link>
+							<Link
+								href={`/dashboard/articles/${row.original.slug}`}
+								title="Aperçu de l'article"
+							>
+								<Button size={"icon"} variant={"secondary"}>
+									<ScanEye size={18} />
+								</Button>
+							</Link>
 							<DeleteButton
 								header={"Supprimer l'article"}
-								message={"Cette action est irréversible. Voulez vous vraiment supprimer cet article ?"}
+								message={
+									"Cette action est irréversible. Voulez vous vraiment supprimer cet article ?"
+								}
 								contentButton={<Trash2 size={16} />}
-								handleDeleteAction={()=> deleteDocument(row.original.id).then((res) => {
-										if (res?.success) {
-											toast.success(res.success)
-										} else {
-											toast.error(res?.error)
+								handleDeleteAction={() =>
+									deleteArticle(row.original.id).then(
+										(res) => {
+											if (res?.success) {
+												toast.success(res.success);
+											} else {
+												toast.error(res?.error);
+											}
 										}
-									})
+									)
 								}
 							/>
 						</div>

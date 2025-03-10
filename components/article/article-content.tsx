@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import CustomBreadcrumb from "@/components/ui/custom-breadcrumb";
 import { ArticleWithIncludes } from "@/types";
 import "./article-content.css";
 import StyledMarkdownArticle from "../styled-markdown-article";
@@ -17,8 +16,10 @@ import { cn } from "@/lib/utils";
 
 export default function ArticleContent({
 	article,
+	isPreview=false,
 }: {
 	article: ArticleWithIncludes;
+	isPreview?: boolean;
 }) {
 	/* const [views, setViews] = useState<number>(article.views);
     useEffect(() => {
@@ -56,14 +57,7 @@ export default function ArticleContent({
 	}, [user?.id, article.likes, article.id]);
 
 	return (
-		<div className="my-5 mx-2 md:mx-5 pt-10 sm:pt-22">
-			<CustomBreadcrumb
-				path={[
-					{ name: "Accueil", href: "/" },
-					{ name: "Articles", href: "/articles" },
-					{ name: article.title, href: `/blog/${article.slug}` },
-				]}
-			/>
+		<div className="my-5 mx-2 md:mx-5">
 			<div className="flex flex-col md:flex-row justify-start items-start md:justify-between md:items-center gap-5">
 				<div className="space-y-3">
 					<div className="flex items-center gap-5">
@@ -133,7 +127,7 @@ export default function ArticleContent({
 						<StyledMarkdownArticle content={article.content} />
 					</div>
 				</div>
-				<div className="flex-none hidden md:block px-7 py-6 sticky top-[80px] h-fit">
+				<div className={`flex-none hidden px-7 py-6 sticky top-[80px] h-fit ${isPreview ? "hidden" : "md:block"}`}>
 					<div className="flex flex-col gap-3">
 						<Button
 							variant={"ghost"}
