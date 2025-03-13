@@ -11,7 +11,8 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
+import { useQueryState, parseAsInteger } from 'nuqs';
 
 
 type DocumentWithUserAndLikes = Document & {
@@ -26,12 +27,12 @@ interface PublicDocumentsProps {
 }
 
 export default function PublicDocuments({documents, categories, sectors}: PublicDocumentsProps) {
-    const [search, setSearch] = React.useState("");
-    const [currentPage, setCurrentPage] = React.useState(1);
+    const [search, setSearch] = useQueryState("title", {defaultValue: ""});
+    const [currentPage, setCurrentPage] = useQueryState("page", parseAsInteger);
     const documentsPerPage = 8;
     const [filteredDocuments, setFilteredDocuments] = React.useState<DocumentWithUserAndLikes[]>(documents);
-    const [selectedCategory, setSelectedCategory] = React.useState<string>("all");
-    const [selectedSector, setSelectedSector] = React.useState<string>("all");
+    const [selectedCategory, setSelectedCategory] = useQueryState("category", {defaultValue: "all"});
+    const [selectedSector, setSelectedSector] = useQueryState("sector", {defaultValue: "all"});
     React.useEffect(() => {
         let filtered = documents;
         if (search) {
@@ -56,16 +57,16 @@ export default function PublicDocuments({documents, categories, sectors}: Public
     const handleSortBySector = (sector: string) => {
         setSelectedSector(sector);
     };
-    const displayedDocuments = filteredDocuments.slice(0, currentPage * documentsPerPage);
+    const displayedDocuments = filteredDocuments.slice(0, (currentPage ?? 1) * documentsPerPage);
 
     const loadMoreDocuments = () => {
-        setCurrentPage(prevPage => prevPage + 1);
+        setCurrentPage(prevPage => (prevPage ?? 1) + 1);
     };
     return (
         <>
             <section
                 className="px-2 md:px-5 mt-5 flex-wrap sm:flex-nowrap flex items-center gap-2 justify-center md:justify-end">
-                <div className="flex flex-col sm:flex-row gap-2 items-center relative">
+                <div className="w-full sm:w-fit flex flex-col sm:flex-row gap-2 items-center relative">
                     <Input
                         type="search"
                         onChange={
@@ -79,7 +80,7 @@ export default function PublicDocuments({documents, categories, sectors}: Public
                 <Select onValueChange={(value) => {
                     handleSortByCategory(value);
                 }}>
-                    <SelectTrigger className={"w-fit"}>
+                    <SelectTrigger className={"w-full sm:w-fit"}>
                         <SelectValue placeholder="Sélectionnez une catégorie"/>
                     </SelectTrigger>
                     <SelectContent>
@@ -94,11 +95,11 @@ export default function PublicDocuments({documents, categories, sectors}: Public
                 <Select onValueChange={(value) => {
                     handleSortBySector(value);
                 }}>
-                    <SelectTrigger className={"w-fit"}>
+                    <SelectTrigger className={"w-full sm:w-fit"}>
                         <SelectValue placeholder="Sélectionnez une filière"/>
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="all">Toutes les catégories</SelectItem>
+                        <SelectItem value="all">Toutes les filières</SelectItem>
                         {sectors.map((sector) => (
                             <SelectItem key={sector.id} value={sector.value}>
                                 {sector.label}

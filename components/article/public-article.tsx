@@ -7,6 +7,7 @@ import {ScrollText, Search} from "lucide-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Button} from "@/components/ui/button";
 import { ArticleWithIncludes } from "@/types";
+import { useQueryState, parseAsInteger } from 'nuqs';
 
 interface PublicArticlesProps {
     articles: ArticleWithIncludes[];
@@ -15,12 +16,12 @@ interface PublicArticlesProps {
 }
 
 export default function PublicArticles({articles, tags, sectors}: PublicArticlesProps) {
-    const [search, setSearch] = React.useState("");
-    const [currentPage, setCurrentPage] = React.useState(1);
+    const [search, setSearch] = useQueryState("title");
+    const [currentPage, setCurrentPage] = useQueryState("page", parseAsInteger);
     const documentsPerPage = 8;
     const [filteredArticles, setFilteredArticles] = React.useState<ArticleWithIncludes[]>(articles);
-    const [selectedTag, setSelectedTag] = React.useState<string>("all");
-    const [selectedSector, setSelectedSector] = React.useState<string>("all");
+    const [selectedTag, setSelectedTag] = useQueryState("category", {defaultValue: "all"});
+    const [selectedSector, setSelectedSector] = useQueryState("sector", {defaultValue: "all"});
 
     React.useEffect(() => {
         let filtered = articles;
@@ -43,10 +44,10 @@ export default function PublicArticles({articles, tags, sectors}: PublicArticles
     const handleSortBySector = (sector: string) => {
         setSelectedSector(sector);
     };
-    const displayedArticles = filteredArticles.slice(0, currentPage * documentsPerPage);
+    const displayedArticles = filteredArticles.slice(0, (currentPage ?? 1) * documentsPerPage);
 
     const loadMoreArticles = () => {
-        setCurrentPage(prevPage => prevPage + 1);
+        setCurrentPage(prevPage => (prevPage ?? 1) + 1);
     };
     return (
         <main className="max-w-[1340px] mx-auto px-2">
