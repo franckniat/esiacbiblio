@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import {getDocumentById} from "@/data/document";
 import {deleteFile} from "@/firebase/functions";
+import { nanoid } from "nanoid";
 
 export const addDocument = async (data: z.infer<typeof DocumentsSchema>) => {
     const validateFields = DocumentsSchema.safeParse(data);
@@ -15,7 +16,16 @@ export const addDocument = async (data: z.infer<typeof DocumentsSchema>) => {
         }
     }
     const { title, description, fileURL, sector, category } = validateFields.data;
-    const documentSlug = title.toLowerCase().replace(/ /g, "-");
+    const normalizeString = (str: string) => {
+		return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+	};
+    const firebaseSlug = normalizeString(title)
+					.toLowerCase()
+					.replace(/[^a-z0-9\s-]/g, "")
+					.replace(/\s+/g, "-")
+					.replace(/-+$/, "") +
+				"-" +
+				nanoid(8);
     const user = await getCurrentUser();
     try {
         if(!user?.id) return { error: "Vous devez être connecté pour effectuer cette action !" }
@@ -27,7 +37,7 @@ export const addDocument = async (data: z.infer<typeof DocumentsSchema>) => {
                 sector,
                 category,
                 userId: user.id,
-                firebaseSlug: documentSlug,
+                firebaseSlug: firebaseSlug,
             }
         });
         await db.user.update({
