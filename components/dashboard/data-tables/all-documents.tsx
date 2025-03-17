@@ -29,7 +29,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { Document, User } from "@prisma/client";
 import DeleteButton from "@/components/delete-button";
-import {deleteDocument, publishDocument} from "@/actions/document";
+import {deleteDocument, hideDocument, publishDocument} from "@/actions/document";
 
 export type DocumentWithIncludes = Document & {
     user: User;
@@ -148,6 +148,19 @@ export function AllDocuments({ data }: { data: DocumentWithIncludes[] }) {
                                     }}
                                 >
                                     Publier
+                                </Button>
+                            }
+                            {row.original.isVisible&& 
+                                <Button variant={"outline"} onClick={()=>{
+                                    hideDocument(row.original.id).then((res) => {
+                                        if (res?.success) {
+                                            toast.success(res.success)
+                                        } else {
+                                            toast.error(res?.error)
+                                        }
+                                    })
+                                }}>
+                                    Masquer
                                 </Button>
                             }
                             <Button variant={"outline"} onClick={()=>{
