@@ -131,3 +131,25 @@ export const publishDocument = async (id: string) => {
         }
     }
 }
+
+export const hideDocument = async (id: string) => {
+    try {
+        await db.document.update({
+            where: {
+                id
+            },
+            data: {
+                isVisible: false
+            }
+        })
+        revalidatePath("/dashboard/documents")
+        return {
+            success: "Document masqué avec succès !"
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            error: "Une erreur s'est produite lors de la masquage du document !"
+        }
+    }
+}
