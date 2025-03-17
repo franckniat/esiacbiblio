@@ -90,9 +90,9 @@ export const updateArticle = async (id: string, data: z.infer<typeof UpdateArtic
                 image,
                 sector,
                 tags: {
-                    set: articleTags.map((tag) => ({ id: tag.id }))
+                    connect: articleTags.map((tag) => ({ id: tag.id }))
                 }
-            }
+            }   
         });
         revalidatePath("/dashboard/articles")
         return {
@@ -125,6 +125,50 @@ export const deleteArticle = async (id: string) => {
         console.error(error);
         return {
             error: "Une erreur est survenue lors de la suppression de l'article"
+        }
+    }
+}
+
+export const publishArticle = async (id: string) => {
+    try {
+        await db.article.update({
+            where: {
+                id
+            },
+            data: {
+                isVisible: true
+            }
+        })
+        revalidatePath("/dashboard/articles")
+        return {
+            success: "Article publié avec succès",
+        }
+    } catch (error) {
+        console.error(error);
+        return {
+            error: "Une erreur est survenue lors de la publication de l'article"
+        }
+    }
+}
+
+export const hideArticle = async (id: string) => {
+    try {
+        await db.article.update({
+            where: {
+                id
+            },
+            data: {
+                isVisible: false
+            }
+        })
+        revalidatePath("/dashboard/articles")
+        return {
+            success: "Article masqué avec succès",
+        }
+    } catch (error) {
+        console.error(error);
+        return {
+            error: "Une erreur est survenue lors de la masquage de l'article"
         }
     }
 }
