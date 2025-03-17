@@ -170,8 +170,8 @@ model Tag {
   value     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Article   Article? @relation(fields: [articleId], references: [id], onDelete: SetNull)
   articleId String?
+  Article   Article? @relation(fields: [articleId], references: [id], onDelete: Cascade)
 
   @@map("tags")
 }

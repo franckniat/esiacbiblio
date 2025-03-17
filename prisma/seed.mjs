@@ -142,14 +142,14 @@ async function main() {
     })
 }
 
-/*async function main() {
+/* async function main() {
     const category = await db.category.createMany({
         data: categories
     })
     const sector = await db.sector.createMany({
         data: sectors
     })
-}*/
+} */
 
 /*async function main() {
     const documents = Array.from({ length: 12 }, (_, i) => ({
