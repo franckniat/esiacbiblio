@@ -1,6 +1,6 @@
 "use client"
-import {SidebarTrigger, useSidebar} from "@/components/ui/sidebar";
-import React, {useEffect} from "react";
+import {SidebarTrigger} from "@/components/ui/sidebar";
+import React from "react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -13,23 +13,16 @@ import {Button} from "@/components/ui/button";
 import {ScrollArea} from "@/components/ui/scroll-area";
 import {BellSlash} from "react-bootstrap-icons";
 import {useTheme} from "next-themes";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 
 export default function DashboardHeader() {
-    const { open } = useSidebar()
     const {theme, setTheme} = useTheme()
-    const navbar = React.useRef<HTMLElement>(null)
-    useEffect(() => {
-        if (open && navbar.current) {
-            navbar.current.style.width = "calc(100% - 16rem)"
-        }
-        if (!open && navbar.current) {
-            navbar.current.style.width = "calc(100%)"
-        }
-    }, [open, navbar])
+    const isMobile = useIsMobile()
+
     return (
-        <nav className={`fixed top-0 right-0 bg-background/90 backdrop-blur`} ref={navbar}>
-            <div className={"h-[60px] flex justify-between gap-3 px-3"}>
+        <nav className={`fixed top-0 right-0 bg-background/90 backdrop-blur ${isMobile ? "w-full" : "w-[calc(100%-16rem)]"}`}>
+            <div className={`h-[60px] flex justify-between gap-3 sm:px-3`}>
                 <SidebarTrigger className={"m-4"}/>
                 <div className={"flex gap-3 items-center"}>
                     <Button

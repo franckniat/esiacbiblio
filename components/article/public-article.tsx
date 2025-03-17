@@ -53,7 +53,7 @@ export default function PublicArticles({articles, tags, sectors}: PublicArticles
         <main className="max-w-[1340px] mx-auto px-2">
             <section
                 className="px-3 md:px-0 mt-5 flex-wrap sm:flex-nowrap flex items-center gap-2 justify-center md:justify-end">
-                <div className="flex flex-col sm:flex-row gap-2 items-center relative">
+                <div className="w-full sm:w-fit flex flex-col sm:flex-row gap-2 items-center relative">
                     <Input
                         type="search"
                         onChange={
@@ -67,7 +67,7 @@ export default function PublicArticles({articles, tags, sectors}: PublicArticles
                 <Select onValueChange={(value) => {
                     handleSortByCategory(value);
                 }}>
-                    <SelectTrigger className={"w-fit"}>
+                    <SelectTrigger className={"w-full sm:w-fit"}>
                         <SelectValue placeholder="Sélectionnez un tag"/>
                     </SelectTrigger>
                     <SelectContent>
@@ -82,7 +82,7 @@ export default function PublicArticles({articles, tags, sectors}: PublicArticles
                 <Select onValueChange={(value) => {
                     handleSortBySector(value);
                 }}>
-                    <SelectTrigger className={"w-fit"}>
+                    <SelectTrigger className={"w-full sm:w-fit"}>
                         <SelectValue placeholder="Sélectionnez une filière"/>
                     </SelectTrigger>
                     <SelectContent>
