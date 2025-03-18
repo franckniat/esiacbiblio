@@ -172,3 +172,22 @@ export const hideArticle = async (id: string) => {
         }
     }
 }
+
+export const incrementArticleViews = async (id: string) => {
+    try {
+        const article = await getArticleById(id);
+        await db.article.update({
+            where: {
+                id
+            },
+            data: {
+                views: {
+                    increment: 1
+                }
+            }
+        })
+        revalidatePath("/articles/" + article?.slug)
+    } catch (error) {
+        console.error(error);
+    }
+}

@@ -21,10 +21,10 @@ export default function ArticleContent({
 	article: ArticleWithIncludes;
 	isPreview?: boolean;
 }) {
-	/* const [views, setViews] = useState<number>(article.views);
+	const [views, setViews] = useState<number>(article.views);
     useEffect(() => {
-        setViews(post.views);
-      }, [post.views]); */
+        setViews(article.views);
+      }, [article.views	]);
 	function calculateReadingTime(text: string) {
 		const wordsPerMinute = 200;
 		const words = text.split(" ").length;
@@ -69,7 +69,7 @@ export default function ArticleContent({
 						</span>
 						<p className="flex gap-2 items-center">
 							<Eye size={16} />
-							<span className="font-bold">50</span>
+							<span className="font-bold">{views}</span>
 						</p>
 					</div>
 					<h1 className="text-3xl md:text-5xl font-bold md:font-extrabold my-5 max-w-xl">

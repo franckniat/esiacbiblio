@@ -1,3 +1,4 @@
+import { incrementArticleViews } from "@/actions/article";
 import ArticleContent from "@/components/article/article-content";
 import CustomBreadcrumb from "@/components/ui/custom-breadcrumb";
 import { getArticleBySlug } from "@/data/article";
@@ -46,6 +47,7 @@ export default async function ArticlePage({
 	if (!article) {
 		notFound();
 	}
+	await incrementArticleViews(article.id);
 	return (
 		<div className="max-w-[1280px] mx-auto px-2 pt-10 sm:pt-22">
 			<CustomBreadcrumb
