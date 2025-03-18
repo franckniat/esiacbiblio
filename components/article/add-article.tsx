@@ -39,16 +39,17 @@ import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+const BlockNoteEditor = dynamic(() => import("@/components/article/editor"), {
+	ssr: false,
+});
+
 export default function AddArticle({
 	tags,
 	sectors,
 }: {
 	tags: Tag[];
 	sectors: Sector[];
-}) {
-	const BlockNoteEditor = dynamic(() => import("@/components/article/editor"), {
-		ssr: false,
-	});
+}) {	
 	const [isPending, startTransaction] = React.useTransition();
 	const [error, setError] = React.useState<string | undefined>();
 	const [success, setSuccess] = React.useState<string | undefined>();
