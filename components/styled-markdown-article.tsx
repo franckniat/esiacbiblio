@@ -155,15 +155,14 @@ const StyledMarkdownArticle: React.FC<StyledMarkdownProps> = ({ content }) => {
 					<del className="line-through text-gray-500" {...props} />
 				),
 				table: ({ node, ...props }) => (
-					<Table
-						className="w-full border border-foreground/10 my-4 text-sm md:text-base overflow-x-auto"
-						{...props}
-					/>
+					<Table className="w-full border border-foreground/10 my-4" {...props} />
 				),
 				thead: ({ node, ...props }) => (
 					<thead className="bg-background/5 sr-only" {...props} />
 				),
-				tbody: ({ node, ...props }) => <TableBody {...props} />,
+				tbody: ({ node, ...props }) => (
+					<TableBody {...props} />
+				),
 				tr: ({ node, ...props }) => (
 					<TableRow className="bg-background/10" {...props} />
 				),
