@@ -15,7 +15,7 @@ export default function SocialButtons() {
 		<div className="max-w-md mx-auto grid grid-cols-2 gap-2">
 			<Button
 				variant={"outline"}
-				className="w-full"
+				className="w-full gap-2"
 				title="Se connecter avec Google"
 				onClick={() => onClick("google")}
 			>
@@ -23,7 +23,7 @@ export default function SocialButtons() {
 			</Button>
 			<Button
 				variant={"outline"}
-				className="w-full"
+				className="w-full gap-2"
 				title="Se connecter avec Github"
 				onClick={() => onClick("github")}
 			>
