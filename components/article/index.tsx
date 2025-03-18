@@ -59,10 +59,7 @@ export default function ArticleCard({ article }: ArticleCardProps) {
 					})}
 				</p>
 				<Link
-					href={`/${article.user.name
-						?.toLowerCase()
-						.split(" ")
-						.join("-")}`}
+					href={`#`}
 					className="flex items-center gap-2 group w-fit"
 				>
 					Par
