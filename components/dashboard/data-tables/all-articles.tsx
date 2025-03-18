@@ -113,7 +113,7 @@ export function AllArticles({ data }: { data: ArticleWithIncludes[] }) {
 				return (
 					<>
 						<div className="flex gap-2">
-							{row.original.isVisible && (
+							{!row.original.isVisible && (
 								<Button
 									variant={"outline"}
 									onClick={() => {
@@ -131,7 +131,7 @@ export function AllArticles({ data }: { data: ArticleWithIncludes[] }) {
 									Publier
 								</Button>
 							)}
-							{!row.original.isVisible && (
+							{row.original.isVisible && (
 								<Button
 									variant={"outline"}
 									onClick={() => {
