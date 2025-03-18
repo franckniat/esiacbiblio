@@ -156,7 +156,7 @@ const StyledMarkdownArticle: React.FC<StyledMarkdownProps> = ({ content }) => {
 				),
 				table: ({ node, ...props }) => (
 					<Table
-						className="w-full border border-foreground/10 my-4 text-sm md:text-base"
+						className="w-full border border-foreground/10 my-4 text-sm md:text-base overflow-x-auto"
 						{...props}
 					/>
 				),
