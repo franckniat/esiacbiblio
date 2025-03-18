@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import {Tag, Sector} from "@prisma/client";
 import * as React from "react";
@@ -20,7 +21,7 @@ export default function PublicArticles({articles, tags, sectors}: PublicArticles
     const [currentPage, setCurrentPage] = useQueryState("page", parseAsInteger);
     const documentsPerPage = 8;
     const [filteredArticles, setFilteredArticles] = React.useState<ArticleWithIncludes[]>(articles);
-    const [selectedTag, setSelectedTag] = useQueryState("category", {defaultValue: "all"});
+    const [selectedTag, setSelectedTag] = useQueryState("tag", {defaultValue: "all"});
     const [selectedSector, setSelectedSector] = useQueryState("sector", {defaultValue: "all"});
 
     React.useEffect(() => {
@@ -64,7 +65,7 @@ export default function PublicArticles({articles, tags, sectors}: PublicArticles
                     />
                     <Search className="absolute left-2 top-1/2 -translate-y-1/2 text-foreground/50" size={17}/>
                 </div>
-                <Select onValueChange={(value) => {
+                {/* <Select onValueChange={(value) => {
                     handleSortByCategory(value);
                 }}>
                     <SelectTrigger className={"w-full sm:w-fit"}>
@@ -73,8 +74,8 @@ export default function PublicArticles({articles, tags, sectors}: PublicArticles
                     <SelectContent>
                         <SelectItem value="all">Toutes les tags</SelectItem>
                         {tags.map((tag) => (
-                            <SelectItem key={tag.id} value={tag.id}>
-                                {tag.value}
+                            <SelectItem key={tag.id} value={tag.value}>
+                                {tag.label}
                             </SelectItem>
                         ))}
                     </SelectContent>
@@ -88,12 +89,12 @@ export default function PublicArticles({articles, tags, sectors}: PublicArticles
                     <SelectContent>
                         <SelectItem value="all">Toutes les filières</SelectItem>
                         {sectors.map((sector) => (
-                            <SelectItem key={sector.id} value={sector.id}>
+                            <SelectItem key={sector.id} value={sector.value}>
                                 {sector.label}
                             </SelectItem>
                         ))}
                     </SelectContent>
-                </Select>
+                </Select> */}
             </section>
             {displayedArticles.length > 0 &&
                 <section className="px-2 md:px-5 mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 pb-10">
