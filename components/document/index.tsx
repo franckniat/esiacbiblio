@@ -181,7 +181,7 @@ export default function DocumentCard({ id, document }: DocumentProps) {
 						<embed
 							src={document.fileURL}
 							width="100%"
-							className={"rounded-md"}
+							className={"rounded-md hidden sm:block h-[300px]"}
 							height="600px"
 						></embed>
 					</div>
