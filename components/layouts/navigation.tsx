@@ -358,7 +358,7 @@ export default function Navbar() {
                                 >
                                     <SheetClose asChild>
                                         <Link
-                                            href={"/signin"}
+                                            href={"/auth/register"}
                                             className="text-green-600 hover:text-green-600/90 flex"
                                         >
                                             Se connecter
@@ -366,7 +366,7 @@ export default function Navbar() {
                                     </SheetClose>
                                     <SheetClose asChild>
                                         <Link
-                                            href={"/signup"}
+                                            href={"/auth/login"}
                                             className="hover:text-opacity-90"
                                         >
                                             S{"'"}inscrire
