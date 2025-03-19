@@ -19,7 +19,8 @@ export default async function Home() {
 			>
 				<section className="flex justify-center">
 					<Link
-						href="/support"
+						href="https://thanks.dev/u/gh/franckniat"
+						target="_blank"
 						className="group bg-foreground/5 inline-flex active:scale-95 transition items-center hover:bg-foreground/10 p-1 pr-2 rounded-full sm:text-base lg:text-sm xl:text-base"
 					>
 						<div className="px-3 py-0.5 text-xs font-semibold leading-5 uppercase tracking-wide rounded-full bg-foreground/10">
