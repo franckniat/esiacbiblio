@@ -1,56 +1,19 @@
 /**
- * An array of routes that are public and do not require authentication.
- * @type {string[]}
- */
-export const publicRoutes = [
-    "/",
-    "/documents",
-    "/articles",
-    "/contact",
-    "/auth/new-verification",
-    "/api/chat"
-]
-
-/**
- * An array of routes that are using for the authentication.
- * These routes will redirect logged users to settings page.
- * @type {string[]}
+ * An array of routes that are used for authentication.
+ * These routes will redirect logged users to the dashboard.
  */
 export const authRoutes = [
     "/auth/login",
     "/auth/register",
     "/auth/error",
-]
+];
 
 /**
- * The prefix of api routes authentication.
- * Routes that start with this prefix are used for API authentication purposes.
- * @type {string}
+ * The prefix of API auth routes.
  */
-export const apiAuthPrefix = "/api/auth"
+export const apiAuthPrefix = "/api/auth";
 
 /**
  * The default login redirect path.
- * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT = "/dashboard"
-
-/**
- * An array of protected routes of the application.
- * @type {string[]}
- */
-export const protectedRoutes = [
-    "/dashboard",
-    "/dashboard/settings",
-    "/dashboard/account",
-]
-
-/**
- * An array of admin routes of the application.
- * @type {string[]}
- */
-export const adminRoutes = [
-    "/dashboard/admin",
-    "/dashboard/admin/users",
-    "/dashboard/admin/documents",
-]
+export const DEFAULT_LOGIN_REDIRECT = "/dashboard";

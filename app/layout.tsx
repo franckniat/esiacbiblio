@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Providers from "@/providers";
-import { SessionProvider } from "next-auth/react";
-import { auth } from "@/auth";
 import { Analytics } from "@vercel/analytics/react";
 import ChatSupport from "@/components/layouts/ai-chatbot";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
@@ -34,25 +32,22 @@ export const metadata: Metadata = {
 	],
 };
 
-export default async function RootLayout({
+export default function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const session = await auth();
 	return (
 		<html lang="fr" suppressHydrationWarning>
 			<body
 				className={`${spaceGrotesk.className} antialiased`}
 				suppressHydrationWarning
 			>
-				<SessionProvider session={session}>
-					<Analytics />
-					<ChatSupport />
-					<Providers>
-						<NuqsAdapter>{children}</NuqsAdapter>
-					</Providers>
-				</SessionProvider>
+				<Analytics />
+				<ChatSupport />
+				<Providers>
+					<NuqsAdapter>{children}</NuqsAdapter>
+				</Providers>
 			</body>
 		</html>
 	);

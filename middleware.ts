@@ -1,31 +1,36 @@
-import { authConfig } from "@/auth.config";
-import NextAuth from "next-auth";
-import {apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT, protectedRoutes} from "@/routes"
+import { NextResponse, type NextRequest } from "next/server";
+import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
-const { auth } = NextAuth(authConfig)
+export function middleware(request: NextRequest) {
+    const { nextUrl } = request;
+    const sessionToken = request.cookies.get("better-auth.session_token")?.value || 
+                         request.cookies.get("__Secure-better-auth.session_token")?.value;
+    const isLoggedIn = !!sessionToken;
 
-export default auth(async function middleware(req){
-    const { nextUrl } = req;
-    const isLoggedIn = !!req.auth;
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-    const isProtectedRoute = protectedRoutes.includes(nextUrl.pathname);
+    const isDashboardRoute = nextUrl.pathname.startsWith("/dashboard");
+
     if (isApiAuthRoute) {
-        return;
+        return NextResponse.next();
     }
+
     if (isAuthRoute) {
         if (isLoggedIn) {
-            return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+            return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
         }
-        return;
+        return NextResponse.next();
     }
 
-    if (!isLoggedIn && isProtectedRoute) {
-        return Response.redirect(new URL("/auth/login", nextUrl));
+    if (isDashboardRoute && !isLoggedIn) {
+        const loginUrl = new URL("/auth/login", nextUrl);
+        loginUrl.searchParams.set("callbackUrl", nextUrl.pathname);
+        return NextResponse.redirect(loginUrl);
     }
-    
-})
+
+    return NextResponse.next();
+}
 
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
-}
+    matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+};

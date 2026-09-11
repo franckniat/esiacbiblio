@@ -1,14 +1,15 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { signIn } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Google, Github } from "react-bootstrap-icons";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 export default function SocialButtons() {
-	const onClick = async (provider: string) => {
-		await signIn(provider, {
-			callbackUrl: DEFAULT_LOGIN_REDIRECT,
+	const onClick = async (provider: "google" | "github") => {
+		await signIn.social({
+			provider,
+			callbackURL: DEFAULT_LOGIN_REDIRECT,
 		});
 	};
 	return (

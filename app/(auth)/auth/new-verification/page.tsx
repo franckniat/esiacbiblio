@@ -1,10 +1,10 @@
 import VerificationForm from "@/components/auth/verification-form";
+import { Suspense } from "react";
 
-
-export default async function NewVerificationPage(){
+export default function NewVerificationPage() {
     return (
-        <div>
-            <VerificationForm/>
-        </div>
-    )
-}
+        <Suspense fallback={<div className="flex items-center justify-center p-8">Chargement...</div>}>
+            <VerificationForm />
+        </Suspense>
+    );
+}

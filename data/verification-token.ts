@@ -2,24 +2,40 @@ import {db} from "@/lib/db";
 
 export const getVerificationTokenByEmail = async (email: string) => {
     try {
-        return await db.verificationToken.findFirst({
+        const record = await db.verification.findFirst({
             where: {
-                email
+                identifier: email
             }
-        })
+        });
+        if (!record) return null;
+        return {
+            id: record.id,
+            email: record.identifier,
+            token: record.value,
+            expiresAt: record.expiresAt,
+        };
     } catch (error) {
-        console.log(error);
+        console.error(error);
+        return null;
     }
 }
 
 export const getVerificationTokenByToken = async (token: string) => {
     try {
-        return await db.verificationToken.findUnique({
+        const record = await db.verification.findFirst({
             where: {
-                token
+                value: token
             }
-        })
+        });
+        if (!record) return null;
+        return {
+            id: record.id,
+            email: record.identifier,
+            token: record.value,
+            expiresAt: record.expiresAt,
+        };
     } catch (error) {
-        console.log(error);
+        console.error(error);
+        return null;
     }
 }
