@@ -15,8 +15,7 @@
     "preview": "next build && next start"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^1.1.9",
-    "@auth/prisma-adapter": "^2.5.3",
+    "@ai-sdk/google": "^1.1.20",
     "@blocknote/core": "^0.24.1",
     "@blocknote/mantine": "^0.24.1",
     "@blocknote/react": "^0.24.1",
@@ -50,6 +49,7 @@
     "@vercel/analytics": "^1.5.0",
     "ai": "^4.1.34",
     "bcryptjs": "^3.0.2",
+    "better-auth": "^1.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.0",
@@ -58,8 +58,7 @@
     "firebase-functions": "^6.3.1",
     "lucide-react": "^0.473.0",
     "nanoid": "^5.1.0",
-    "next": "15.1.11",
-    "next-auth": "^5.0.0-beta.25",
+    "next": "^16.3.4",
     "next-nprogress-bar": "^2.3.14",
     "next-themes": "^0.3.0",
     "nuqs": "^2.4.1",
@@ -83,15 +82,16 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "eslint": "^8",
-    "eslint-config-next": "^15.1.6",
+    "eslint-config-next": "^16.3.4",
     "postcss": "^8",
     "prisma": "^5.20.0",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^4.0.0",
     "typescript": "^5"
   }
 }

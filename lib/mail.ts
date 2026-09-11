@@ -18,6 +18,6 @@ export const sendVerificationEMail = async (email:string, token:string)=>{
             firstName: user?.name as string,
             email: email,
             customLink: confirmLink
-        }),
+        }) as React.ReactElement,
     })
 }
