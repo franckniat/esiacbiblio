@@ -17,32 +17,37 @@ export default async function PublicUserProfilePage({
     const { username } = await params;
     const decodedName = decodeURIComponent(username);
 
-    const user = await db.user.findFirst({
-        where: {
-            OR: [
-                { id: username },
-                { name: decodedName },
-            ],
-        },
-        include: {
-            documents: {
-                where: { isVisible: true },
-                orderBy: { createdAt: "desc" },
-                take: 12,
+    let user = null;
+    try {
+        user = await db.user.findFirst({
+            where: {
+                OR: [
+                    { id: username },
+                    { name: decodedName },
+                ],
             },
-            articles: {
-                where: { isVisible: true },
-                orderBy: { createdAt: "desc" },
-                take: 12,
-            },
-            _count: {
-                select: {
-                    documents: true,
-                    articles: true,
+            include: {
+                documents: {
+                    where: { isVisible: true },
+                    orderBy: { createdAt: "desc" },
+                    take: 12,
+                },
+                articles: {
+                    where: { isVisible: true },
+                    orderBy: { createdAt: "desc" },
+                    take: 12,
+                },
+                _count: {
+                    select: {
+                        documents: true,
+                        articles: true,
+                    },
                 },
             },
-        },
-    });
+        });
+    } catch {
+        user = null;
+    }
 
     if (!user) {
         return (
