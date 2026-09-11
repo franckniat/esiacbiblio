@@ -1,5 +1,6 @@
 "use client";
-import {ArrowUpRight, CircleStop, CornerDownLeft} from "lucide-react";
+import React, { useState } from "react";
+import { ArrowUpRight, CircleStop, CornerDownLeft, Sparkles, GraduationCap, ShieldAlert } from "lucide-react";
 import {
 	ChatBubble,
 	ChatBubbleAvatar,
@@ -16,10 +17,13 @@ import { ChatMessageList } from "@/components/ui/chat/chat-message-list";
 import { Button } from "../ui/button";
 import { useChat } from "@ai-sdk/react";
 import { useCurrentUser } from "@/hooks/use-currentuser";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import StyledMarkdown from "@/components/styled-markdown";
 
 export default function ChatSupport() {
+	const { user } = useCurrentUser();
+	const [quotaExceeded, setQuotaExceeded] = useState(false);
+
 	const {
 		messages,
 		input,
@@ -30,130 +34,153 @@ export default function ChatSupport() {
 		error,
 		reload,
 	} = useChat({
-		onFinish: (message, { usage, finishReason }) => {
-			console.log("Finished streaming message:", message);
-			console.log("Token usage:", usage);
-			console.log("Finish reason:", finishReason);
-		},
-		onError: (error) => {
-			console.error("An error occurred:", error);
+		initialMessages: [
+			{
+				id: "welcome-message",
+				role: "assistant",
+				content: "Bonjour ! Je suis **BiblioBot**, votre assistant pédagogique et académique officiel d'ESIAC-BIBLIO 🎓.\n\nJe suis là pour vous aider dans vos révisions, vos cours (Génie Logiciel, Réseaux, Gestion, Électronique) et la méthodologie de vos rapports de stage. Quelle est votre question d'étude aujourd'hui ?",
+			},
+		],
+		onError: (err) => {
+			console.error("Erreur Chatbot:", err);
+			if (err.message?.includes("Quota invité") || (err as any)?.status === 429) {
+				setQuotaExceeded(true);
+			}
 		},
 		onResponse: (response) => {
-			console.log("Received HTTP response from server:", response);
+			if (response.status === 429) {
+				setQuotaExceeded(true);
+			}
 		},
 	});
-	const { user } = useCurrentUser();
-	const router = useRouter();
 
 	return (
 		<ExpandableChat size="lg" position="bottom-right">
-			<ExpandableChatHeader className="flex-col text-center justify-center text-sm">
-				<h1 className="text-lg font-semibold">
-					Discuter avec notre IA ✨
-				</h1>
-				<p>Posez vos questions et obtenez des réponses instantanées.</p>
-			</ExpandableChatHeader>
-			<ExpandableChatBody>
-				{user && (
-					<ChatMessageList className="text-sm">
-						{messages.map((message, index) => (
-							<ChatBubble
-								key={index}
-								variant={`${
-									message.role === "user"
-										? "sent"
-										: "received"
-								}`}
-								className={`${message.role === "user" ? "max-w-[60%]" : "max-w-[90%]"}`}
-							>
-								<ChatBubbleAvatar
-									fallback={`${
-										message.role === "user" ? "You" : "AI"
-									}`}
-								/>
-								<ChatBubbleMessage className={`text-sm px-3 py-3`}>
-									<StyledMarkdown content={message.content} />
-								</ChatBubbleMessage>
-							</ChatBubble>
-						))}
-						{error && (
-							<>
-								<div>An error occurred.</div>
-								<Button variant={"outline"} type="button" onClick={() => reload()}>
-									Retry
-								</Button>
-							</>
-						)}
-						{isLoading && (
-							<ChatBubble variant="received">
-								<ChatBubbleAvatar fallback="AI" />
-								<ChatBubbleMessage isLoading />
-							</ChatBubble>
-						)}
-					</ChatMessageList>
-				)}
+			<ExpandableChatHeader className="flex-col text-center justify-center text-sm py-3 px-4 bg-primary/10 border-b border-border">
+				<div className="flex items-center justify-center gap-2">
+					<GraduationCap className="text-primary size-5" />
+					<h1 className="text-base font-bold text-foreground">
+						BiblioBot Académique ✨
+					</h1>
+				</div>
+				<p className="text-xs text-muted-foreground mt-0.5">
+					Assistance aux cours et révisions universitaires ESIAC
+				</p>
 				{!user && (
-					<ChatMessageList className="text-sm">
-						<ChatBubble variant="received">
-							<ChatBubbleAvatar fallback="AI" />
-							<ChatBubbleMessage>
-								<StyledMarkdown
-									content={
-										"Connectez-vous ou créer un compte pour discuter avec notre IA."
-									}
-								/>
+					<div className="mt-1.5 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-background/80 text-foreground/80 border border-border">
+						<span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+						Accès libre (5 questions offertes)
+					</div>
+				)}
+			</ExpandableChatHeader>
+
+			<ExpandableChatBody className="p-3">
+				<ChatMessageList className="text-sm space-y-3">
+					{messages.map((message) => (
+						<ChatBubble
+							key={message.id}
+							variant={message.role === "user" ? "sent" : "received"}
+							className={message.role === "user" ? "max-w-[75%]" : "max-w-[95%]"}
+						>
+							<ChatBubbleAvatar
+								fallback={message.role === "user" ? (user?.name?.charAt(0) || "U") : "🎓"}
+								className={message.role === "user" ? "bg-primary text-primary-foreground" : "bg-primary/20 text-primary"}
+							/>
+							<ChatBubbleMessage className="text-sm px-3.5 py-2.5 rounded-2xl">
+								<StyledMarkdown content={message.content} />
 							</ChatBubbleMessage>
 						</ChatBubble>
-					</ChatMessageList>
-				)}
+					))}
+
+					{isLoading && (
+						<ChatBubble variant="received">
+							<ChatBubbleAvatar fallback="🎓" className="bg-primary/20 text-primary" />
+							<ChatBubbleMessage isLoading className="px-3.5 py-2.5" />
+						</ChatBubble>
+					)}
+
+					{quotaExceeded && (
+						<div className="my-3 p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-foreground space-y-2 text-xs">
+							<div className="flex items-center gap-2 font-semibold text-amber-600 dark:text-amber-400">
+								<ShieldAlert size={16} />
+								Quota invité atteint (5/5 questions)
+							</div>
+							<p className="text-muted-foreground">
+								Vous avez utilisé vos 5 questions gratuites. Rejoignez la communauté étudiante pour continuer à poser vos questions en illimité !
+							</p>
+							<div className="pt-1 flex gap-2">
+								<Link href="/auth/register" className="w-full">
+									<Button size="sm" className="w-full gap-1.5 font-medium">
+										Créer un compte gratuit
+										<ArrowUpRight size={14} />
+									</Button>
+								</Link>
+							</div>
+						</div>
+					)}
+
+					{error && !quotaExceeded && (
+						<div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-center justify-between">
+							<span>Une erreur est survenue lors de la communication avec l'assistant.</span>
+							<Button variant="outline" size="sm" onClick={() => reload()}>
+								Réessayer
+							</Button>
+						</div>
+					)}
+				</ChatMessageList>
 			</ExpandableChatBody>
-			<ExpandableChatFooter>
-				{user && (
+
+			<ExpandableChatFooter className="p-2.5 border-t border-border bg-background">
+				{quotaExceeded ? (
+					<div className="w-full flex justify-between items-center px-2 py-1">
+						<span className="text-xs text-muted-foreground">Créez un compte pour discuter en illimité</span>
+						<Link href="/auth/login">
+							<Button size="sm" variant="outline" className="text-xs">
+								Se connecter
+							</Button>
+						</Link>
+					</div>
+				) : (
 					<form
 						onSubmit={handleSubmit}
-						className="relative rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring p-1"
+						className="relative rounded-lg border bg-background focus-within:ring-1 focus-within:ring-primary p-1 w-full"
 					>
 						<ChatInput
 							onChange={handleInputChange}
 							value={input}
 							name="prompt"
 							disabled={isLoading}
-							placeholder="Discutez avec notre IA"
-							className="min-h-12 resize-none rounded-lg bg-background border-0 p-3 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+							placeholder="Posez une question sur vos cours, rapports ou révisions..."
+							className="min-h-11 resize-none rounded-lg bg-background border-0 px-3 py-2 text-xs sm:text-sm shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
 						/>
-						<div className="flex items-center p-3 pt-0">
+						<div className="flex items-center justify-between px-2 pt-0 pb-1">
+							<span className="text-[11px] text-muted-foreground flex items-center gap-1">
+								<Sparkles size={12} className="text-primary" /> Questions académiques
+							</span>
 							{isLoading ? (
 								<Button
+									type="button"
 									size="sm"
-									variant={"destructive"}
-									className="ml-auto gap-1.5"
+									variant="destructive"
+									className="gap-1.5 h-7 text-xs px-2.5"
 									onClick={() => stop()}
 								>
-									<CircleStop className="size-3.5" />
+									<CircleStop className="size-3" />
 									Arrêter
 								</Button>
 							) : (
-								<Button size="sm" className="ml-auto gap-1.5">
-									Envoyer le message
-									<CornerDownLeft className="size-3.5" />
+								<Button
+									type="submit"
+									size="sm"
+									disabled={!input.trim()}
+									className="gap-1.5 h-7 text-xs px-3"
+								>
+									Envoyer
+									<CornerDownLeft className="size-3" />
 								</Button>
 							)}
 						</div>
 					</form>
-				)}
-				{!user && (
-					<div className="flex items-center p-3 pt-0">
-						<Button
-							size="sm"
-							className="ml-auto gap-1.5"
-							onClick={() => {
-								router.push("/auth/login");
-							}}
-						>
-							Se connecter
-							<ArrowUpRight className="size-3.5" />
-						</Button>
-					</div>
 				)}
 			</ExpandableChatFooter>
 		</ExpandableChat>
