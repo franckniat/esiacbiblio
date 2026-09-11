@@ -7,16 +7,20 @@ import { db } from "@/lib/db";
  * @returns An array of all documents in the database.
  */
 export const getAllDocuments = async () => {
-    const data = await db.document.findMany({
-        orderBy: {
-            createdAt: "desc"
-        },
-        include: {
-            user: true,
-            likes: true
-        }
-    });
-    return data;
+    try {
+        const data = await db.document.findMany({
+            orderBy: {
+                createdAt: "desc"
+            },
+            include: {
+                user: true,
+                likes: true
+            }
+        });
+        return data;
+    } catch {
+        return [];
+    }
 }
 
 /**
@@ -25,22 +29,24 @@ export const getAllDocuments = async () => {
  * @returns An array of all visible documents in the database, sorted by creation date in descending order.
  */
 export const getActiveDocuments = async () => {
-    const data = await db.document.findMany({
-        where: {
-            isVisible: true
-        },
-        orderBy: {
-            createdAt: "desc"
-        },
-        include: {
-            user: true,
-            likes: true,
-        }
-    });
-    return data;
+    try {
+        const data = await db.document.findMany({
+            where: {
+                isVisible: true
+            },
+            orderBy: {
+                createdAt: "desc"
+            },
+            include: {
+                user: true,
+                likes: true,
+            }
+        });
+        return data;
+    } catch {
+        return [];
+    }
 }
-
-
 
 /**
  * Finds all documents created by a user in the database.
@@ -50,28 +56,36 @@ export const getActiveDocuments = async () => {
  * @returns An array of all documents created by the user, sorted by creation date in descending order.
  */
 export const getUserDocuments = async (userId: string) => {
-    const data = await db.document.findMany({
-        where: {
-            user: {
-                id: userId
+    try {
+        const data = await db.document.findMany({
+            where: {
+                user: {
+                    id: userId
+                }
+            },
+            orderBy: {
+                createdAt: "desc"
+            },
+            include: {
+                user: true,
+                likes: true
             }
-        },
-        orderBy: {
-            createdAt: "desc"
-        },
-        include: {
-            user: true,
-            likes: true
-        }
-    });
-    return data;
+        });
+        return data;
+    } catch {
+        return [];
+    }
 }
 
 export const getDocumentById = async (id: string) => {
-    const data = await db.document.findUnique({
-        where: {
-            id
-        }
-    });
-    return data;
-}
+    try {
+        const data = await db.document.findUnique({
+            where: {
+                id
+            }
+        });
+        return data;
+    } catch {
+        return null;
+    }
+}

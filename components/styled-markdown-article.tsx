@@ -8,7 +8,7 @@ import { JetBrains_Mono } from "next/font/google";
 import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
-import { Table, TableBody, TableCell, TableHead, TableRow } from "./ui/table";
+import { Table, TableBody, TableCell, TableHead, TableRow } from "@/components/ui/table";
 
 const jetBrainsMono = JetBrains_Mono({ subsets: ["latin"] });
 
@@ -60,7 +60,7 @@ const StyledMarkdownArticle: React.FC<StyledMarkdownProps> = ({ content }) => {
 				),
 				p: ({ node, ...props }) => (
 					<p
-						className="text-lg leading-relaxed text-foreground/90 my-3"
+						className="text-base leading-relaxed text-foreground/90 my-3"
 						{...props}
 					/>
 				),
@@ -104,7 +104,7 @@ const StyledMarkdownArticle: React.FC<StyledMarkdownProps> = ({ content }) => {
 						</code>
 					) : (
 						<div
-							className={`${jetBrainsMono.className} text-sm px-1 relative group`}
+							className={`text-sm px-1 relative group`}
 						>
 							<div className="flex justify-between items-center bg-gray-100 px-4 py-2 rounded-t-lg">
 								<span className="text-xs text-gray-600">
@@ -126,7 +126,7 @@ const StyledMarkdownArticle: React.FC<StyledMarkdownProps> = ({ content }) => {
 							</div>
 							<SyntaxHighlighter
 								language={language}
-								className="max-w-full overflow-x-auto rounded-b-lg bg-gray-900 text-gray-100 p-4"
+								className={`max-w-full md:max-w-3xl overflow-x-auto rounded-b-lg bg-gray-900 text-gray-100 p-4 ${jetBrainsMono.className} antialiased`}
 							>
 								{String(props.children).replace(/\n$/, "")}
 							</SyntaxHighlighter>
@@ -135,7 +135,7 @@ const StyledMarkdownArticle: React.FC<StyledMarkdownProps> = ({ content }) => {
 				},
 				pre: ({ node, ...props }) => (
 					<pre
-						className="bg-gray-900 text-gray-100 p-4 rounded-lg my-4 overflow-x-auto"
+						className="bg-gray-900 text-gray-100 p-4 rounded-lg my-4 overscroll-auto"
 						{...props}
 					/>
 				),
@@ -155,14 +155,12 @@ const StyledMarkdownArticle: React.FC<StyledMarkdownProps> = ({ content }) => {
 					<del className="line-through text-gray-500" {...props} />
 				),
 				table: ({ node, ...props }) => (
-					<Table className="w-full border border-foreground/10 my-4" {...props} />
+					<Table className="w-full border border-border" {...props} />
 				),
 				thead: ({ node, ...props }) => (
 					<thead className="bg-background/5 sr-only" {...props} />
 				),
-				tbody: ({ node, ...props }) => (
-					<TableBody {...props} />
-				),
+				tbody: ({ node, ...props }) => <TableBody {...props} />,
 				tr: ({ node, ...props }) => (
 					<TableRow className="bg-background/10" {...props} />
 				),
@@ -174,6 +172,14 @@ const StyledMarkdownArticle: React.FC<StyledMarkdownProps> = ({ content }) => {
 				),
 				td: ({ node, ...props }) => (
 					<TableCell className="px-4 py-2" {...props} />
+				),
+				img: ({ node, ...props }) => (
+					// eslint-disable-next-line @next/next/no-img-element
+					<img
+						className="max-w-full h-auto my-4"
+						alt={props?.alt}
+						{...props}
+					/>
 				),
 			}}
 		>

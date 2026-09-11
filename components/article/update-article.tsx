@@ -32,6 +32,13 @@ import { FormSuccess } from "@/components/ui/form-success";
 import DashboardWrapper from "@/components/dashboard/dashboard-wrapper";
 import { updateArticle } from "@/actions/article";
 import { getStringOfFile } from "@/firebase/functions";
+import dynamic from "next/dynamic";
+import { useCreateBlockNote } from "@blocknote/react";
+import { locales } from "@blocknote/core";
+
+const BlockNoteEditor = dynamic(() => import("@/components/article/editor"), {
+	ssr: false,
+});
 
 export default function UpdateArticle({
 	article,
@@ -62,6 +69,30 @@ export default function UpdateArticle({
     const [success, setSuccess] = useState<string>("");
 	const [isPending, startTransition] = useTransition();
 
+	const [content, setContent] = useState(article.content || "");
+	const editor = useCreateBlockNote({
+		dictionary: locales.fr,
+	});
+
+	React.useEffect(() => {
+		async function loadInitialMarkdown() {
+			if (article.content) {
+				try {
+					const blocks = await editor.tryParseMarkdownToBlocks(article.content);
+					editor.replaceBlocks(editor.document, blocks);
+				} catch (e) {
+					console.error("Error parsing markdown to blocks:", e);
+				}
+			}
+		}
+		loadInitialMarkdown();
+	}, [editor, article.content]);
+
+	const onEditorChange = async () => {
+		const markdown = await editor.blocksToMarkdownLossy(editor.document);
+		setContent(markdown);
+	};
+
 	const onSubmit = (data: z.infer<typeof UpdateArticleSchema>) => {
 		startTransition(async () => {
 			if (!imgFile) {
@@ -69,6 +100,7 @@ export default function UpdateArticle({
 			} else {
 				data.image = await getStringOfFile(imgFile, `articles/images/${article.slug}`);
 			}
+			data.content = content;
             updateArticle(article.id, data).then((res) => {
                 if (res?.error) {
                     setError(res.error);
@@ -217,6 +249,19 @@ export default function UpdateArticle({
 						</FormItem>
 					)}
 				/>
+				<FormItem className="mt-6">
+					<FormLabel htmlFor="editor">
+						Contenu de l&#39;article :
+					</FormLabel>
+					<BlockNoteEditor
+						editor={editor}
+						onChange={onEditorChange}
+						className={isPending ? "cursor-not-allowed pointer-events-none" : ""}
+					/>
+					<FormDescription>
+						Modifiez le contenu textuel de votre article.
+					</FormDescription>
+				</FormItem>
 				<div className="space-y-4 mt-[30px] pb-[50px]">
 					{error && <FormError message={error} />}
 					{success && <FormSuccess message={success} />}

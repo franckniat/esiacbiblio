@@ -47,7 +47,7 @@ export default async function ArticlePage({
 	if (!article) {
 		notFound();
 	}
-	await incrementArticleViews(article.id);
+	incrementArticleViews(article.id);
 	return (
 		<div className="max-w-[1280px] mx-auto px-2 pt-10 sm:pt-22">
 			<CustomBreadcrumb

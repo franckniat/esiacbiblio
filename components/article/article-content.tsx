@@ -122,8 +122,8 @@ export default function ArticleContent({
 				</div>
 			</div>
 			<div className="flex">
-				<div className="my-5 flex flex-grow">
-					<div className={`my-5`}>
+				<div className="my-5 block sm:flex sm:flex-grow">
+					<div className={`mt-5 px-1`}>
 						<StyledMarkdownArticle content={article.content} />
 					</div>
 				</div>

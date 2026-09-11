@@ -35,8 +35,10 @@ import {
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
+import {useRouter} from "next/navigation";
 import {useTheme} from "next-themes";
 import {useCurrentUser} from "@/hooks/use-currentuser";
+import {signOut} from "@/lib/auth-client";
 
 const navlinks = [
     {
@@ -94,8 +96,19 @@ const morelinks = [
 ];
 export default function Navbar() {
     const pathname = usePathname();
+    const router = useRouter();
     const {theme, setTheme} = useTheme();
     const {user, isLoading} = useCurrentUser();
+
+    const handleLogout = async () => {
+        try {
+            await signOut();
+            router.push("/auth/login");
+            router.refresh();
+        } catch (error) {
+            console.error("Erreur lors de la déconnexion:", error);
+        }
+    };
 
     return (
         <>
@@ -286,6 +299,14 @@ export default function Navbar() {
                                                     Assistance
                                                 </Link>
                                             </DropdownMenuItem>
+                                            <DropdownMenuSeparator/>
+                                            <DropdownMenuItem
+                                                onClick={handleLogout}
+                                                className="flex gap-2 items-center w-full py-2 cursor-pointer text-destructive focus:text-destructive"
+                                            >
+                                                <DoorClosed size={18}/>
+                                                Se déconnecter
+                                            </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                 </div>
@@ -305,7 +326,7 @@ export default function Navbar() {
                                 <SheetHeader>
                                     <SheetTitle>ESIAC-BIBLIO</SheetTitle>
                                     <SheetDescription>
-                                        Votre bibliothèque numérique
+                                        Votre bibliothèque numérique
                                     </SheetDescription>
                                 </SheetHeader>
                                 <div className="flex flex-col gap-3 mt-4">
@@ -316,9 +337,9 @@ export default function Navbar() {
                                                     href={navlink.href}
                                                     className={clsx(
                                                         pathname == navlink.href
-                                                            ? "text-green-600"
+                                                            ? "text-green-600 font-semibold"
                                                             : "text-gray-600 dark:text-neutral-50",
-                                                        "font-medium hover:text-green-600 dark:hover:text-green-600 px-4 py-1 text-sm"
+                                                        "font-medium hover:text-green-600 dark:hover:text-green-600 px-4 py-1 text-sm block"
                                                     )}
                                                 >
                                                     {navlink.title}
@@ -335,9 +356,9 @@ export default function Navbar() {
                                                     href={navlink.href}
                                                     className={clsx(
                                                         pathname == navlink.href
-                                                            ? "text-green-600"
+                                                            ? "text-green-600 font-semibold"
                                                             : "text-gray-600 dark:text-neutral-50",
-                                                        "font-medium hover:text-green-600 dark:hover:text-green-600 px-4 py-1 text-sm"
+                                                        "font-medium hover:text-green-600 dark:hover:text-green-600 px-4 py-1 text-sm block"
                                                     )}
                                                 >
                                                     {navlink.title}
@@ -345,9 +366,10 @@ export default function Navbar() {
                                             </SheetClose>
                                         </div>
                                     ))}
-                                    <SheetClose>
+                                    <SheetClose asChild>
                                         <button
-                                            className="font-medium text-red-600 hover:text-red-400 w-full py-3 text-sm flex justify-start gap-2">
+                                            onClick={handleLogout}
+                                            className="font-medium text-red-600 hover:text-red-400 w-full py-3 px-4 text-sm flex justify-start gap-2 items-center">
                                             <DoorClosed size={20}/>
                                             Se déconnecter
                                         </button>
@@ -358,15 +380,15 @@ export default function Navbar() {
                                 >
                                     <SheetClose asChild>
                                         <Link
-                                            href={"/auth/register"}
-                                            className="text-green-600 hover:text-green-600/90 flex"
+                                            href={"/auth/login"}
+                                            className="text-green-600 hover:text-green-600/90 flex font-semibold"
                                         >
                                             Se connecter
                                         </Link>
                                     </SheetClose>
                                     <SheetClose asChild>
                                         <Link
-                                            href={"/auth/login"}
+                                            href={"/auth/register"}
                                             className="hover:text-opacity-90"
                                         >
                                             S{"'"}inscrire

@@ -4,6 +4,8 @@ import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 
+export const dynamic = "force-dynamic";
+
 
 export default async function PublicLayout({
 	children,

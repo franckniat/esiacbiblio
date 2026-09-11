@@ -15,6 +15,8 @@ export async function generateMetadata(): Promise<Metadata> {
 	};
 }
 
+import { Suspense } from "react";
+
 export default async function Documents() {
 	const documents = await getActiveDocuments();
 	const categories = await getCategories();
@@ -39,7 +41,9 @@ export default async function Documents() {
 						</p>
 					</div>
 				</section>
-				<PublicDocuments sectors={sectors} categories={categories} documents={documents}/>
+				<Suspense fallback={<div className="flex justify-center p-12">Chargement des documents...</div>}>
+					<PublicDocuments sectors={sectors} categories={categories} documents={documents}/>
+				</Suspense>
 			</main>
 		</>
 	);
