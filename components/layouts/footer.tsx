@@ -1,72 +1,175 @@
-"use client"
-import { Github, Twitter } from "lucide-react";
+"use client";
+import { Github, Twitter, Globe, Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 
-export default function Footer(){
-    return(
-        <footer className="max-w-[1340px] mx-auto pt-5 pb-10 border-t border-foreground/5">
-        <section className="mx-2 md:mx-5 border-b border-foreground/5 pb-5">
-            <div className="flex flex-col md:flex-row justify-between gap-5 flex-wrap">
-                <div className="flex flex-col">
-                    <Image height={500} width={500} className="w-[100px] h-[100px]" src="/images/logo_esiac.png" alt=""/>
-                    <h1 className="font-bold max-w-xs uppercase tracking-wide text-lg">Ecole supérieure d{"'"}Ingénieurie et de management d{"'"}Afrique Centrale</h1>
-                </div>
-                <div className="flex flex-col gap-3 border-b border-gray-100 dark:border-neutral-600 py-5 md:border-none">
-                    <h1 className="text-gray-600 dark:text-neutral-200">Ressources</h1>
-                    <div className="flex flex-col gap-3">
-                        <Link href="/articles" className="text-sm hover:underline font-medium">Articles</Link>
-                        <Link href="/documents" className="text-sm hover:underline font-medium">Documents</Link>
-                        <Link href="#" className="text-sm hover:underline font-medium flex gap-1 items-center">
-                            Discussions
-                            <Badge className="hover:no-underline">Bientot</Badge>
-                        </Link>
+export default function Footer() {
+    return (
+        <footer className="border-t border-border/50 bg-foreground/[0.01] mt-20">
+            <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-border/50">
+                    {/* Brand Column */}
+                    <div className="md:col-span-1 space-y-4">
+                        <div className="flex items-center gap-3">
+                            <Image
+                                height={60}
+                                width={60}
+                                className="w-12 h-12 rounded-lg object-contain"
+                                src="/images/logo_esiac.png"
+                                alt="Logo ESIAC"
+                            />
+                            <div>
+                                <span className="font-extrabold tracking-tight text-lg block">
+                                    ESIAC<span className="text-primary">.</span>BIBLIO
+                                </span>
+                                <span className="text-xs text-muted-foreground">
+                                    Bibliothèque Numérique
+                                </span>
+                            </div>
+                        </div>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                            École Supérieure d&apos;Ingénierie et de Management d&apos;Afrique Centrale (ESIAC).
+                            Plateforme collaborative d&apos;apprentissage et de diffusion du savoir.
+                        </p>
                     </div>
-                </div>
-                <div className="flex flex-col gap-3 py-5 border-b border-foreground/5 md:border-none">
-                    <h1 className="text-gray-600 dark:text-neutral-200">Légal</h1>
-                    <div className="flex flex-col gap-3">
-                        <Link href="/privacy" className="text-sm hover:underline font-medium">Confidentialité</Link>
-                        <Link href="/terms" className="text-sm hover:underline font-medium">Condition d{"'"}utilisation</Link>
-                        <Link href="/rules" className="text-sm hover:underline font-medium">Code de conduite</Link>
-                        <Link href="/faq" className="text-sm hover:underline font-medium">FAQ</Link>
+
+                    {/* Quick links */}
+                    <div className="space-y-3">
+                        <h4 className="text-sm font-semibold tracking-wider uppercase text-foreground">
+                            Ressources
+                        </h4>
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                            <li>
+                                <Link href="/documents" className="hover:text-primary transition-colors">
+                                    Documents &amp; Annales
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/articles" className="hover:text-primary transition-colors">
+                                    Articles &amp; Guides
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/about" className="hover:text-primary transition-colors">
+                                    À propos du projet
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/help" className="hover:text-primary transition-colors">
+                                    Centre d&apos;aide
+                                </Link>
+                            </li>
+                        </ul>
                     </div>
-                </div>
-                <div className="flex flex-col gap-3 py-5">
-                    <h1 className="text-gray-600 dark:text-neutral-200">Rejoignez nous.</h1>
-                    <p className="text-sm text-gray-600 dark:text-neutral-600 max-w-md">Souscrivez à notre newsletter pour recevoir de nouveaux articles, documents, ...</p>
-                    <div className="flex flex-col gap-3">
-                        <form>
-                            <Input type="email" className="peer w-full sm:max-w-xl md:max-w-3xl" placeholder="Entrez votre adresse email" required/>
-                            <p className="text-xs text-red-600 invisible peer-invalid:visible"></p>
-                            <Button type="submit" className="mt-3 w-full sm:w-fit">Soumettre</Button>
+
+                    {/* Legal & Standards */}
+                    <div className="space-y-3">
+                        <h4 className="text-sm font-semibold tracking-wider uppercase text-foreground">
+                            Informations
+                        </h4>
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                            <li>
+                                <Link href="/about" className="hover:text-primary transition-colors">
+                                    Mission académique
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/support" className="hover:text-primary transition-colors">
+                                    Support &amp; Contact
+                                </Link>
+                            </li>
+                            <li>
+                                <a
+                                    href="https://thanks.dev/u/gh/franckniat"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:text-primary transition-colors inline-flex items-center gap-1"
+                                >
+                                    Soutenir le projet ⚡️
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Newsletter / Stay connected */}
+                    <div className="space-y-3">
+                        <h4 className="text-sm font-semibold tracking-wider uppercase text-foreground">
+                            Restez informé
+                        </h4>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                            Recevez les annonces des nouveaux documents et sujets d&apos;examens ajoutés.
+                        </p>
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                            }}
+                            className="space-y-2"
+                        >
+                            <Input
+                                type="email"
+                                placeholder="votre.email@etudiant.esiac.cm"
+                                className="text-xs bg-background/50 h-9"
+                            />
+                            <Button type="submit" variant="success" size="sm" className="w-full font-medium text-xs">
+                                S&apos;abonner
+                            </Button>
                         </form>
                     </div>
                 </div>
-            </div>
-        </section>
-        <div className="flex justify-center flex-col md:flex-row md:justify-between gap-2 pt-5 mx-5">
-            <div>
-                <Button variant="ghost" size="icon">
-                    <a target="_blank" href="https://github.com/franckniat/esiac-biblio"><Github size={20} /></a>
-                </Button>
-                <Button variant="ghost" size="icon">
-                    <a target="_blank" href="https://twitter.com/manuel_niat"><Twitter size={20} /></a>
-                </Button>
-            </div>
-            <div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-500">
-                    Copyright © 2024. Tous droits réservés.
-                </p>
-                <div className="my-3 text-neutral-600 dark:text-neutral-500">
-                    Built with ❤️ by <a className="text-sm text-primary font-semibold hover:underline" target="_blank" href="https://franckniat.me">Franck NIAT (Software Engineer)</a>
+
+                {/* Bottom bar with author credit */}
+                <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
+                    <p>
+                        © {new Date().getFullYear()} ESIAC-BIBLIO. Développé pour la communauté étudiante.
+                    </p>
+
+                    <div className="flex items-center gap-1.5 font-medium">
+                        <span>Conçu avec</span>
+                        <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500 inline" />
+                        <span>par</span>
+                        <a
+                            href="https://franckniat.me"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-foreground hover:text-primary font-semibold transition-colors underline decoration-primary/40 underline-offset-4"
+                        >
+                            Franck NIAT (Software Engineer)
+                        </a>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <a
+                            href="https://franckniat.me"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 rounded-lg hover:bg-muted/80 text-muted-foreground hover:text-foreground transition-colors"
+                            title="Site web de Franck NIAT"
+                        >
+                            <Globe size={16} />
+                        </a>
+                        <a
+                            href="https://github.com/franckniat"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 rounded-lg hover:bg-muted/80 text-muted-foreground hover:text-foreground transition-colors"
+                            title="GitHub"
+                        >
+                            <Github size={16} />
+                        </a>
+                        <a
+                            href="https://twitter.com/manuel_niat"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 rounded-lg hover:bg-muted/80 text-muted-foreground hover:text-foreground transition-colors"
+                            title="Twitter"
+                        >
+                            <Twitter size={16} />
+                        </a>
+                    </div>
                 </div>
             </div>
-            
-        </div>
-    </footer>
-    )
+        </footer>
+    );
 }

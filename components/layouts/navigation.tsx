@@ -112,25 +112,27 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="z-[30] w-full sticky top-0 backdrop-blur-sm bg-background/95 transition">
-                <section className="max-w-[1340px] mx-auto px-2">
-                    <section className="flex items-center justify-between h-[60px]">
-                        <section className="flex items-center gap-5">
+            <nav className="z-[30] w-full sticky top-0 backdrop-blur-md bg-background/85 border-b border-border/50 transition-all">
+                <section className="max-w-[1340px] mx-auto px-4 sm:px-6">
+                    <section className="flex items-center justify-between h-[64px]">
+                        <section className="flex items-center gap-6">
                             <Link
                                 href="/"
-                                className="mx-2 flex items-center gap-0 text-lg md:text-xl lg:text-2xl font-serif"
+                                className="flex items-center gap-1.5 text-lg md:text-xl font-extrabold tracking-tight"
                             >
-                                E-BIBLIO
+                                <span className="w-2.5 h-2.5 rounded-full bg-primary inline-block"></span>
+                                <span>ESIAC<span className="text-primary">.</span>BIBLIO</span>
                             </Link>
-                            <div className="items-center hidden md:flex">
+                            <div className="items-center hidden md:flex gap-1">
                                 {navlinks.map((nlink) => (
                                     <Link
                                         key={nlink.id}
                                         href={nlink.href}
                                         className={clsx(
-                                            pathname == nlink.href &&
-                                            "text-primary",
-                                            "font-medium px-4 py-1 text-sm hover:text-primary transition-colors"
+                                            pathname == nlink.href
+                                                ? "bg-primary/10 text-primary font-semibold"
+                                                : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                                            "px-3.5 py-1.5 rounded-lg text-sm transition-all"
                                         )}
                                     >
                                         {nlink.title}
@@ -142,7 +144,7 @@ export default function Navbar() {
                         <section className="hidden md:flex items-center gap-3">
                             <Button
                                 size={"icon"}
-                                className="relative"
+                                className="relative rounded-lg hover:bg-muted/60"
                                 variant="ghost"
                                 onClick={() => {
                                     setTheme(
@@ -161,20 +163,17 @@ export default function Navbar() {
                             </Button>
                             <div className="hidden md:flex gap-2">
                                 <div
-                                    className={`text-sm gap-3 items-center font-medium ${user ? "hidden" : "flex"}`}
+                                    className={`text-sm gap-2 items-center font-medium ${user ? "hidden" : "flex"}`}
                                 >
-                                    <Link
-                                        href={"/auth/login"}
-                                        className="text-primary"
-                                    >
-                                        Se connecter
+                                    <Link href="/auth/login">
+                                        <Button variant="ghost" size="sm" className="font-semibold text-sm">
+                                            Se connecter
+                                        </Button>
                                     </Link>
-                                    ●
-                                    <Link
-                                        href={"/auth/register"}
-                                        className="hover:text-opacity-90"
-                                    >
-                                        S{"'"}inscrire
+                                    <Link href="/auth/register">
+                                        <Button variant="success" size="sm" className="font-semibold text-sm rounded-lg shadow-xs">
+                                            S&apos;inscrire
+                                        </Button>
                                     </Link>
                                 </div>
                                 <div className={`flex gap-4 items-center ${user ? "flex" : "hidden"}`}>

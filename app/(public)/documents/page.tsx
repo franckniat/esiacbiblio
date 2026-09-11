@@ -1,50 +1,68 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import DocumentCard from "@/components/document";
-import { SortData } from "@/components/document/sort-data";
 import CustomBreadcrumb from "@/components/ui/custom-breadcrumb";
 import { getActiveDocuments } from "@/data/document";
 import { Metadata } from "next";
 import PublicDocuments from "@/components/document/public-document";
-import {getCategories, getSectors} from "@/data/items";
+import { getCategories, getSectors } from "@/data/items";
+import { Suspense } from "react";
+import { BookOpen, Sparkles } from "lucide-react";
 
 export async function generateMetadata(): Promise<Metadata> {
 	return {
-		title: "Documents - ESIAC BIBLIO",
+		title: "Documents & Annales - ESIAC BIBLIO",
 		description:
-			"Venez à la découverte d'une multitude de rapports, cours et documents.",
+			"Consultez les cours, devoirs surveillés, annales d'examens et mémoires de l'ESIAC.",
 	};
 }
 
-import { Suspense } from "react";
-
 export default async function Documents() {
-	const documents = await getActiveDocuments();
-	const categories = await getCategories();
-	const sectors = await getSectors();
+	const [documents, categories, sectors] = await Promise.all([
+		getActiveDocuments(),
+		getCategories(),
+		getSectors(),
+	]);
+
 	return (
-		<>
-			<main className="max-w-[1340px] mx-auto px-2">
-				<section className="mx-2 md:mx-5 pt-10 sm:pt-22">
-					<section className="text-sm">
-						<CustomBreadcrumb
-							path={[
-								{ name: "Accueil", href: "/" },
-								{ name: "Documents", href: "/documents" },
-							]}
-						/>
-					</section>
-					<div className="space-y-4">
-						<h1 className="text-3xl font-bold">Documents</h1>
-						<p className="text-sm">
-							Venez à la découverte d&#039;une multitude de
-							rapports, cours et documents.
+		<main className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+			{/* Header Section */}
+			<section className="mb-8 space-y-4">
+				<CustomBreadcrumb
+					path={[
+						{ name: "Accueil", href: "/" },
+						{ name: "Documents", href: "/documents" },
+					]}
+				/>
+
+				<div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-2">
+					<div>
+						<div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary uppercase tracking-wider mb-3">
+							<BookOpen className="w-3.5 h-3.5" /> Bibliothèque Numérique
+						</div>
+						<h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
+							Documents &amp; Annales
+						</h1>
+						<p className="text-sm sm:text-base text-muted-foreground mt-2 max-w-2xl leading-relaxed">
+							Découvrez et téléchargez les cours magistraux, fiches de TD, sujets d&apos;examens passés et mémoires partagés par la communauté étudiante de l&apos;ESIAC.
 						</p>
 					</div>
-				</section>
-				<Suspense fallback={<div className="flex justify-center p-12">Chargement des documents...</div>}>
-					<PublicDocuments sectors={sectors} categories={categories} documents={documents}/>
-				</Suspense>
-			</main>
-		</>
+
+					<div className="flex items-center gap-2 text-xs font-medium text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-lg border border-border/60 self-start md:self-auto">
+						<Sparkles className="w-3.5 h-3.5 text-primary" />
+						<span>{documents.length} documents disponibles</span>
+					</div>
+				</div>
+			</section>
+
+			{/* Interactive Document Explorer */}
+			<Suspense
+				fallback={
+					<div className="flex justify-center items-center py-20 text-muted-foreground gap-2">
+						<div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+						<span>Chargement du catalogue...</span>
+					</div>
+				}
+			>
+				<PublicDocuments sectors={sectors} categories={categories} documents={documents} />
+			</Suspense>
+		</main>
 	);
 }

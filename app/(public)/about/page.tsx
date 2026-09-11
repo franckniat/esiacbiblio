@@ -59,7 +59,7 @@ export default function AboutPage() {
             </section>
 
             {/* Values / Quote */}
-            <section className="mt-20 p-8 sm:p-12 rounded-3xl bg-linear-to-r from-emerald-500/10 via-primary/5 to-transparent border border-emerald-500/20 flex flex-col md:flex-row items-center justify-between gap-8">
+            <section className="mt-20 p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-primary/10 via-primary/5 to-transparent border border-primary/20 flex flex-col md:flex-row items-center justify-between gap-8">
                 <div className="space-y-3 max-w-2xl">
                     <h3 className="text-2xl sm:text-3xl font-bold">Construit par les étudiants, pour les étudiants</h3>
                     <p className="text-muted-foreground">
@@ -68,7 +68,7 @@ export default function AboutPage() {
                 </div>
                 <div className="flex gap-4">
                     <Link href="/documents">
-                        <Button size="lg" className="font-semibold shadow-sm">
+                        <Button size="lg" variant="success" className="font-semibold shadow-sm">
                             Explorer les documents
                         </Button>
                     </Link>

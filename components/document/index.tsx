@@ -64,53 +64,50 @@ export default function DocumentCard({ id, document }: DocumentProps) {
 		<>
 			<Dialog>
 				<DialogTrigger asChild>
-					<Card className="hover:-translate-y-0 sm:hover:-translate-y-1 bg-neutral-white  cursor-pointer block transition-transform rounded-lg border border-foreground/5 will-change-transform hover:shadow-lg">
-						<CardHeader>
-							<CardTitle className="text-xl line-clamp-1">
+					<Card className="group hover:-translate-y-1 bg-card hover:border-primary/50 cursor-pointer transition-all rounded-2xl border border-border/80 shadow-xs hover:shadow-md flex flex-col justify-between">
+						<CardHeader className="p-5 pb-3">
+							<div className="flex items-center justify-between gap-2 mb-2">
+								<span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 line-clamp-1">
+									{document.sector}
+								</span>
+								<span className="text-[11px] text-muted-foreground">
+									{document.createdAt?.toLocaleDateString("fr-FR", {
+										month: "short",
+										year: "numeric",
+									})}
+								</span>
+							</div>
+							<CardTitle className="text-base sm:text-lg font-bold line-clamp-2 group-hover:text-primary transition-colors">
 								{document.title}
 							</CardTitle>
-							<div className="space-y-2 text-sm">
-								<p className=" text-green-600">
-									{document.sector}
-								</p>
-								<p className="text-foreground/50">
-									{document.user.name?.toUpperCase()}
-								</p>
-							</div>
-						</CardHeader>
-						<CardContent className="-mt-2 space-y-3">
-							<h2 className="text-base line-clamp-2 text-justify tracking-tight">
-								{document.description}
-							</h2>
-							<p className="text-xs text-foreground/40">
-								Publié le
-								{document.createdAt?.toLocaleDateString(
-									"fr-FR",
-									{
-										year: "numeric",
-										month: "long",
-										day: "numeric",
-									}
-								)}
+							<p className="text-xs text-muted-foreground font-medium pt-0.5">
+								Par {document.user.name || "Étudiant ESIAC"}
 							</p>
-							<div className="flex gap-4 mt-3 ">
-								{document.fileURL && (
-									<Button size="icon">
-										<Download size={20} />
-									</Button>
-								)}
+						</CardHeader>
+						<CardContent className="p-5 pt-0 space-y-4">
+							<p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+								{document.description}
+							</p>
+							<div className="flex items-center justify-between pt-3 border-t border-border/50">
+								<div className="flex items-center gap-2">
+									{document.fileURL && (
+										<Button size="sm" variant="secondary" className="h-8 px-3 text-xs gap-1.5 rounded-lg">
+											<Download size={14} /> Aperçu
+										</Button>
+									)}
+								</div>
 								<Button
-									size={likesCount > 0 ? "default" : "icon"}
-									variant={"ghost"}
+									size="sm"
+									variant="ghost"
 									onClick={handleLike}
-									className="active:scale-95 transition-transform gap-2"
+									className="h-8 px-2 text-xs gap-1.5 rounded-lg active:scale-95 transition-transform"
 								>
 									<Heart
-										size={20}
+										size={16}
 										fill={liked ? "#ef4444" : "none"}
-										className={liked ? "text-red-500" : ""}
+										className={liked ? "text-red-500" : "text-muted-foreground"}
 									/>
-									{likesCount > 0 && likesCount}
+									<span className="text-xs font-medium">{likesCount}</span>
 								</Button>
 							</div>
 						</CardContent>

@@ -51,71 +51,46 @@ export default function PublicArticles({articles, tags, sectors}: PublicArticles
         setCurrentPage(prevPage => (prevPage ?? 1) + 1);
     };
     return (
-        <main className="max-w-[1340px] mx-auto px-2">
-            <section
-                className="px-3 md:px-0 mt-5 flex-wrap sm:flex-nowrap flex items-center gap-2 justify-center md:justify-end">
-                <div className="w-full sm:w-fit flex flex-col sm:flex-row gap-2 items-center relative">
+        <div>
+            <section className="p-3 sm:p-4 rounded-2xl bg-card border border-border/80 shadow-xs mb-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="w-full sm:w-[380px] relative">
                     <Input
                         type="search"
-                        onChange={
-                            (e) => setSearch(e.target.value)
-                        }
-                        placeholder="Rechercher un article"
-                        className="w-full sm:w-[400px] pl-7"
+                        value={search ?? ""}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Rechercher par titre ou sujet..."
+                        className="w-full pl-9 h-10 rounded-xl bg-background/60"
                     />
-                    <Search className="absolute left-2 top-1/2 -translate-y-1/2 text-foreground/50" size={17}/>
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
                 </div>
-                {/* <Select onValueChange={(value) => {
-                    handleSortByCategory(value);
-                }}>
-                    <SelectTrigger className={"w-full sm:w-fit"}>
-                        <SelectValue placeholder="Sélectionnez un tag"/>
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="all">Toutes les tags</SelectItem>
-                        {tags.map((tag) => (
-                            <SelectItem key={tag.id} value={tag.value}>
-                                {tag.label}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-                <Select onValueChange={(value) => {
-                    handleSortBySector(value);
-                }}>
-                    <SelectTrigger className={"w-full sm:w-fit"}>
-                        <SelectValue placeholder="Sélectionnez une filière"/>
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="all">Toutes les filières</SelectItem>
-                        {sectors.map((sector) => (
-                            <SelectItem key={sector.id} value={sector.value}>
-                                {sector.label}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select> */}
             </section>
-            {displayedArticles.length > 0 &&
-                <section className="px-2 md:px-5 mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 pb-10">
+            {displayedArticles.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 pb-12">
                     {displayedArticles.map((article) => (
-                        <ArticleCard article={article} key={article.id}/>
+                        <ArticleCard article={article} key={article.id} />
                     ))}
-                </section>
-            }
-            {displayedArticles.length === 0 &&
-                <div className="flex justify-center gap-3 flex-col items-center mt-5 h-[300px] border border-dashed rounded-md border-foreground/30 text-foreground/50">
-                    <ScrollText size={40}/>
-                    <p className="text-lg">Aucun article trouvé.</p>
                 </div>
-            }
+            )}
+            {displayedArticles.length === 0 && (
+                <div className="flex justify-center gap-3 flex-col items-center py-20 px-4 border border-dashed rounded-2xl border-border bg-card/40 text-center">
+                    <div className="w-14 h-14 rounded-2xl bg-muted/60 text-muted-foreground flex items-center justify-center">
+                        <ScrollText size={28} />
+                    </div>
+                    <p className="text-lg font-bold text-foreground">Aucun article trouvé</p>
+                    <p className="text-sm text-muted-foreground max-w-sm">
+                        Aucun article ne correspond à vos critères de recherche.
+                    </p>
+                </div>
+            )}
             <div className="flex justify-center mt-5 gap-3 my-5">
                 {displayedArticles.length < filteredArticles.length && (
                     <div className="flex justify-center mt-5">
-                        <Button variant={"outline"} onClick={loadMoreArticles}>Charger plus d&#039;articles</Button>
+                        <Button variant={"outline"} onClick={loadMoreArticles} className="rounded-xl px-6">
+                            Charger plus d&apos;articles
+                        </Button>
                     </div>
                 )}
             </div>
-        </main>
-    )
+        </div>
+    );
 }

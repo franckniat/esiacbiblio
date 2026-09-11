@@ -1,46 +1,68 @@
 import CustomBreadcrumb from "@/components/ui/custom-breadcrumb";
 import { Metadata } from "next";
 import PublicArticles from "@/components/article/public-article";
-import {getActiveArticles} from "@/data/article";
-import {getSectors, getTags} from "@/data/items";
+import { getActiveArticles } from "@/data/article";
+import { getSectors, getTags } from "@/data/items";
+import { Suspense } from "react";
+import { Newspaper, Sparkles } from "lucide-react";
 
 export async function generateMetadata(): Promise<Metadata> {
 	return {
-		title: "Articles - ESIAC BIBLIO",
+		title: "Articles & Tutoriels - ESIAC BIBLIO",
 		description:
-			"Venez à la découverte d'une multitude d'articles passionnants rédigés par notre communauté.",
+			"Découvrez des articles et tutoriels rédigés par la communauté d'ingénieurs et de managers de l'ESIAC.",
 	};
 }
 
-import { Suspense } from "react";
-
 export default async function Articles() {
-	const articles = await getActiveArticles();
-	const tags = await getTags();
-	const sectors = await getSectors();
+	const [articles, tags, sectors] = await Promise.all([
+		getActiveArticles(),
+		getTags(),
+		getSectors(),
+	]);
+
 	return (
-		<>
-			<main className="max-w-[1340px] mx-auto px-2">
-				<section className="mx-2 md:mx-5 pt-10 sm:pt-22">
-					<section className="text-sm">
-						<CustomBreadcrumb
-							path={[
-								{ name: "Accueil", href: "/" },
-								{ name: "Articles", href: "/articles" },
-							]}
-						/>
-					</section>
-					<div className="space-y-4">
-						<h1 className="text-3xl font-bold">Articles</h1>
-						<p className="text-sm">
-							Venez à la découverte d&#039;une multitude d&#039;articles passionnants rédigés par notre communauté.
+		<main className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+			{/* Header Section */}
+			<section className="mb-8 space-y-4">
+				<CustomBreadcrumb
+					path={[
+						{ name: "Accueil", href: "/" },
+						{ name: "Articles", href: "/articles" },
+					]}
+				/>
+
+				<div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-2">
+					<div>
+						<div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary uppercase tracking-wider mb-3">
+							<Newspaper className="w-3.5 h-3.5" /> Publications &amp; Guides
+						</div>
+						<h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
+							Articles &amp; Méthodologies
+						</h1>
+						<p className="text-sm sm:text-base text-muted-foreground mt-2 max-w-2xl leading-relaxed">
+							Découvrez des synthèses de cours, tutoriels techniques, veilles technologiques et retours d&apos;expérience rédigés par les étudiants et formateurs de l&apos;ESIAC.
 						</p>
 					</div>
-				</section>
-				<Suspense fallback={<div className="flex justify-center p-12">Chargement des articles...</div>}>
-					<PublicArticles articles={articles} sectors={sectors} tags={tags} />
-				</Suspense>
-			</main>
-		</>
+
+					<div className="flex items-center gap-2 text-xs font-medium text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-lg border border-border/60 self-start md:self-auto">
+						<Sparkles className="w-3.5 h-3.5 text-primary" />
+						<span>{articles.length} articles publiés</span>
+					</div>
+				</div>
+			</section>
+
+			{/* Interactive Articles Explorer */}
+			<Suspense
+				fallback={
+					<div className="flex justify-center items-center py-20 text-muted-foreground gap-2">
+						<div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+						<span>Chargement des articles...</span>
+					</div>
+				}
+			>
+				<PublicArticles articles={articles} sectors={sectors} tags={tags} />
+			</Suspense>
+		</main>
 	);
 }

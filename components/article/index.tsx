@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArticleWithIncludes } from "@/types";
-import { Badge } from "../ui/badge";
+import { Clock, Calendar, User } from "lucide-react";
 
 interface ArticleCardProps {
 	article: ArticleWithIncludes;
@@ -12,60 +12,85 @@ export default function ArticleCard({ article }: ArticleCardProps) {
 	function calculateReadingTime(text: string) {
 		const wordsPerMinute = 200;
 		const words = text.split(" ").length;
-		const minutes = words / wordsPerMinute;
-		const seconds = Math.ceil(minutes * 60);
-		return { minutes: Math.floor(seconds / 60), seconds: seconds % 60 };
+		const minutes = Math.max(1, Math.round(words / wordsPerMinute));
+		return `${minutes} min de lecture`;
 	}
-	const { minutes, seconds } = calculateReadingTime(article.content);
+
 	return (
-		<div className="flex flex-col gap-3">
-			<Link
-				href={`/articles/${article.slug}`}
-				className="rounded-md max-h-[250px] w-full object-cover hover:opacity-85 transition-opacity overflow-hidden"
-			>
-				<Image
-					src={article.image}
-					alt={article.title}
-					width={500}
-					height={500}
-					className="rounded-md w-full min-h-[250px] object-cover hover:opacity-90 hover:scale-105 transition-all"
-				/>
-			</Link>
-			<div className="space-y-3 px-3 py-2">
-				<div className="flex gap-2 py-2">
-					{article.tags.map((tag) => (
-						<Badge key={tag.id} title={tag.value} className="inline-flex items-center gap-2 cursor-pointer bg-primary/30 hover:bg-primary/40" variant={"outline"}>
-							<span className="text-sm text-foreground">●</span>
-							<span className="line-clamp-1">{tag.value}</span>
-						</Badge>
-					))}
-				</div>
+		<div className="group flex flex-col justify-between rounded-2xl bg-card border border-border/80 hover:border-primary/50 transition-all shadow-xs hover:shadow-md overflow-hidden">
+			<div>
+				{/* Image Preview */}
 				<Link
 					href={`/articles/${article.slug}`}
-					className="text-lg font-bold hover:text-primary"
+					className="block aspect-[16/10] w-full overflow-hidden bg-muted relative"
 				>
-					{article.title}
+					{article.image ? (
+						<Image
+							src={article.image}
+							alt={article.title}
+							fill
+							sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+							className="object-cover group-hover:scale-105 transition-transform duration-300"
+						/>
+					) : (
+						<div className="w-full h-full flex items-center justify-center text-muted-foreground bg-primary/5">
+							ESIAC-BIBLIO
+						</div>
+					)}
 				</Link>
-				<p className="group-hover:underline text-sm font-medium">
-					{minutes} minutes et{" "}
-					{seconds > 0 ? seconds + " secondes" : ""}
-				</p>
-				<p className="text-sm text-foreground/70">
-					Publié le{" "}
-					{article.createdAt.toLocaleDateString("fr-FR", {
-						day: "numeric",
-						month: "long",
-						year: "numeric",
-					})}
-				</p>
+
+				{/* Content */}
+				<div className="p-5 space-y-3">
+					{/* Tags */}
+					{article.tags && article.tags.length > 0 && (
+						<div className="flex flex-wrap gap-1.5">
+							{article.tags.slice(0, 2).map((tag) => (
+								<span
+									key={tag.id}
+									className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20"
+								>
+									{tag.value}
+								</span>
+							))}
+						</div>
+					)}
+
+					{/* Title */}
+					<Link href={`/articles/${article.slug}`} className="block">
+						<h3 className="text-base sm:text-lg font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+							{article.title}
+						</h3>
+					</Link>
+
+					{/* Metadata */}
+					<div className="flex items-center gap-3 text-xs text-muted-foreground pt-1">
+						<span className="flex items-center gap-1">
+							<Clock className="w-3.5 h-3.5" />
+							{calculateReadingTime(article.content)}
+						</span>
+						<span>•</span>
+						<span className="flex items-center gap-1">
+							<Calendar className="w-3.5 h-3.5" />
+							{new Date(article.createdAt).toLocaleDateString("fr-FR", {
+								month: "short",
+								year: "numeric",
+							})}
+						</span>
+					</div>
+				</div>
+			</div>
+
+			{/* Author Footer */}
+			<div className="px-5 py-3.5 border-t border-border/50 flex items-center justify-between text-xs text-muted-foreground bg-foreground/[0.01]">
+				<span className="flex items-center gap-1.5 font-medium text-foreground/80">
+					<User className="w-3.5 h-3.5 text-primary" />
+					{article.user?.name || "Auteur ESIAC"}
+				</span>
 				<Link
-					href={`#`}
-					className="flex items-center gap-2 group w-fit"
+					href={`/articles/${article.slug}`}
+					className="font-semibold text-primary group-hover:underline"
 				>
-					Par
-					<h2 className="group-hover:underline text-sm font-bold text-primary">
-						{article.user.name}
-					</h2>
+					Lire l&apos;article →
 				</Link>
 			</div>
 		</div>
