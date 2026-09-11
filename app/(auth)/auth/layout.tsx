@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
 	title: "ESIAC-BIBLIO",
-	description: "Accéder à votre compte u créer en un.",
+	description: "Accédez à votre compte ou créez-en un.",
 	applicationName: "ESIAC-BIBLIO",
 	creator: "Franck NIAT",
 	authors: [

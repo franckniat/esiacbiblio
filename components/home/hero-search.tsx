@@ -22,22 +22,27 @@ export function HeroSearch() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="w-full max-w-2xl mx-auto flex items-center gap-2 p-1.5 rounded-full bg-background/70 backdrop-blur-md border border-foreground/10 hover:border-foreground/25 transition-all shadow-md shadow-black/5"
+            role="search"
+            className="w-full max-w-2xl mx-auto flex items-center gap-2 p-1.5 rounded-full bg-card/80 backdrop-blur-md border border-border hover:border-primary/40 focus-within:border-primary/60 transition-colors shadow-xs"
         >
-            <div className="pl-4 text-muted-foreground">
-                <Search className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+            <label htmlFor="hero-search" className="sr-only">
+                Rechercher un document
+            </label>
+            <div className="pl-4">
+                <Search className="w-5 h-5 text-primary" />
             </div>
             <input
+                id="hero-search"
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Rechercher un rapport, un cours, un examen..."
-                className="w-full bg-transparent px-2 py-2 text-sm sm:text-base outline-none placeholder:text-muted-foreground/60 text-foreground"
+                placeholder="Rechercher un cours, une annale, un mémoire..."
+                className="w-full bg-transparent px-2 py-2 text-sm sm:text-base outline-none placeholder:text-muted-foreground/70 text-foreground"
             />
             <Button
                 type="submit"
                 variant="success"
-                className="shrink-0 rounded-full font-medium gap-1.5 h-10 sm:h-11 px-5 sm:px-7"
+                className="shrink-0 rounded-full font-semibold gap-1.5 h-10 sm:h-11 px-5 sm:px-7"
             >
                 <span className="hidden sm:inline">Rechercher</span>
                 <ArrowRight className="w-4 h-4" />

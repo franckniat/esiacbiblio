@@ -104,8 +104,8 @@ export default function DocumentCard({ id, document }: DocumentProps) {
 								>
 									<Heart
 										size={16}
-										fill={liked ? "#ef4444" : "none"}
-										className={liked ? "text-red-500" : "text-muted-foreground"}
+										fill={liked ? "currentColor" : "none"}
+										className={liked ? "text-brand" : "text-muted-foreground"}
 									/>
 									<span className="text-xs font-medium">{likesCount}</span>
 								</Button>
@@ -165,8 +165,8 @@ export default function DocumentCard({ id, document }: DocumentProps) {
 								>
 									<Heart
 										size={16}
-										fill={liked ? "#ef4444" : "none"}
-										className={liked ? "text-red-500" : ""}
+										fill={liked ? "currentColor" : "none"}
+										className={liked ? "text-brand" : ""}
 									/>
 									{likesCount > 0 && likesCount}
 								</Button>

@@ -1,5 +1,35 @@
 @import "tailwindcss";
 
+/*
+ * Tailwind v4 ne lit pas tailwind.config.ts sans directive @config : le plugin
+ * y était déclaré mais ne générait rien. Les composants shadcn (dialog, sheet,
+ * dropdown, select, tooltip…) dépendent tous de ces utilitaires pour s'animer.
+ */
+@plugin "tailwindcss-animate";
+
+@theme {
+    --animate-accordion-down: accordion-down 0.2s ease-out;
+    --animate-accordion-up: accordion-up 0.2s ease-out;
+
+    @keyframes accordion-down {
+        from {
+            height: 0;
+        }
+        to {
+            height: var(--radix-accordion-content-height);
+        }
+    }
+
+    @keyframes accordion-up {
+        from {
+            height: var(--radix-accordion-content-height);
+        }
+        to {
+            height: 0;
+        }
+    }
+}
+
 @theme inline {
     --color-background: hsl(var(--background));
     --color-foreground: hsl(var(--foreground));
@@ -17,6 +47,9 @@
     --color-accent-foreground: hsl(var(--accent-foreground));
     --color-destructive: hsl(var(--destructive));
     --color-destructive-foreground: hsl(var(--destructive-foreground));
+    /* Rouge du logo ESIAC : accent d'identité, jamais une couleur d'action. */
+    --color-brand: hsl(var(--brand));
+    --color-brand-foreground: hsl(var(--brand-foreground));
     --color-border: hsl(var(--border));
     --color-input: hsl(var(--input));
     --color-ring: hsl(var(--ring));
@@ -52,6 +85,9 @@
         --accent-foreground: 240 5.9% 10%;
         --destructive: 0 84.2% 60.2%;
         --destructive-foreground: 0 0% 98%;
+        /* #EE1D23, échantillonné sur le logo ESIAC */
+        --brand: 358 86% 52%;
+        --brand-foreground: 0 0% 100%;
         --border: 240 5.9% 90%;
         --input: 240 5.9% 90%;
         --ring: 142.1 76.2% 36.3%;
@@ -88,6 +124,9 @@
         --accent-foreground: 0 0% 98%;
         --destructive: 0 62.8% 30.6%;
         --destructive-foreground: 0 85.7% 97.3%;
+        /* Version éclaircie : le rouge pur vibre sur fond sombre */
+        --brand: 358 80% 63%;
+        --brand-foreground: 0 0% 100%;
         --border: 240 3.7% 15.9%;
         --input: 240 3.7% 15.9%;
         --ring: 142.4 71.8% 29.2%;
@@ -118,13 +157,74 @@
     }
 }
 
+/*
+ * La texture de grille est portée par un pseudo-élément, et non par la section
+ * elle-même : un mask sur .hero masquerait aussi son contenu. Le dégradé radial
+ * la fait se dissoudre vers les bords au lieu de s'arrêter net.
+ */
 .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
     background-image: url("../public/images/bg__hero.png");
+    background-size: 1250px auto;
+    background-position: center top;
+    background-repeat: no-repeat;
+    -webkit-mask-image: radial-gradient(
+        ellipse 70% 60% at 50% 32%,
+        #000 30%,
+        transparent 75%
+    );
+    mask-image: radial-gradient(
+        ellipse 70% 60% at 50% 32%,
+        #000 30%,
+        transparent 75%
+    );
 }
 
 @media (max-width: 768px) {
-    .hero {
-        background-image: none;
+    .hero::before {
+        display: none;
+    }
+}
+
+/* Halos de fond : dérive lente pour que la zone ne soit jamais tout à fait figée. */
+@keyframes hero-glow {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translate3d(0, -14px, 0) scale(1.08);
+        opacity: 1;
+    }
+}
+
+.hero-glow {
+    animation: hero-glow 16s ease-in-out infinite;
+    will-change: transform, opacity;
+}
+
+.hero-glow--delayed {
+    animation-delay: -8s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-glow {
+        animation: none;
+    }
+
+    .animate-in {
+        animation: none !important;
     }
 }
 

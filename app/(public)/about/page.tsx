@@ -18,7 +18,7 @@ export default function AboutPage() {
                     <GraduationCap className="w-4 h-4" /> Notre Histoire &amp; Mission
                 </div>
                 <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight">
-                    La bibliothèque pensée pour l&apos;excellence académique à <span className="bg-gradient-to-r from-red-500 via-primary to-emerald-600 bg-clip-text text-transparent">l&apos;ESIAC</span>
+                    La bibliothèque pensée pour l&apos;excellence académique à <span className="text-primary">l&apos;ESIAC</span>
                 </h1>
                 <p className="text-lg text-muted-foreground leading-relaxed">
                     ESIAC-BIBLIO est une plateforme numérique collaborative conçue pour faciliter l&apos;accès aux ressources pédagogiques, annales d&apos;examens, fiches de révision et travaux de recherche pour l&apos;ensemble des filières de l&apos;ESIAC.
@@ -59,7 +59,7 @@ export default function AboutPage() {
             </section>
 
             {/* Values / Quote */}
-            <section className="mt-20 p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-primary/10 via-primary/5 to-transparent border border-primary/20 flex flex-col md:flex-row items-center justify-between gap-8">
+            <section className="mt-20 p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-primary/10 via-brand/5 to-transparent border border-primary/20 flex flex-col md:flex-row items-center justify-between gap-8">
                 <div className="space-y-3 max-w-2xl">
                     <h3 className="text-2xl sm:text-3xl font-bold">Construit par les étudiants, pour les étudiants</h3>
                     <p className="text-muted-foreground">
@@ -89,7 +89,7 @@ export default function AboutPage() {
                     <div className="space-y-2 text-center sm:text-left">
                         <div>
                             <h3 className="text-xl font-bold">Franck NIAT</h3>
-                            <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                            <p className="text-xs font-semibold text-primary uppercase tracking-wider">
                                 Software Engineer
                             </p>
                         </div>

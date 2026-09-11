@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import {Tag, Sector} from "@prisma/client";
 import * as React from "react";
@@ -35,11 +34,17 @@ export default function PublicArticles({articles, tags, sectors}: PublicArticles
         if (selectedSector !== "all") {
             filtered = filtered.filter((article) => article.sector === selectedSector);
         }
+
+        if (selectedTag !== "all") {
+            filtered = filtered.filter((article) =>
+                article.tags?.some((tag) => tag.value === selectedTag)
+            );
+        }
         setFilteredArticles(filtered);
     }, [search, articles, selectedTag, selectedSector]);
 
-    const handleSortByCategory = (category: string) => {
-        setSelectedTag(category);
+    const handleSortByTag = (tag: string) => {
+        setSelectedTag(tag);
     };
 
     const handleSortBySector = (sector: string) => {
@@ -50,10 +55,17 @@ export default function PublicArticles({articles, tags, sectors}: PublicArticles
     const loadMoreArticles = () => {
         setCurrentPage(prevPage => (prevPage ?? 1) + 1);
     };
+
+    // Les tags sont stockés par article : on les dédoublonne pour le filtre.
+    const uniqueTags = React.useMemo(
+        () => [...new Map(tags.map((tag) => [tag.value, tag])).values()],
+        [tags]
+    );
+
     return (
         <div>
-            <section className="p-3 sm:p-4 rounded-2xl bg-card border border-border/80 shadow-xs mb-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <div className="w-full sm:w-[380px] relative">
+            <section className="p-3 sm:p-4 rounded-2xl bg-card border border-border/80 shadow-xs mb-8 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+                <div className="w-full md:w-[360px] relative">
                     <Input
                         type="search"
                         value={search ?? ""}
@@ -62,6 +74,34 @@ export default function PublicArticles({articles, tags, sectors}: PublicArticles
                         className="w-full pl-9 h-10 rounded-xl bg-background/60"
                     />
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
+                </div>
+                <div className="flex flex-col sm:flex-row gap-2.5 items-center">
+                    <Select onValueChange={(value) => handleSortByTag(value)} value={selectedTag}>
+                        <SelectTrigger className="w-full sm:w-[200px] h-10 rounded-xl">
+                            <SelectValue placeholder="Tous les tags" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">Tous les tags</SelectItem>
+                            {uniqueTags.map((tag) => (
+                                <SelectItem key={tag.id} value={tag.value}>
+                                    {tag.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <Select onValueChange={(value) => handleSortBySector(value)} value={selectedSector}>
+                        <SelectTrigger className="w-full sm:w-[200px] h-10 rounded-xl">
+                            <SelectValue placeholder="Toutes les filières" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">Toutes les filières</SelectItem>
+                            {sectors.map((sector) => (
+                                <SelectItem key={sector.id} value={sector.value}>
+                                    {sector.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </div>
             </section>
             {displayedArticles.length > 0 && (

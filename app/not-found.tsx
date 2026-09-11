@@ -14,7 +14,7 @@ export default function ErrorNotfound() {
 				autoplay
 			/>
 			<h1 className="text-2xl font-bold flex items-center gap-2">
-				<span className="text-red-500 flex items-center gap-2">
+				<span className="text-brand flex items-center gap-2">
 					<BookmarkX size={20} /> 404
 				</span>{" "}
 				- Page Non trouvée
