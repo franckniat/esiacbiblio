@@ -43,7 +43,7 @@ export function AllUsers({ data }: { data: User[] }) {
 
 		if (selectedAuth !== "all") {
 			filtered = filtered.filter((user) =>
-				selectedAuth === "true" ? user.is0Auth : !user.is0Auth
+				selectedAuth === "true" ? (user as any).is0Auth : !(user as any).is0Auth
 			);
 		}
 
@@ -159,7 +159,7 @@ export function AllUsers({ data }: { data: User[] }) {
 								<div className="flex items-center gap-2 text-sm">
 									<span className="font-medium">Auth:</span>
 									<span>
-										{user.is0Auth ? "OAuth" : "Email"}
+										{(user as any).is0Auth ? "OAuth" : "Email"}
 									</span>
 								</div>
 								<div className="text-sm text-muted-foreground">

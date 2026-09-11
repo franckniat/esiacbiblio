@@ -59,7 +59,22 @@ export const addDocument = async (data: z.infer<typeof DocumentsSchema>) => {
     }
 }
 
-export const updateDocument = async (id:string, data: z.infer<typeof UpdateDocumentSchema>) => {
+export const updateDocument = async (id: string, data: z.infer<typeof UpdateDocumentSchema>) => {
+    const user = await getCurrentUser();
+    if (!user?.id) {
+        return { error: "Vous devez être connecté !" };
+    }
+
+    const document = await getDocumentById(id);
+    if (!document) {
+        return { error: "Document introuvable !" };
+    }
+
+    const isAuthorized = document.userId === user.id || (user as any).role === "ADMIN" || (user as any).role === "admin";
+    if (!isAuthorized) {
+        return { error: "Vous n'avez pas l'autorisation de modifier ce document !" };
+    }
+
     const validateFields = UpdateDocumentSchema.safeParse(data);
     if (!validateFields.success) {
         return {
@@ -79,18 +94,30 @@ export const updateDocument = async (id:string, data: z.infer<typeof UpdateDocum
                 category
             }
         });
-        revalidatePath("/dashboard/documents")
+        revalidatePath("/dashboard/documents");
         return {
             success: "Document modifié avec succès !"
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
+        return { error: "Une erreur est survenue lors de la modification !" };
     }
 }
 
 export const deleteDocument = async (id: string) => {
+    const user = await getCurrentUser();
+    if (!user?.id) {
+        return { error: "Vous devez être connecté !" };
+    }
+
     const document = await getDocumentById(id);
-    if(!document) return { error: "Document introuvable !" }
+    if (!document) return { error: "Document introuvable !" };
+
+    const isAuthorized = document.userId === user.id || (user as any).role === "ADMIN" || (user as any).role === "admin";
+    if (!isAuthorized) {
+        return { error: "Vous n'avez pas l'autorisation de supprimer ce document !" };
+    }
+
     try {
         await db.document.delete({
             where: {
@@ -98,12 +125,12 @@ export const deleteDocument = async (id: string) => {
             }
         });
         await deleteFile(`documents/${document.firebaseSlug}`);
-        revalidatePath("/dashboard/documents")
+        revalidatePath("/dashboard/documents");
         return {
             success: "Document supprimé avec succès !"
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return {
             error: "Une erreur s'est produite lors de la suppression du document !"
         }
@@ -111,6 +138,19 @@ export const deleteDocument = async (id: string) => {
 }
 
 export const publishDocument = async (id: string) => {
+    const user = await getCurrentUser();
+    if (!user?.id) {
+        return { error: "Vous devez être connecté !" };
+    }
+
+    const document = await getDocumentById(id);
+    if (!document) return { error: "Document introuvable !" };
+
+    const isAuthorized = document.userId === user.id || (user as any).role === "ADMIN" || (user as any).role === "admin";
+    if (!isAuthorized) {
+        return { error: "Vous n'avez pas l'autorisation de publier ce document !" };
+    }
+
     try {
         await db.document.update({
             where: {
@@ -120,12 +160,12 @@ export const publishDocument = async (id: string) => {
                 isVisible: true
             }
         });
-        revalidatePath("/dashboard/documents")
+        revalidatePath("/dashboard/documents");
         return {
             success: "Document publié avec succès !"
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return {
             error: "Une erreur s'est produite lors de la publication du document !"
         }
@@ -133,6 +173,19 @@ export const publishDocument = async (id: string) => {
 }
 
 export const hideDocument = async (id: string) => {
+    const user = await getCurrentUser();
+    if (!user?.id) {
+        return { error: "Vous devez être connecté !" };
+    }
+
+    const document = await getDocumentById(id);
+    if (!document) return { error: "Document introuvable !" };
+
+    const isAuthorized = document.userId === user.id || (user as any).role === "ADMIN" || (user as any).role === "admin";
+    if (!isAuthorized) {
+        return { error: "Vous n'avez pas l'autorisation de masquer ce document !" };
+    }
+
     try {
         await db.document.update({
             where: {
@@ -141,15 +194,15 @@ export const hideDocument = async (id: string) => {
             data: {
                 isVisible: false
             }
-        })
-        revalidatePath("/dashboard/documents")
+        });
+        revalidatePath("/dashboard/documents");
         return {
             success: "Document masqué avec succès !"
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return {
-            error: "Une erreur s'est produite lors de la masquage du document !"
+            error: "Une erreur s'est produite lors du masquage du document !"
         }
     }
 }

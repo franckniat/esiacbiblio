@@ -23,7 +23,10 @@ export const createArticle = async (data: z.infer<typeof AddArticleSchema>, arti
                 error: validateFields.error.message,
             }
         }
-        const user = await getCurrentUser()
+        const user = await getCurrentUser();
+        if (!user?.id) {
+            return { error: "Vous devez être connecté pour publier un article !" };
+        }
         const { title, content, image, sector, tags } = validateFields.data;
         const articleTags = await db.tag.findMany({
             where: {
@@ -42,38 +45,54 @@ export const createArticle = async (data: z.infer<typeof AddArticleSchema>, arti
                     connect: articleTags.map((tag) => ({ id: tag.id }))
                 },
                 slug: articleSlug,
-                author: user?.id as string
+                author: user.id
             }
         });
         await db.user.update({
             where: {
-                id: user?.id
+                id: user.id
             },
             data: {
                 expPoints: {
                     increment: 50
                 }
             }
-        })
-        revalidatePath("/dashboard/articles")
+        });
+        revalidatePath("/dashboard/articles");
         return {
             success: "Article ajouté avec succès",
         }
     } catch (error) {
         console.error(error);
+        return { error: "Une erreur est survenue lors de la création de l'article !" };
     }
 }
 
 
 export const updateArticle = async (id: string, data: z.infer<typeof UpdateArticleSchema>) => {
     try {
+        const user = await getCurrentUser();
+        if (!user?.id) {
+            return { error: "Vous devez être connecté !" };
+        }
+
+        const article = await getArticleById(id);
+        if (!article) {
+            return { error: "Article introuvable !" };
+        }
+
+        const isAuthorized = article.author === user.id || (user as any).role === "ADMIN" || (user as any).role === "admin";
+        if (!isAuthorized) {
+            return { error: "Vous n'avez pas l'autorisation de modifier cet article !" };
+        }
+
         const validateFields = UpdateArticleSchema.safeParse(data);
         if (!validateFields.success) {
             return {
                 error: validateFields.error.message,
             }
         }
-        const { title, image, sector, tags } = validateFields.data;
+        const { title, content, image, sector, tags } = validateFields.data;
         const articleTags = await db.tag.findMany({
             where: {
                 value: {
@@ -89,27 +108,41 @@ export const updateArticle = async (id: string, data: z.infer<typeof UpdateArtic
                 title,
                 image,
                 sector,
+                ...(content !== undefined ? { content } : {}),
                 tags: {
+                    set: [],
                     connect: articleTags.map((tag) => ({ id: tag.id }))
                 }
             }   
         });
-        revalidatePath("/dashboard/articles")
+        revalidatePath("/dashboard/articles");
         return {
             success: "Article modifié avec succès",
         }
     } catch (error) {
         console.error(error);
+        return { error: "Une erreur est survenue lors de la modification de l'article !" };
     }
 }
 
 export const deleteArticle = async (id: string) => {
+    const user = await getCurrentUser();
+    if (!user?.id) {
+        return { error: "Vous devez être connecté !" };
+    }
+
     const article = await getArticleById(id);
     if (!article) {
         return {
             error: "Article introuvable",
         }
     }
+
+    const isAuthorized = article.author === user.id || (user as any).role === "ADMIN" || (user as any).role === "admin";
+    if (!isAuthorized) {
+        return { error: "Vous n'avez pas l'autorisation de supprimer cet article !" };
+    }
+
     try {
         await db.article.delete({
             where: {
@@ -117,7 +150,7 @@ export const deleteArticle = async (id: string) => {
             }
         });
         await deleteFile(`articles/images/${article.slug}`);
-        revalidatePath("/dashboard/articles")
+        revalidatePath("/dashboard/articles");
         return {
             success: "Article supprimé avec succès !",
         }
@@ -130,6 +163,19 @@ export const deleteArticle = async (id: string) => {
 }
 
 export const publishArticle = async (id: string) => {
+    const user = await getCurrentUser();
+    if (!user?.id) {
+        return { error: "Vous devez être connecté !" };
+    }
+
+    const article = await getArticleById(id);
+    if (!article) return { error: "Article introuvable !" };
+
+    const isAuthorized = article.author === user.id || (user as any).role === "ADMIN" || (user as any).role === "admin";
+    if (!isAuthorized) {
+        return { error: "Vous n'avez pas l'autorisation de publier cet article !" };
+    }
+
     try {
         await db.article.update({
             where: {
@@ -138,8 +184,8 @@ export const publishArticle = async (id: string) => {
             data: {
                 isVisible: true
             }
-        })
-        revalidatePath("/dashboard/articles")
+        });
+        revalidatePath("/dashboard/articles");
         return {
             success: "Article publié avec succès",
         }
@@ -152,6 +198,19 @@ export const publishArticle = async (id: string) => {
 }
 
 export const hideArticle = async (id: string) => {
+    const user = await getCurrentUser();
+    if (!user?.id) {
+        return { error: "Vous devez être connecté !" };
+    }
+
+    const article = await getArticleById(id);
+    if (!article) return { error: "Article introuvable !" };
+
+    const isAuthorized = article.author === user.id || (user as any).role === "ADMIN" || (user as any).role === "admin";
+    if (!isAuthorized) {
+        return { error: "Vous n'avez pas l'autorisation de masquer cet article !" };
+    }
+
     try {
         await db.article.update({
             where: {
@@ -160,8 +219,8 @@ export const hideArticle = async (id: string) => {
             data: {
                 isVisible: false
             }
-        })
-        revalidatePath("/dashboard/articles")
+        });
+        revalidatePath("/dashboard/articles");
         return {
             success: "Article masqué avec succès",
         }
@@ -175,7 +234,7 @@ export const hideArticle = async (id: string) => {
 
 export const incrementArticleViews = async (id: string) => {
     try {
-        const article = await getArticleById(id);
+        await getArticleById(id);
         await db.article.update({
             where: {
                 id
@@ -186,7 +245,6 @@ export const incrementArticleViews = async (id: string) => {
                 }
             }
         })
-        revalidatePath("/articles/" + article?.slug)
     } catch (error) {
         console.error(error);
     }

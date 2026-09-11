@@ -156,4 +156,5 @@ export const UpdateArticleSchema = z.object({
     sector: z.string({
         required_error: "Veuillez choisir une filière !"
     }),
+    content: z.string().optional(),
 })
