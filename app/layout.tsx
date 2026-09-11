@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 	authors: [
 		{
 			name: "Franck NIAT",
-			url: "https://fndev.vercel.app",
+			url: "https://franckniat.me",
 		},
 	],
 };

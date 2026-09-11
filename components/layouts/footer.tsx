@@ -61,7 +61,9 @@ export default function Footer(){
                 <p className="text-sm text-neutral-600 dark:text-neutral-500">
                     Copyright © 2024. Tous droits réservés.
                 </p>
-                <div className="my-3 text-neutral-600 dark:text-neutral-500">Build with ❤️ by <a className="text-sm text-red-600 hover:underline" href="https://github.com/franckniat">Franck NIAT</a></div>
+                <div className="my-3 text-neutral-600 dark:text-neutral-500">
+                    Built with ❤️ by <a className="text-sm text-primary font-semibold hover:underline" target="_blank" href="https://franckniat.me">Franck NIAT (Software Engineer)</a>
+                </div>
             </div>
             
         </div>

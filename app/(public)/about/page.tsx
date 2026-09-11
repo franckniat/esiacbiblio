@@ -78,22 +78,27 @@ export default function AboutPage() {
             {/* Creator & Contributors */}
             <section className="mt-20">
                 <h2 className="text-2xl font-bold tracking-tight mb-8">Auteur &amp; Contributeurs</h2>
-                <div className="flex flex-col sm:flex-row items-center gap-6 p-6 rounded-2xl bg-card border border-border max-w-xl">
+                <div className="flex flex-col sm:flex-row items-center gap-6 p-6 rounded-2xl bg-card border border-border max-w-xl shadow-xs">
                     <Image
                         src="/images/profile_master.jpg"
                         alt="Franck NIAT"
                         width={96}
                         height={96}
-                        className="w-24 h-24 rounded-full object-cover border-2 border-primary"
+                        className="w-24 h-24 rounded-full object-cover border-2 border-primary shadow-xs"
                     />
                     <div className="space-y-2 text-center sm:text-left">
-                        <h3 className="text-xl font-bold">Franck NIAT</h3>
+                        <div>
+                            <h3 className="text-xl font-bold">Franck NIAT</h3>
+                            <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                                Software Engineer
+                            </p>
+                        </div>
                         <p className="text-sm text-muted-foreground">
-                            Développeur Fullstack, initiateur et mainteneur du projet ESIAC-BIBLIO.
+                            Software Engineer, initiateur et mainteneur principal de la plateforme ESIAC-BIBLIO.
                         </p>
                         <div className="flex justify-center sm:justify-start gap-3 pt-1">
-                            <Link href="https://fndev.vercel.app" target="_blank" className="text-sm text-primary hover:underline flex items-center gap-1">
-                                <Globe className="w-4 h-4" /> Portfolio
+                            <Link href="https://franckniat.me" target="_blank" className="text-sm text-primary hover:underline flex items-center gap-1 font-medium">
+                                <Globe className="w-4 h-4" /> franckniat.me
                             </Link>
                             <Link href="https://github.com/franckniat" target="_blank" className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
                                 <Github className="w-4 h-4" /> GitHub

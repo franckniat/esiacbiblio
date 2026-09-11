@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 	authors: [
 		{
 			name: "Franck NIAT",
-			url: "https://franckinato.vercel.app",
+			url: "https://franckniat.me",
 		},
 	],
 };
